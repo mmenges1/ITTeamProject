@@ -1,5 +1,3 @@
-package CoreGameTopTrumps;
-
 import java.util.ArrayList;
 
 /*
@@ -9,50 +7,22 @@ import java.util.ArrayList;
  * This will be an arraylist of card objects
  *
  */
-public class Human {
+public class Human extends User {
 	private String name;
 	private ArrayList<Cards> hand;
-	
-	public Human(String name) {
-		this.name = name;
-		this.hand = new ArrayList<Cards>;
+
+	public Human(String name, ArrayList<Cards> hand) {
+		super(name, hand);
 	}
 	
-	// get user's name (might not be necessary)
-	public String getName() {
-		return this.name;
-	}
-	
-	// set user's name (might not be necessary)
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	// This method will get the user's hand
-	public ArrayList<Cards> getHand() {
-		return this.hand;
-	}
-	
-	// This method will set the user's hand
-	public void setHand(ArrayList<Cards> dealtCards) {
-		this.hand = dealtCards;
-	}
-	
-	// This player will get the top card
-	public Card showTopCard() {
-		return this.hand.get(0);
-	}
-	
-	// If the player wins, this method will add the pile of cards to the end of the player's hand
-	public void addCards(ArrayList<Cards> wonCards) {
-		this.hand.addAll(wonCards);
-	}
-	
-	//This method will remove the top card (i.e. the card at the start)
-	public void discardTopCard() {
-		this.hand.remove(0);
-	}
-	
-	
+	// To display user and their number of cards
+			public String toString() {
+				return this.name + ": You have " + this.hand.size() + " cards in your hand.";
+			}
+
+			@Override
+			void getTopCardName() {
+				System.out.println("You drew " + this.hand.get(0).getName());
+			}
 	
 }

@@ -1,5 +1,3 @@
-package CoreGameTopTrumps;
-
 import java.util.ArrayList;
 
 // this will be the ai player
