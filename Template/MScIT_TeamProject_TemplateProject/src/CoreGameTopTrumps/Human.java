@@ -1,3 +1,5 @@
+package CoreGameTopTrumps;
+
 import java.util.ArrayList;
 
 /*

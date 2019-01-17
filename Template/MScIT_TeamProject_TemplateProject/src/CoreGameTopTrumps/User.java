@@ -39,13 +39,12 @@ abstract public class User {
 		// I imagine that each card will be an arraylist itself
 		// with each stat in each index
 		// or each card could be an object?
+		
+		// BC - Changed so that the top Card stats are printed via sysout. 
+		//  I anticipate this will change to passing the whole card
 		public void showTopCardCriteria() {
 			Card topCard = this.hand.get(0);
-			
-			//Commented out for now to hush error messages
-//			for (int i = 0; i < topCard.size(); i++) {
-//				System.out.println("> " + topCard.get(criteriaName) + ": " + topCard.get(criteriaNumber));
-//			}
+			topCard.viewCard();
 		}
 		
 		// If the player wins, this method will add the pile of cards to the end of the player's hand
