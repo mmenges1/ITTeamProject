@@ -27,7 +27,8 @@ public class GameManager {
 		totalPlayers = 1 + numberOfAIPlayers;
 		
 		/* Divide up deck
-		 * 
+		 * mainCardEach does integer division on the size of the deck
+		 * remainderCards captures the number remainder cards to be shared
 		 */
 		
 		int mainCardEach = newdeck.size() / totalPlayers;
@@ -48,14 +49,20 @@ public class GameManager {
 			}
 			
 			divideCount += mainCardEach;
-			
+		}
+		
+		
+		// this loop distributes the spare cards one by one. players[0] is the user
+		for(int i = 0; i < remainderCards; i++) {
+			players.get(i).addSingleCard(newdeck.get(divideCount));
+			divideCount++;
 		}
 		
 		//Test printing!!
 		
 		for(User p : players) {
-			System.out.println("This is the test print - Game Manager");
-			p.getName();
+			System.out.println("This is the test print - Game Manager : " + p.getName());
+			
 			p.displayEntireHand();
 		}
 		

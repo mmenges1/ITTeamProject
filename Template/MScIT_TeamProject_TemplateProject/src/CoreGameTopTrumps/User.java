@@ -52,6 +52,10 @@ abstract public class User {
 			this.hand.addAll(wonCards);
 		}
 		
+		public void addSingleCard(Card card) {
+			this.hand.add(card);
+		}
+		
 		//This method will remove the top card (i.e. the card at the start)
 		public void discardTopCard() {
 			this.hand.remove(0);
