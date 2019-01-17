@@ -17,6 +17,8 @@ public class Human extends User {
 		super(name, hand);
 	}
 	
+	
+	
 	// To display user and their number of cards
 			public String toString() {
 				return this.name + ": You have " + this.hand.size() + " cards in your hand.";

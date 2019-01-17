@@ -12,6 +12,7 @@ public class Deck {
 	/*
 	 * This method creates list of cards from the deck text file
 	 */
+
 	public ArrayList<Card> createDeck(String fileName) {
 		ArrayList<Card> cardList = new ArrayList<Card>();
 		try {
@@ -39,6 +40,8 @@ public class Deck {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Collections.shuffle(cardList);
+		
 		return cardList;
 	}
     //Creates a card from the file data

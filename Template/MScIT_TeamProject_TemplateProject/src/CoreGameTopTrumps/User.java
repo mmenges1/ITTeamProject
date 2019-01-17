@@ -57,6 +57,13 @@ abstract public class User {
 			this.hand.remove(0);
 		}
 		
+		//Added for testing - prints all cards to sys out
+		public void displayEntireHand() {
+			for(Card c: hand) {
+				c.viewCard();
+			}
+		}
+		
 		
 		// checks to see if a user's hand is == 0
 		// return true (i.e. a player is out).
