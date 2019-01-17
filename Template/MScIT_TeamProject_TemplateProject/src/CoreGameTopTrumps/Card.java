@@ -45,7 +45,7 @@ public class Card {
 		this.attribute5 = attribute5;
 	}
 
-	public void viewCard()
+	public String viewCard()
 	{
 		String cardString = "Name: " + getName() +
 										" Att 1: " + attribute1+
@@ -54,5 +54,9 @@ public class Card {
 										" Att 4: " + attribute4+
 										" Att 5: " + attribute5;
 		System.out.println(cardString);
+		
+		return cardString;
 	}
+	
+	
 }

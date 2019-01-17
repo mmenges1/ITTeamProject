@@ -42,9 +42,9 @@ abstract public class User {
 		
 		// BC - Changed so that the top Card stats are printed via sysout. 
 		//  I anticipate this will change to passing the whole card
-		public void showTopCardCriteria() {
+		public String showTopCardCriteria() {
 			Card topCard = this.hand.get(0);
-			topCard.viewCard();
+			return topCard.viewCard();
 		}
 		
 		// If the player wins, this method will add the pile of cards to the end of the player's hand
@@ -71,7 +71,7 @@ abstract public class User {
 		
 		// checks to see if a user's hand is == 0
 		// return true (i.e. a player is out).
-		public boolean UserLoses() {
+		public boolean userLoses() {
 			if (this.hand.size() == 0) {
 				return true;
 			}
