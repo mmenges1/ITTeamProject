@@ -9,9 +9,9 @@ import java.util.ArrayList;
  */
 public class Human extends User {
 	private String name;
-	private ArrayList<Cards> hand;
+	private ArrayList<Card> hand;
 
-	public Human(String name, ArrayList<Cards> hand) {
+	public Human(String name, ArrayList<Card> hand) {
 		super(name, hand);
 	}
 	

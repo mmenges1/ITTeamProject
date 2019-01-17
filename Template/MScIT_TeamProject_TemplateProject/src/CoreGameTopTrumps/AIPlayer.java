@@ -1,3 +1,5 @@
+package CoreGameTopTrumps;
+
 import java.util.ArrayList;
 
 // this will be the ai player
@@ -5,9 +7,9 @@ import java.util.ArrayList;
 public class AIPlayer extends User {
 
 	private String name;
-	private ArrayList<Cards> hand;
+	private ArrayList<Card> hand;
 	
-	public AIPlayer(String name, ArrayList<Cards> hand) {
+	public AIPlayer(String name, ArrayList<Card> hand) {
 		super(name, hand);
 	}
 	
