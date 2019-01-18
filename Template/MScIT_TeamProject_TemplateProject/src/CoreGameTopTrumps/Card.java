@@ -60,6 +60,7 @@ public class Card {
 	 * @param selectionCriteriaNumber
 	 * @return 
 	 */
+	 /*
 	public int getAttribute(int selectionCriteriaNumber) {
 		int value = 0;
 		switch (selectionCriteriaNumber) {
@@ -89,7 +90,7 @@ public class Card {
 		}
 		return value;
 	}
-	
+	*/
 //	public String viewCard()
 //	{
 //		String cardString = "Name: " + getName() +
@@ -103,10 +104,29 @@ public class Card {
 //		return cardString;
 //	}
 	
+	public int returnSelectedAttr(int att) {
+		
+		if(att == 1) {
+			return getAttribute1();
+		}else if(att == 2) {
+			return getAttribute2();
+		}else if(att == 3) {
+			return getAttribute3();
+		}else if(att == 4) {
+			return getAttribute4();
+		}else if(att == 5) {
+			return getAttribute5();
+		}
+		
+		return -1;
+	}
+	@Override
+	public String toString() {
+		return "Card [name=" + name + "]";
+	}	
 	
 	public String viewCard() {
 		String cardString = "";
-		{
 			cardString =  "Name: " + getName() + "\n" + 
 					this.criterias.get(0) + ": "+ attribute1+"\n" + 
 					this.criterias.get(1) + ": " + attribute2+ "\n" + 
@@ -116,7 +136,6 @@ public class Card {
 			System.out.println(cardString);
 
 			return cardString;
-		}
 	}
 	//temporary test
 	public static void main (String[] args) {
