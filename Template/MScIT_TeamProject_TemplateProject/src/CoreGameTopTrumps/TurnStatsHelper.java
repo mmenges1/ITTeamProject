@@ -1,9 +1,8 @@
 package CoreGameTopTrumps;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class TurnStats {
+public class TurnStatsHelper {
 	ArrayList<Card> cardsPlayed;
 	
 	
@@ -20,7 +19,7 @@ public class TurnStats {
 		cardsPlayed.add(card);
 	}
 	
-	public TurnStats(int turnNumber, int attributeNumberPlayed) {
+	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed) {
 		this.turnNumber = turnNumber;
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
@@ -61,7 +60,7 @@ public class TurnStats {
 				isDraw = true;
 			}
 			
-//			System.out.println("TurnStats.determineWinner currentStat : " + currentStat);
+//			System.out.println("TurnStatsHelper.determineWinner currentStat : " + currentStat);
 		}
 		
 		return winner;		
@@ -69,7 +68,7 @@ public class TurnStats {
 
 	@Override
 	public String toString() {
-		return "TurnStats [cardsPlayed=" + cardsPlayed + ", turnNumber=" + turnNumber + ", winner=" + winner
+		return "TurnStatsHelper [cardsPlayed=" + cardsPlayed + ", turnNumber=" + turnNumber + ", winner=" + winner
 				+ ", attributeNumberPlayed=" + attributeNumberPlayed + ", isDraw=" + isDraw + ", roundString="
 				+ roundString + "]";
 	}
