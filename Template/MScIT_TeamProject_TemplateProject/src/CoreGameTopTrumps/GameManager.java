@@ -27,7 +27,15 @@ public class GameManager {
 		
 	}
 	private void manageTurn() {
-		while(playRound(getCardChoice()));
+		int counter = 0;
+		
+		while(playRound(getCardChoice())) {
+			counter ++;
+			
+			if(counter>=3) {
+				break;
+			}
+		}
 		
 		
 		
