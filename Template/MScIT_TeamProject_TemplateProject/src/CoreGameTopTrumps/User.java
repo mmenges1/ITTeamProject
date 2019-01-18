@@ -33,7 +33,7 @@ abstract public class User {
 			this.hand = dealtCards;
 		}
 		
-		abstract void getTopCardName();
+		abstract String getTopCardName();
 		
 		// This player will print the topCard
 		// I imagine that each card will be an arraylist itself
@@ -47,7 +47,7 @@ abstract public class User {
 			return topCard.viewCard();
 		}
 		
-		// If the player wins, this method will add the pile of cards to the end of the player's hand
+		// If the player wins, this method will add the pile of cards to the end of either user's or computer's hand
 		public void addCards(ArrayList<Card> wonCards) {
 			this.hand.addAll(wonCards);
 		}
@@ -56,11 +56,27 @@ abstract public class User {
 			this.hand.add(card);
 		}
 		
+		// imagining that criterias will be stored as an arraylist?
+		// therefore an index will be passed to this method which will
+		/**return the corresponding attribute number that is in the same index
+		public int getValue(int criteriaIndexInArrayList) {
+			return this.hand.get(0).get(criteriaIndexInArrayList);
+		}**/
+		
+		//get name of the top card
+		public String getNameOfTopCard() {
+			return this.hand.get(0).getName();
+		}
+		
 		//This method will remove the top card (i.e. the card at the start)
 		public void discardTopCard() {
 			this.hand.remove(0);
 		}
 		
+		//return the size of a player's hand
+		public int displayHandSize() {
+			return this.hand.size();
+		}
 		//Added for testing - prints all cards to sys out
 		public void displayEntireHand() {
 			for(Card c: hand) {

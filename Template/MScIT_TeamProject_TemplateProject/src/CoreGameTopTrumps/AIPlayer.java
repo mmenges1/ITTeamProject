@@ -5,7 +5,6 @@ import java.util.ArrayList;
 // this will be the ai player
 
 public class AIPlayer extends User {
-
 	private String name;
 	private ArrayList<Card> hand;
 	
@@ -15,7 +14,7 @@ public class AIPlayer extends User {
 	
 	// if ai win, this method will print their card name
 	@Override
-	void getTopCardName() {
-		System.out.println("The winning card is " + this.hand.get(0).getName());
+	String getTopCardName() {
+		return "The winning card is " + this.hand.get(0).getName();
 	}
 }

@@ -17,16 +17,15 @@ public class Human extends User {
 		super(name, hand);
 	}
 	
-	
-	
 	// To display user and their number of cards
 			public String toString() {
 				return this.name + ": You have " + this.hand.size() + " cards in your hand.";
 			}
-
+			
+			//should either be sys.out or return the argument back??
 			@Override
-			void getTopCardName() {
-				System.out.println("You drew " + this.hand.get(0).getName());
+			public String getTopCardName() {
+				return "You drew " + this.hand.get(0).getName();
 			}
 	
 }
