@@ -1,5 +1,7 @@
 package CoreGameTopTrumps;
 
+import java.util.ArrayList;
+
 public class Card {
 	protected int attribute1;
 	protected int attribute2;
@@ -7,7 +9,12 @@ public class Card {
 	protected int attribute4;
 	protected int attribute5;
 	protected String name;
-
+	protected ArrayList<String> criterias = new ArrayList<String>(); //adding a criterias/attributes
+	
+	
+	public void setCriteria(ArrayList<String> criteria) {
+		this.criterias = criteria;
+	}
 	public String getName() {
 		return name;
 	}
@@ -44,19 +51,66 @@ public class Card {
 	public void setAttribute5(int attribute5) {
 		this.attribute5 = attribute5;
 	}
-
-	public String viewCard()
-	{
-		String cardString = "Name: " + getName() +
-										" Att 1: " + attribute1+
-										" Att 2: " + attribute2+
-										" Att 3: " + attribute3+
-										" Att 4: " + attribute4+
-										" Att 5: " + attribute5;
-		System.out.println(cardString);
-		
-		return cardString;
+	
+	public String getAttributeName(int index) {
+		return this.criterias.get(index);
+	}
+	/**kw
+	 * Get an attribute based on the selected criteria number
+	 * @param selectionCriteriaNumber
+	 * @return 
+	 */
+	public int getAttribute(int selectionCriteriaNumber) {
+		int attribute = 0;
+		switch (selectionCriteriaNumber) {
+		case '1': {
+			attribute = this.attribute1;
+		}
+		case '2': {
+			attribute = this.attribute2;
+		}
+		case '3': {
+			attribute =this.attribute3;
+		}
+		case '4': {
+			attribute  = this.attribute4;
+		}
+		case '5': {
+			attribute = this.attribute5;
+		}
+		default: {
+			break;
+		}
+		}
+		return attribute;
 	}
 	
+//	public String viewCard()
+//	{
+//		String cardString = "Name: " + getName() +
+//										" Att 1: " + attribute1+
+//										" Att 2: " + attribute2+
+//										" Att 3: " + attribute3+
+//										" Att 4: " + attribute4+
+//										" Att 5: " + attribute5;
+//		System.out.println(cardString);
+//		
+//		return cardString;
+//	}
 	
+	
+	public String viewCard() {
+		String cardString = "";
+		{
+			cardString =  "Name: " + getName() + "\n" + 
+					this.criterias.get(0) + ": "+ attribute1+"\n" + 
+					this.criterias.get(1) + ": " + attribute2+ "\n" + 
+					this.criterias.get(2) + ": "+ attribute3+"\n" + 
+					this.criterias.get(3) + ": "+ attribute4+"\n" + 
+					this.criterias.get(4)+ ": " + attribute5;
+			System.out.println(cardString);
+
+			return cardString;
+		}
+	}
 }

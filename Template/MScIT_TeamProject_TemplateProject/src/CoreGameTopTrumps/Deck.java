@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck {
-
+	ArrayList<String> criteria = new ArrayList<String>();
 	/*
 	 * This method creates list of cards from the deck text file
 	 */
@@ -25,11 +25,13 @@ public class Deck {
 				String data[] = new String[6];
 				for (String value : line.split(" ")) {
 					if (!value.equals(" "))
-					data[i] = value;
+						data[i] = value;
 					i++;
 				}
 				if (count > 0) {
 					cardList.add(createCard(data));
+				} else {
+					readCriterias(data); //kw - read the top line and stores in an arraylist of strings 
 				}
 				count++;
 			}
@@ -44,7 +46,13 @@ public class Deck {
 		
 		return cardList;
 	}
-    //Creates a card from the file data
+	
+	public void readCriterias(String[] data) {
+		for (int j = 0; j<data.length; j++) {
+			this.criteria.add(data[j]);
+		}
+	}
+    //Creates a card from the file data and includes the attributes as well
 	public Card createCard(String[] data) {
 		Card newCard = new Card();
 		newCard.setName(data[0]);
@@ -53,6 +61,7 @@ public class Deck {
 		newCard.setAttribute3(Integer.parseInt(data[3]));
 		newCard.setAttribute4(Integer.parseInt(data[4]));
 		newCard.setAttribute5(Integer.parseInt(data[5]));
+		newCard.setCriteria(this.criteria); //kw
 		return newCard;
 	}
 //A temporary test
@@ -65,7 +74,8 @@ public class Deck {
 		for (Card c : list) {
 			c.viewCard();
 		}
-
+		
+		
 	}
 
 }
