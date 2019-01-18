@@ -9,6 +9,9 @@ public class AIPlayer extends User {
 	private ArrayList<Card> hand;
 	
 	public AIPlayer(String name, ArrayList<Card> hand) {
+		public static void main(String args[]) {
+			System.out.println(true);
+		}
 		super(name, hand);
 	}
 	
