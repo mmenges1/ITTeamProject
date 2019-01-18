@@ -1,3 +1,5 @@
+package CoreGameTopTrumps;
+
 import commandline.TopTrumpsCLIApplication;
 
 import online.TopTrumpsOnlineApplication;

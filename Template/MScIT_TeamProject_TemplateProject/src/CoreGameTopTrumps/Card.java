@@ -45,14 +45,18 @@ public class Card {
 		this.attribute5 = attribute5;
 	}
 
-	public void viewCard()
+	public String viewCard()
 	{
 		String cardString = "Name: " + getName() +
-										"\nAttribute 1: " + attribute1+
-										"\nAttribute 2: " + attribute2+
-										"\nAttribute 3: " + attribute3+
-										"\nAttribute 4: " + attribute4+
-										"\nAttribute 5: " + attribute5;
+										" Att 1: " + attribute1+
+										" Att 2: " + attribute2+
+										" Att 3: " + attribute3+
+										" Att 4: " + attribute4+
+										" Att 5: " + attribute5;
 		System.out.println(cardString);
+		
+		return cardString;
 	}
+	
+	
 }
