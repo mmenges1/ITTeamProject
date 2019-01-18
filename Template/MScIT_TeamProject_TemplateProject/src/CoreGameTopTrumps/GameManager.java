@@ -12,6 +12,8 @@ public class GameManager {
 	int startingPlayer;
 	int playerTurn;
 	
+	ArrayList<TurnStats> turnStats = new ArrayList<TurnStats>();
+	ArrayList<Card> community = new ArrayList<Card>();
 	ArrayList<User> players;
 	
 	//TEMP MAIN for testing
@@ -32,13 +34,11 @@ public class GameManager {
 		while(playRound(getCardChoice())) {
 			counter ++;
 			
-			if(counter>=3) {
-				break;
-			}
+//			//This is here for testing
+//			if(counter>=3) {
+//				break;
+//			}
 		}
-		
-		
-		
 	}
 
 
@@ -88,10 +88,10 @@ public class GameManager {
 		
 		//Test printing!!
 		
-		for(User p : players) {
-			System.out.println("This is the test print - Game Manager : " + p.getName());
-			p.displayEntireHand();
-		}
+//		for(User p : players) {
+//			System.out.println("This is the test print - Game Manager : " + p.getName());
+//			p.displayEntireHand();
+//		}
 		
 	}
 	
@@ -146,7 +146,51 @@ public class GameManager {
 	private boolean playRound(int cardChoice) {
 		//The actual stuff goes here
 		
+		turnStats.add(new TurnStats(totalTurns, cardChoice));
 		
+		
+		
+		for(int i = 0; i < players.size(); i++ ) {
+			//This accesses the most recently added TurnStats object, and puts the players top cards into it
+//			System.out.println(players.get(i).getTopCard().viewCard());	
+			
+			
+			
+			turnStats.get(turnStats.size()-1).addCardToCardsPlayed(players.get(i).getTopCard());
+			
+			//display players hand size
+//			System.out.printf("   Player %d deck size is %d ", i, players.get(i).getHandSize());
+			
+			players.get(i).discardTopCard();
+		}
+		
+		//to string for turn stats
+//		System.out.println(turnStats.get(turnStats.size()-1));
+		
+//		System.out.println(" playRound");
+		//Find the winner or if its a draw
+//		System.out.println("Winner method returns: " + turnStats.get(turnStats.size()-1).determineWinner());;
+		
+		//If it is not a draw, then put the cards played and community into the winners hand;
+		if(!turnStats.get(turnStats.size()-1).getIsDraw()) {
+			
+			
+			lastWinner = turnStats.get(turnStats.size()-1).getWinner();
+			
+//			System.out.printf("playRound: LastWinner = %d turnstats %d\n", lastWinner, turnStats.get(turnStats.size()-1).getWinner());
+			
+			players.get(lastWinner).addCards(turnStats.get(turnStats.size()-1).passCardsPlayed());
+			
+			//pass the community cards and clear
+			players.get(lastWinner).addCards(community);			
+			community.clear();
+		} else {
+			//lastWinner does not change if there is a draw
+			
+			community.addAll(turnStats.get(turnStats.size()-1).passCardsPlayed());
+		}
+		
+		System.out.println(turnStats.get(turnStats.size()-1).getRoundString() + "\n\n");
 		
 		// If its NOT game over = true. If this returns false then the game loop is stopped
 		return !gameOver();
@@ -159,6 +203,7 @@ public class GameManager {
 		
 		for(User p : players) {
 			if(p.userLoses()) {
+				
 				count++;
 			}
 		}

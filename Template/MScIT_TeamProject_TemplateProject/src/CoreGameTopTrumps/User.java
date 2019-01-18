@@ -41,10 +41,13 @@ abstract public class User {
 		// or each card could be an object?
 		
 		// BC - Changed so that the top Card stats are printed via sysout. 
-		//  I anticipate this will change to passing the whole card
 		public String showTopCardCriteria() {
 			Card topCard = this.hand.get(0);
 			return topCard.viewCard();
+		}
+		
+		public Card getTopCard() {
+			return this.hand.get(0);
 		}
 		
 		// If the player wins, this method will add the pile of cards to the end of the player's hand
@@ -68,6 +71,9 @@ abstract public class User {
 			}
 		}
 		
+		public int getHandSize() {
+			return hand.size();
+		}
 		
 		// checks to see if a user's hand is == 0
 		// return true (i.e. a player is out).
