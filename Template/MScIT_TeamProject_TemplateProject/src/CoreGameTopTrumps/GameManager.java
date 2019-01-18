@@ -230,34 +230,34 @@ public class GameManager {
 	 *  then this becomes a false which ends the loop! 
 	 */
 	private boolean playRound(int cardChoice) {
-		
+		int currentTurnStats = turnStats.size()-1;
 		// 1)
 		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice));
 		
 		// 2)
 		for(int i = 0; i < players.size(); i++ ) {			
-			turnStats.get(turnStats.size()-1).addCardToCardsPlayed(players.get(i).getTopCard());			
+			turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());			
 			players.get(i).discardTopCard();
 		}
 		
 		// 3)
-		turnStats.get(turnStats.size()-1).determineWinner();
+		turnStats.get(currentTurnStats).determineWinner();
 		
 		// 4)
-		if(!turnStats.get(turnStats.size()-1).getIsDraw()) {
+		if(!turnStats.get(currentTurnStats).getIsDraw()) {
 			
-			lastWinner = turnStats.get(turnStats.size()-1).getWinner();			
-			players.get(lastWinner).addCards(turnStats.get(turnStats.size()-1).passCardsPlayed());
+			lastWinner = turnStats.get(currentTurnStats).getWinner();			
+			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			
 			players.get(lastWinner).addCards(community);			
 			community.clear();
 			
 		} else {
 			// 5)		
-			community.addAll(turnStats.get(turnStats.size()-1).passCardsPlayed());
+			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 		}
 		
-		// 6) Let another method deal with printing for the user
+		// 6) 
 		displayRoundSummery();
 
 		
@@ -269,14 +269,23 @@ public class GameManager {
 		
 		int currentTurnStats = turnStats.size()-1;
 		
-		turnStats.get(currentTurnStats).setCommunitySize(community.size());
+//		turnStats.get(currentTurnStats).setCommunitySize(community.size());
+		
+		String roundString = String.format(String.format("\n%s won using %s. "
+				+ "\n\nCommunity deck size is currently:%d "
+				+ "\n\nThe cards that everyone played are:\n%s ", 
+				players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size(), cardsPlayed);
 		
 		System.out.println(turnStats.get(currentTurnStats).getRoundString() + "\n\n");
+		
+		
+		
+		System.out.println("Top Card Att test " + turnStats.get(currentTurnStats).getTopCardByAttribute() );
 		
 		//This loop shows how big the deck is for each player
 		
 		for(int i = 0; i < players.size(); i++) {
-			System.out.printf("Player %d deck size is %d   ", i, players.get(i).getHandSize());
+			System.out.printf("Player %d's deck size is %d\n", players.get(i).getName(), players.get(i).getHandSize());
 		}
 		
 		System.out.println("\n\n");

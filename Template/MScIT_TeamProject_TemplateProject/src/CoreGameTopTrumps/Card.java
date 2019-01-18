@@ -60,7 +60,7 @@ public class Card {
 	 * @param selectionCriteriaNumber
 	 * @return 
 	 */
-	 /*
+	
 	public int getAttribute(int selectionCriteriaNumber) {
 		int value = 0;
 		switch (selectionCriteriaNumber) {
@@ -90,7 +90,7 @@ public class Card {
 		}
 		return value;
 	}
-	*/
+	
 //	public String viewCard()
 //	{
 //		String cardString = "Name: " + getName() +
@@ -104,6 +104,7 @@ public class Card {
 //		return cardString;
 //	}
 	
+	//TODO: remove this method and replace all references to it with getAttribute
 	public int returnSelectedAttr(int att) {
 		
 		if(att == 1) {
@@ -133,11 +134,12 @@ public class Card {
 					this.criterias.get(2) + ": "+ attribute3+"\n" + 
 					this.criterias.get(3) + ": "+ attribute4+"\n" + 
 					this.criterias.get(4)+ ": " + attribute5;
-			System.out.println(cardString);
+			
+//			System.out.println(cardString);
 
 			return cardString;
 	}
-	//temporary test
+	/*temporary test
 	public static void main (String[] args) {
 		Card card = new Card();
 		card.setName("Kevin");
@@ -147,5 +149,5 @@ public class Card {
 		card.setAttribute4(5);
 		card.setAttribute5(5);
 		System.out.println(card.getAttribute(1));
-	}
+	}*/
 }

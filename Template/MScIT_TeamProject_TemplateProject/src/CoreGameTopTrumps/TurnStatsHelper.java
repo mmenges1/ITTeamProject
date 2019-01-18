@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TurnStatsHelper {
 	ArrayList<Card> cardsPlayed;
-	
+	ArrayList<User> players;
 	
 	int turnNumber;
 	int winner;
@@ -23,6 +23,10 @@ public class TurnStatsHelper {
 		this.turnNumber = turnNumber;
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
+	}
+	
+	public void addPlayers(ArrayList<User> players) {
+		this.players = new ArrayList<User>(players);
 	}
 	
 	public void setWinner(int winner) {
@@ -83,6 +87,14 @@ public class TurnStatsHelper {
 
 	public void setCommunitySize(int size) {
 		this.communitySize = size;		
+	}
+	
+	public String getTopCardByAttribute() {
+		return cardsPlayed.get(this.winner).getAttributeName(attributeNumberPlayed) + " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
+	}
+	
+	public String getAnyCardAnyAttribute(int playerIndex, int attributeIndex) {
+		return cardsPlayed.get(playerIndex).getAttributeName(attributeNumberPlayed) + " : " + cardsPlayed.get(this.winner).getAttribute(attributeIndex);
 	}
 
 }
