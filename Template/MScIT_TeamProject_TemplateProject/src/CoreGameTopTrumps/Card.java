@@ -61,28 +61,33 @@ public class Card {
 	 * @return 
 	 */
 	public int getAttribute(int selectionCriteriaNumber) {
-		int attribute = 0;
+		int value = 0;
 		switch (selectionCriteriaNumber) {
-		case '1': {
-			attribute = this.attribute1;
+		case 1: {
+			value = this.getAttribute1();
+			 break;
 		}
-		case '2': {
-			attribute = this.attribute2;
+		case 2: {
+			value = this.getAttribute2();
+			break;
 		}
-		case '3': {
-			attribute =this.attribute3;
+		case 3: {
+			 value =this.getAttribute3();
+			 break;
 		}
-		case '4': {
-			attribute  = this.attribute4;
+		case 4: {
+			 value  = this.getAttribute4();
+			 break;
 		}
-		case '5': {
-			attribute = this.attribute5;
+		case 5: {
+			value = this.getAttribute5();
+			break;
 		}
 		default: {
 			break;
 		}
 		}
-		return attribute;
+		return value;
 	}
 	
 //	public String viewCard()
@@ -112,5 +117,16 @@ public class Card {
 
 			return cardString;
 		}
+	}
+	//temporary test
+	public static void main (String[] args) {
+		Card card = new Card();
+		card.setName("Kevin");
+		card.setAttribute1(10);
+		card.setAttribute2(2);
+		card.setAttribute3(3);
+		card.setAttribute4(5);
+		card.setAttribute5(5);
+		System.out.println(card.getAttribute(1));
 	}
 }
