@@ -10,6 +10,7 @@ public class TurnStats {
 	int turnNumber;
 	int winner;
 	int attributeNumberPlayed;
+	int communitySize;
 	boolean isDraw;
 	
 	//This is what the user will see which summarises the round
@@ -78,7 +79,11 @@ public class TurnStats {
 		// This is just a basic version right now because to make it properly user friendly
 		// will probibly involve a lot more work
 
-		return String.format("\nPlayer %d won using Attribute %d. \n\nThe cards that everyone played are:\n%s ", winner, attributeNumberPlayed, cardsPlayed);
+		return String.format("\nPlayer %d won using Attribute %d. \n\nCommunity deck size is currently:%d \n\nThe cards that everyone played are:\n%s ", winner, attributeNumberPlayed, communitySize, cardsPlayed);
+	}
+
+	public void setCommunitySize(int size) {
+		this.communitySize = size;		
 	}
 
 }

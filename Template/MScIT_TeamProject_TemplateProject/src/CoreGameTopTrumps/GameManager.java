@@ -103,8 +103,9 @@ public class GameManager {
 		Random r = new Random();
 		
 		
-		//This will stay at zero for now for testing, so that user is always 
-		// the one controlling
+		//Last winner stay at zero for now for testing, so that user is always 
+		// the one controlling.
+	
 		lastWinner = 0;
 		
 		int playerChoice = 0;
@@ -144,53 +145,45 @@ public class GameManager {
 	 * Methods focused on conducting the round
 	 */
 	private boolean playRound(int cardChoice) {
-		//The actual stuff goes here
 		
 		turnStats.add(new TurnStats(totalTurns, cardChoice));
 		
-		
-		
-		for(int i = 0; i < players.size(); i++ ) {
-			//This accesses the most recently added TurnStats object, and puts the players top cards into it
-//			System.out.println(players.get(i).getTopCard().viewCard());	
-			
-			
-			
-			turnStats.get(turnStats.size()-1).addCardToCardsPlayed(players.get(i).getTopCard());
-			
-			//display players hand size
-//			System.out.printf("   Player %d deck size is %d ", i, players.get(i).getHandSize());
-			
+		//Adds all the top cards to the turnStatus object;
+		for(int i = 0; i < players.size(); i++ ) {			
+			turnStats.get(turnStats.size()-1).addCardToCardsPlayed(players.get(i).getTopCard());			
 			players.get(i).discardTopCard();
 		}
 		
-		//to string for turn stats
-//		System.out.println(turnStats.get(turnStats.size()-1));
-		
-//		System.out.println(" playRound");
-		//Find the winner or if its a draw
-//		System.out.println("Winner method returns: " + turnStats.get(turnStats.size()-1).determineWinner());;
+		//This function determins the winner
+		turnStats.get(turnStats.size()-1).determineWinner();
 		
 		//If it is not a draw, then put the cards played and community into the winners hand;
 		if(!turnStats.get(turnStats.size()-1).getIsDraw()) {
 			
-			
-			lastWinner = turnStats.get(turnStats.size()-1).getWinner();
-			
-//			System.out.printf("playRound: LastWinner = %d turnstats %d\n", lastWinner, turnStats.get(turnStats.size()-1).getWinner());
-			
+			//get the lastwinner index and add the cards played into that players[index]
+			lastWinner = turnStats.get(turnStats.size()-1).getWinner();			
 			players.get(lastWinner).addCards(turnStats.get(turnStats.size()-1).passCardsPlayed());
 			
 			//pass the community cards and clear
 			players.get(lastWinner).addCards(community);			
 			community.clear();
+			
 		} else {
 			//lastWinner does not change if there is a draw
 			
 			community.addAll(turnStats.get(turnStats.size()-1).passCardsPlayed());
 		}
+		turnStats.get(turnStats.size()-1).setCommunitySize(community.size());
 		
 		System.out.println(turnStats.get(turnStats.size()-1).getRoundString() + "\n\n");
+		
+		//This loop shows how big the deck is for each player
+		
+		for(int i = 0; i < players.size(); i++) {
+			System.out.printf("Player %d deck size is %d   ", i, players.get(i).getHandSize());
+		}
+		
+		System.out.println("\n\n");
 		
 		// If its NOT game over = true. If this returns false then the game loop is stopped
 		return !gameOver();
