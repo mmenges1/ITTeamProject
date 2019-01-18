@@ -7,6 +7,7 @@ import java.util.ArrayList;
 abstract public class User {
 	private String name;
 	private ArrayList<Card> hand;
+	private ArrayList<String> headers;
 	
 	public User(String name, ArrayList<Card> hand) {
 		this.name = name;
@@ -56,12 +57,17 @@ abstract public class User {
 			this.hand.add(card);
 		}
 		
-		// imagining that criterias will be stored as an arraylist?
+		public String selectCriteriaOfTopCard(int index) {
+			Card topCard = this.hand.get(0);
+			String attributeName = topCard.getAttributeName(index);
+			return attributeName;
+		}
 		// therefore an index will be passed to this method which will
-		/**return the corresponding attribute number that is in the same index
-		public int getValue(int criteriaIndexInArrayList) {
-			return this.hand.get(0).get(criteriaIndexInArrayList);
-		}**/
+		//return the corresponding attribute number that is in the same index
+		public int getValue(int criteriaNumber) {
+			Card topCard = this.hand.get(0);
+			return topCard.getAttribute(criteriaNumber);
+		}
 		
 		//get name of the top card
 		public String getNameOfTopCard() {
