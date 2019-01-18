@@ -23,7 +23,7 @@ public class GameManager {
 		
 		
 		int playerChoice = 0;
-		
+		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n\n");
 		while(true) {
 			playerChoice = gm.initialPlayerChoice();
 			
@@ -34,6 +34,7 @@ public class GameManager {
 				gm.deal(4);				
 				gm.manageTurn();
 			} else {
+				System.out.println("Goodbye!");
 				break;
 			}
 		}
@@ -48,7 +49,7 @@ public class GameManager {
 		
 		InputReader in = new InputReader();
 		
-		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, or would you like to start a new game?\n\n");
+		
 		System.out.println("Press 1 for previous game stats, or 2 to start a new game, or 3 to quit");
 		
 		int choice = 0;
@@ -77,6 +78,18 @@ public class GameManager {
 	
 	/*
 	 * Method for dealing the new deck of cards evenly. It is already shuffled;
+	 * It follows this order:
+	 * 
+	 * 1) mainCardEach gets the basic division of cards so that each players deck is even.
+	 * remainderCards gets the summer of spare cards to be split up as evenply as possible.
+	 * dividedCount is used to count the start and finish indexes of the newdeck,
+	 * the cards are taken from the newdeck and shared between the players.
+	 * 
+	 * 2) loops though the newdeck and distributes each according to the above variables. 
+	 * Human player always goes first
+	 * 
+	 * 3) this loop distributes the spare cards one by one. players[0] is the user, so the user 
+	 * always gets a spare card in this setting
 	 */
 	private void deal(int numberOfAIPlayers) {		
 		Deck d = new Deck();
@@ -84,26 +97,15 @@ public class GameManager {
 		players = new ArrayList<User>();		
 		totalPlayers = 1 + numberOfAIPlayers;
 		
-		/* Divide up deck
-		 * 
-		 * mainCardEach does integer division on the  size of the 
-		 * deck to count the amount of cards which evenly divide between all players
-		 * 
-		 * remainderCards captures the number remainder cards to be shared
-		 */
-		
+		// 1)
 		int mainCardEach = newdeck.size() / totalPlayers;
 		int remainderCards = newdeck.size() % totalPlayers;
 		
-		System.out.println("Manager - mainCardEach: " + mainCardEach + " remCard: " + remainderCards);
-		
 		int divideCount = 0;
 		
+		// 2)
 		for(int i = 0; i < totalPlayers; i++) {	
-			//divideCount always represents the first index in current sublist			
-			//Human goes first! - however many AI players are added next
 			if(i==0) {
-				// add a new user plus the appropriate 'sublist' of the deck
 				players.add(new Human("BobsHisName", new ArrayList<Card>(newdeck.subList(divideCount,divideCount + mainCardEach))));
 			}else {
 				players.add(new AIPlayer("Val "+i,new ArrayList<Card>(newdeck.subList(divideCount, divideCount + mainCardEach))));	
@@ -113,18 +115,11 @@ public class GameManager {
 		}
 		
 		
-		// this loop distributes the spare cards one by one. players[0] is the user
+		// 3)
 		for(int i = 0; i < remainderCards; i++) {
 			players.get(i).addSingleCard(newdeck.get(divideCount));
 			divideCount++;
 		}
-		
-		//Test printing!!
-		
-//		for(User p : players) {
-//			System.out.println("This is the test print - Game Manager : " + p.getName());
-//			p.displayEntireHand();
-//		}
 		
 	}
 	
@@ -227,7 +222,7 @@ public class GameManager {
 	 * 
 	 * 5) else if its a draw, cards go to community, and lastWinner stays the same
 	 * 
-	 * 6) turnStats is used to display the vital information to the user
+	 * 6) trigger displayRoundSummery() to print the key info to the player
 	 * 
 	 * 7) Finally, gameOver() is used to check if the game is over (only one player has cards)
 	 * it is phrased as "return !gameOver();" because the loop continues if the game is NOT over 
@@ -262,11 +257,21 @@ public class GameManager {
 			community.addAll(turnStats.get(turnStats.size()-1).passCardsPlayed());
 		}
 		
-		// 6)
+		// 6) Let another method deal with printing for the user
+		displayRoundSummery();
+
 		
-		turnStats.get(turnStats.size()-1).setCommunitySize(community.size());
+		// 7)
+		return !gameOver();
+	}
+	
+	private void displayRoundSummery() {
 		
-		System.out.println(turnStats.get(turnStats.size()-1).getRoundString() + "\n\n");
+		int currentTurnStats = turnStats.size()-1;
+		
+		turnStats.get(currentTurnStats).setCommunitySize(community.size());
+		
+		System.out.println(turnStats.get(currentTurnStats).getRoundString() + "\n\n");
 		
 		//This loop shows how big the deck is for each player
 		
@@ -275,9 +280,6 @@ public class GameManager {
 		}
 		
 		System.out.println("\n\n");
-		
-		// 7)
-		return !gameOver();
 	}
 	
 	//This helps playRound
