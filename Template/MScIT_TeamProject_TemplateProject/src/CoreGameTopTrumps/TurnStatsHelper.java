@@ -19,10 +19,11 @@ public class TurnStatsHelper {
 		cardsPlayed.add(card);
 	}
 	
-	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed) {
+	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players) {
 		this.turnNumber = turnNumber;
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
+		this.players = new ArrayList<User>(players);
 	}
 	
 	public void addPlayers(ArrayList<User> players) {
@@ -93,8 +94,20 @@ public class TurnStatsHelper {
 		return cardsPlayed.get(this.winner).getAttributeName(attributeNumberPlayed) + " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
 	
-	public String getAnyCardAnyAttribute(int playerIndex, int attributeIndex) {
-		return cardsPlayed.get(playerIndex).getAttributeName(attributeNumberPlayed) + " : " + cardsPlayed.get(this.winner).getAttribute(attributeIndex);
+	public String getAnyCardTopAttribute(int playerIndex) {
+		return cardsPlayed.get(playerIndex).getAttributeName(attributeNumberPlayed) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
+	}
+	
+	public String getUserCardName(int index) {
+		return cardsPlayed.get(index).getName();
+	}
+	
+	public int getCardPlayedSize() {
+		return cardsPlayed.size();
+	}
+	
+	public User getPlayer(int index) {
+		return players.get(index);
 	}
 
 }

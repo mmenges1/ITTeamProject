@@ -129,11 +129,11 @@ public class Card {
 	public String viewCard() {
 		String cardString = "";
 			cardString =  "Name: " + getName() + "\n" + 
-					this.criterias.get(0) + ": "+ attribute1+"\n" + 
-					this.criterias.get(1) + ": " + attribute2+ "\n" + 
-					this.criterias.get(2) + ": "+ attribute3+"\n" + 
-					this.criterias.get(3) + ": "+ attribute4+"\n" + 
-					this.criterias.get(4)+ ": " + attribute5;
+					this.criterias.get(1) + ": "+ attribute1+"\n" + 
+					this.criterias.get(2) + ": " + attribute2+ "\n" + 
+					this.criterias.get(3) + ": "+ attribute3+"\n" + 
+					this.criterias.get(4) + ": "+ attribute4+"\n" + 
+					this.criterias.get(5)+ ": " + attribute5;
 			
 //			System.out.println(cardString);
 

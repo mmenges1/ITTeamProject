@@ -41,7 +41,6 @@ abstract public class User {
 		// with each stat in each index
 		// or each card could be an object?
 		
-		// BC - Changed so that the top Card stats are printed via sysout. 
 		public String showTopCardCriteria() {
 			Card topCard = this.hand.get(0);
 			return topCard.viewCard();
@@ -101,6 +100,7 @@ abstract public class User {
 		// checks to see if a user's hand is == 0
 		// return true (i.e. a player is out).
 		public boolean userLoses() {
+			
 			if (this.hand.size() == 0) {
 				return true;
 			}

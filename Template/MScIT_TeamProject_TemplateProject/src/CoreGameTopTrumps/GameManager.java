@@ -7,7 +7,7 @@ import java.util.Random;
 public class GameManager {
 	int totalPlayers = 0;
 	int totalTurns = 0;
-	int totalRounds = 0;
+	int totalRounds = 1;
 	int lastWinner = 0;
 	int startingPlayer;
 	int playerTurn;
@@ -23,7 +23,7 @@ public class GameManager {
 		
 		
 		int playerChoice = 0;
-		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n\n");
+		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
 		while(true) {
 			playerChoice = gm.initialPlayerChoice();
 			
@@ -50,7 +50,7 @@ public class GameManager {
 		InputReader in = new InputReader();
 		
 		
-		System.out.println("Press 1 for previous game stats, or 2 to start a new game, or 3 to quit");
+		System.out.println("\nPress 1 for previous game stats, or 2 to start a new game, or 3 to quit");
 		
 		int choice = 0;
 		
@@ -106,9 +106,9 @@ public class GameManager {
 		// 2)
 		for(int i = 0; i < totalPlayers; i++) {	
 			if(i==0) {
-				players.add(new Human("BobsHisName", new ArrayList<Card>(newdeck.subList(divideCount,divideCount + mainCardEach))));
+				players.add(new Human("You", new ArrayList<Card>(newdeck.subList(divideCount,divideCount + mainCardEach))));
 			}else {
-				players.add(new AIPlayer("Val "+i,new ArrayList<Card>(newdeck.subList(divideCount, divideCount + mainCardEach))));	
+				players.add(new AIPlayer("AI "+i,new ArrayList<Card>(newdeck.subList(divideCount, divideCount + mainCardEach))));	
 			}
 			
 			divideCount += mainCardEach;
@@ -135,14 +135,14 @@ public class GameManager {
 	private void manageTurn() {
 		int counter = 0;
 		
-		while(playRound(getCardChoice())) {
+		do {
 			counter ++;
 			
 //			//This is here for testing
 //			if(counter>=3) {
 //				break;
 //			}
-		}
+		}while(playRound(getCardChoice()));
 	}
 	
 	/*
@@ -155,21 +155,26 @@ public class GameManager {
 	private int getCardChoice() {
 		Random r = new Random();		
 		
+		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
+		
+		
 		//Last winner stay at zero for now for testing, so that user is always 
 		// the one controlling.
 		
-		if(true/*totalRounds == 0*/) {
+		if(totalRounds == 1) {
 			lastWinner = 0;
 		}
 			
 			
 		int playerChoice = 0;
 		if(lastWinner ==0 && !players.get(0).userLoses()) {			
-			playerChoice = getUserInput();
+			playerChoice = getUserInput(); // I RECCOMEND just choosing an integer for testing! (There can be 200-400 rounds)
 		}else {
 			//Seperate method for AI choosing card goes here
 			playerChoice = r.nextInt(5) + 1;
 		}
+		
+		totalRounds++;
 		
 		return playerChoice;
 	}
@@ -230,22 +235,25 @@ public class GameManager {
 	 *  then this becomes a false which ends the loop! 
 	 */
 	private boolean playRound(int cardChoice) {
-		int currentTurnStats = turnStats.size()-1;
+		
+		
 		// 1)
-		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice));
+		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players));
+		int currentTurnStats = turnStats.size()-1;
 		
 		// 2)
-		for(int i = 0; i < players.size(); i++ ) {			
-			turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());			
-			players.get(i).discardTopCard();
+		for(int i = 0; i < players.size(); i++ ) {
+			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
+				turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());			
+				players.get(i).discardTopCard();
+			}			
 		}
 		
 		// 3)
 		turnStats.get(currentTurnStats).determineWinner();
 		
 		// 4)
-		if(!turnStats.get(currentTurnStats).getIsDraw()) {
-			
+		if(!turnStats.get(currentTurnStats).getIsDraw()) {			
 			lastWinner = turnStats.get(currentTurnStats).getWinner();			
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			
@@ -268,42 +276,52 @@ public class GameManager {
 	private void displayRoundSummery() {
 		
 		int currentTurnStats = turnStats.size()-1;
-		
-//		turnStats.get(currentTurnStats).setCommunitySize(community.size());
-		
-		String roundString = String.format(String.format("\n%s won using %s. "
-				+ "\n\nCommunity deck size is currently:%d "
-				+ "\n\nThe cards that everyone played are:\n%s ", 
-				players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size(), cardsPlayed);
-		
-		System.out.println(turnStats.get(currentTurnStats).getRoundString() + "\n\n");
-		
-		
-		
-		System.out.println("Top Card Att test " + turnStats.get(currentTurnStats).getTopCardByAttribute() );
-		
-		//This loop shows how big the deck is for each player
-		
-		for(int i = 0; i < players.size(); i++) {
-			System.out.printf("Player %d's deck size is %d\n", players.get(i).getName(), players.get(i).getHandSize());
-		}
-		
-		System.out.println("\n\n");
-	}
-	
-	//This helps playRound
-	private boolean gameOver() {
-		// counts how many users are OUT
-		int count = 0;
-		
-		for(User p : players) {
-			if(p.userLoses()) {
+		int cardPlayedIndex = 0;
 				
-				count++;
+		for(int i = 0; i < players.size(); i++) {
+			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
+				
+				System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n", 
+						turnStats.get(currentTurnStats).getPlayer(cardPlayedIndex).getName(), 
+						turnStats.get(currentTurnStats).getUserCardName(cardPlayedIndex),
+						turnStats.get(currentTurnStats).getAnyCardTopAttribute(cardPlayedIndex), 
+						players.get(i).getHandSize() );
+				
+				
+				cardPlayedIndex++;
 			}
 		}
 		
-		if(count == totalPlayers - 1) {
+		//TODO Implement a GameStats here to convey a points system for each player
+		
+		String roundString = "";
+		
+		if(turnStats.get(currentTurnStats).isDraw) {			
+			roundString = String.format("\nIts a draw!! Cards added to Community... "
+					+ "\n\nCommunity deck size is currently:%d", 
+					community.size());			
+		} else {
+			roundString = String.format("\n%s won using %s. "
+					+ "\n\nCommunity deck size is currently: %d", 
+					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
+		}
+		
+		System.out.println(roundString);
+	}
+	
+	//This helps playRound 
+	// It checks if the game is over AND deletes players with no cards
+	private boolean gameOver() {
+		
+		int count = 0;
+		
+		for(int i = 0; i< players.size(); i++){
+			if(players.get(i).userLoses()) {
+				players.remove(i);
+			}
+		}
+		
+		if(players.size() == 1) {
 			return true;
 		}
 		
