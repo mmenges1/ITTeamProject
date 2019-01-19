@@ -9,6 +9,10 @@ abstract public class User {
 	private ArrayList<Card> hand;
 	private ArrayList<String> headers;
 	
+	public User() {
+		this.hand = new ArrayList<Card>();
+		this.headers = new ArrayList<String>();
+	}
 	public User(String name, ArrayList<Card> hand) {
 		this.name = name;
 		this.hand = hand;
@@ -66,7 +70,7 @@ abstract public class User {
 		//return the corresponding attribute number that is in the same index
 		public int getValue(int criteriaNumber) {
 			Card topCard = this.hand.get(0);
-			return topCard.getAttribute(criteriaNumber);
+			return topCard.getValueforAttribute(criteriaNumber);
 		}
 		
 		//get name of the top card
