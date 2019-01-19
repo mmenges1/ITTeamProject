@@ -60,6 +60,7 @@ public class Card {
 	 * @param selectionCriteriaNumber
 	 * @return 
 	 */
+	
 	public int getAttribute(int selectionCriteriaNumber) {
 		int value = 0;
 		switch (selectionCriteriaNumber) {
@@ -103,22 +104,42 @@ public class Card {
 //		return cardString;
 //	}
 	
+	//TODO: remove this method and replace all references to it with getAttribute
+	public int returnSelectedAttr(int att) {
+		
+		if(att == 1) {
+			return getAttribute1();
+		}else if(att == 2) {
+			return getAttribute2();
+		}else if(att == 3) {
+			return getAttribute3();
+		}else if(att == 4) {
+			return getAttribute4();
+		}else if(att == 5) {
+			return getAttribute5();
+		}
+		
+		return -1;
+	}
+	@Override
+	public String toString() {
+		return "Card [name=" + name + "]";
+	}	
 	
 	public String viewCard() {
 		String cardString = "";
-		{
 			cardString =  "Name: " + getName() + "\n" + 
-					this.criterias.get(0) + ": "+ attribute1+"\n" + 
-					this.criterias.get(1) + ": " + attribute2+ "\n" + 
-					this.criterias.get(2) + ": "+ attribute3+"\n" + 
-					this.criterias.get(3) + ": "+ attribute4+"\n" + 
-					this.criterias.get(4)+ ": " + attribute5;
-			System.out.println(cardString);
+					this.criterias.get(1) + ": "+ attribute1+"\n" + 
+					this.criterias.get(2) + ": " + attribute2+ "\n" + 
+					this.criterias.get(3) + ": "+ attribute3+"\n" + 
+					this.criterias.get(4) + ": "+ attribute4+"\n" + 
+					this.criterias.get(5)+ ": " + attribute5;
+			
+//			System.out.println(cardString);
 
 			return cardString;
-		}
 	}
-	//temporary test
+	/*temporary test
 	public static void main (String[] args) {
 		Card card = new Card();
 		card.setName("Kevin");
@@ -128,5 +149,5 @@ public class Card {
 		card.setAttribute4(5);
 		card.setAttribute5(5);
 		System.out.println(card.getAttribute(1));
-	}
+	}*/
 }
