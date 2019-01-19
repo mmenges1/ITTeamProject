@@ -45,14 +45,17 @@ abstract public class User {
 		// with each stat in each index
 		// or each card could be an object?
 		
-		// BC - Changed so that the top Card stats are printed via sysout. 
-		//  I anticipate this will change to passing the whole card
 		public String showTopCardCriteria() {
 			Card topCard = this.hand.get(0);
 			return topCard.viewCard();
 		}
 		
-		// If the player wins, this method will add the pile of cards to the end of either user's or computer's hand
+		public Card getTopCard() {
+			return this.hand.get(0);
+		}
+		
+		// If the player wins, this method will add the pile of cards to the end of the player's hand
+
 		public void addCards(ArrayList<Card> wonCards) {
 			this.hand.addAll(wonCards);
 		}
@@ -94,10 +97,14 @@ abstract public class User {
 			}
 		}
 		
+		public int getHandSize() {
+			return hand.size();
+		}
 		
 		// checks to see if a user's hand is == 0
 		// return true (i.e. a player is out).
 		public boolean userLoses() {
+			
 			if (this.hand.size() == 0) {
 				return true;
 			}

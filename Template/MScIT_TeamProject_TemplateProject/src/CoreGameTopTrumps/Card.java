@@ -37,7 +37,7 @@ public class Card {
 	public ArrayList<Integer> getAttributes() {
 		return this.attributes;
 	}
-	public int getAttribute(int index) {
+	public int getAttribute1(int index) {
 		return this.attributes.get(index);
 	}
 	
@@ -92,7 +92,7 @@ public class Card {
 	 * @param selectionCriteriaNumber
 	 * @return 
 	 */
-	public int getValueforAttribute(int selectionCriteriaNumber) {
+	public int getAttribute(int selectionCriteriaNumber) {
 		int value = 0;
 		int n = 1;
 		switch (selectionCriteriaNumber) {
@@ -141,6 +141,27 @@ public class Card {
 //		return cardString;
 //	}
 	
+	//TODO: remove this method and replace all references to it with getAttribute
+	public int returnSelectedAttr(int att) {
+		
+		if(att == 1) {
+			return getAttribute1();
+		}else if(att == 2) {
+			return getAttribute2();
+		}else if(att == 3) {
+			return getAttribute3();
+		}else if(att == 4) {
+			return getAttribute4();
+		}else if(att == 5) {
+			return getAttribute5();
+		}
+		
+		return -1;
+	}
+	@Override
+	public String toString() {
+		return "Card [name=" + name + "]";
+	}	
 	
 	public String viewCard() {
 		String cardString = "";
@@ -153,9 +174,19 @@ public class Card {
 					this.criterias.get(4)+ ": " + this.getAttribute(4);
 			System.out.println(cardString);
 
+			cardString =  "Name: " + getName() + "\n" + 
+					this.criterias.get(1) + ": "+ attribute1+"\n" + 
+					this.criterias.get(2) + ": " + attribute2+ "\n" + 
+					this.criterias.get(3) + ": "+ attribute3+"\n" + 
+					this.criterias.get(4) + ": "+ attribute4+"\n" + 
+					this.criterias.get(5)+ ": " + attribute5;
+			
+//			System.out.println(cardString);
+>>>>>>> 76f498c4c57703c7b899ff933b3da9cc9fd1fe80
+
 			return cardString;
-		}
 	}
+<<<<<<< HEAD
 	
 	//temporary test
 	public static void main (String[] args) {
@@ -176,4 +207,17 @@ public class Card {
 //		card.viewCard();
 		System.out.println(card.getValueforAttribute(3));
 	}
+=======
+	/*temporary test
+	public static void main (String[] args) {
+		Card card = new Card();
+		card.setName("Kevin");
+		card.setAttribute1(10);
+		card.setAttribute2(2);
+		card.setAttribute3(3);
+		card.setAttribute4(5);
+		card.setAttribute5(5);
+		System.out.println(card.getAttribute(1));
+	}*/
+>>>>>>> 76f498c4c57703c7b899ff933b3da9cc9fd1fe80
 }
