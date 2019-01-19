@@ -1,3 +1,5 @@
+package CoreGameTopTrumps;
+
 import java.util.ArrayList;
 
 /*
@@ -9,9 +11,9 @@ import java.util.ArrayList;
  */
 public class Human extends User {
 	private String name;
-	private ArrayList<Cards> hand;
+	private ArrayList<Card> hand;
 
-	public Human(String name, ArrayList<Cards> hand) {
+	public Human(String name, ArrayList<Card> hand) {
 		super(name, hand);
 	}
 	
@@ -19,10 +21,11 @@ public class Human extends User {
 			public String toString() {
 				return this.name + ": You have " + this.hand.size() + " cards in your hand.";
 			}
-
+			
+			//should either be sys.out or return the argument back??
 			@Override
-			void getTopCardName() {
-				System.out.println("You drew " + this.hand.get(0).getName());
+			public String getTopCardName() {
+				return "You drew " + this.hand.get(0).getName();
 			}
 	
 }

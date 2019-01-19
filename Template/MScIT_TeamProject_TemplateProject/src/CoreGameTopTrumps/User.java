@@ -1,12 +1,15 @@
+package CoreGameTopTrumps;
+
 import java.util.ArrayList;
 
 // This will be the superclass which human and aiuser will both inherit from
 
 abstract public class User {
 	private String name;
-	private ArrayList<Cards> hand;
+	private ArrayList<Card> hand;
+	private ArrayList<String> headers;
 	
-	public User(String name, ArrayList<Cards> hand) {
+	public User(String name, ArrayList<Card> hand) {
 		this.name = name;
 		this.hand = hand;
 	}
@@ -22,30 +25,56 @@ abstract public class User {
 		}
 		
 		// This method will get the user's hand
-		public ArrayList<Cards> getHand() {
+		public ArrayList<Card> getHand() {
 			return this.hand;
 		}
 		
 		// This method will set the user's hand
-		public void setHand(ArrayList<Cards> dealtCards) {
+		public void setHand(ArrayList<Card> dealtCards) {
 			this.hand = dealtCards;
 		}
 		
-		abstract void getTopCardName();
-		}
+		abstract String getTopCardName();
+		
 		// This player will print the topCard
 		// I imagine that each card will be an arraylist itself
 		// with each stat in each index
 		// or each card could be an object?
-		public void showTopCardCriteria() {
+		
+		public String showTopCardCriteria() {
 			Card topCard = this.hand.get(0);
-			for (int i = 0; i < topCard.size(); i++) {
-				System.out.println("> " + topCard.get(criteriaName) + ": " + topCard.get(criteriaNumber));
+			return topCard.viewCard();
+		}
+		
+		public Card getTopCard() {
+			return this.hand.get(0);
 		}
 		
 		// If the player wins, this method will add the pile of cards to the end of the player's hand
-		public void addCards(ArrayList<Cards> wonCards) {
+
+		public void addCards(ArrayList<Card> wonCards) {
 			this.hand.addAll(wonCards);
+		}
+		
+		public void addSingleCard(Card card) {
+			this.hand.add(card);
+		}
+		
+		public String selectCriteriaOfTopCard(int index) {
+			Card topCard = this.hand.get(0);
+			String attributeName = topCard.getAttributeName(index);
+			return attributeName;
+		}
+		// therefore an index will be passed to this method which will
+		//return the corresponding attribute number that is in the same index
+		public int getValue(int criteriaNumber) {
+			Card topCard = this.hand.get(0);
+			return topCard.getAttribute(criteriaNumber);
+		}
+		
+		//get name of the top card
+		public String getNameOfTopCard() {
+			return this.hand.get(0).getName();
 		}
 		
 		//This method will remove the top card (i.e. the card at the start)
@@ -53,10 +82,25 @@ abstract public class User {
 			this.hand.remove(0);
 		}
 		
+		//return the size of a player's hand
+		public int displayHandSize() {
+			return this.hand.size();
+		}
+		//Added for testing - prints all cards to sys out
+		public void displayEntireHand() {
+			for(Card c: hand) {
+				c.viewCard();
+			}
+		}
+		
+		public int getHandSize() {
+			return hand.size();
+		}
 		
 		// checks to see if a user's hand is == 0
 		// return true (i.e. a player is out).
-		public boolean UserLoses() {
+		public boolean userLoses() {
+			
 			if (this.hand.size() == 0) {
 				return true;
 			}

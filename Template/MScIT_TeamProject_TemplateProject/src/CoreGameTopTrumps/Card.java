@@ -1,5 +1,7 @@
 package CoreGameTopTrumps;
 
+import java.util.ArrayList;
+
 public class Card {
 	protected int attribute1;
 	protected int attribute2;
@@ -7,7 +9,12 @@ public class Card {
 	protected int attribute4;
 	protected int attribute5;
 	protected String name;
-
+	protected ArrayList<String> criterias = new ArrayList<String>(); //adding a criterias/attributes
+	
+	
+	public void setCriteria(ArrayList<String> criteria) {
+		this.criterias = criteria;
+	}
 	public String getName() {
 		return name;
 	}
@@ -44,15 +51,103 @@ public class Card {
 	public void setAttribute5(int attribute5) {
 		this.attribute5 = attribute5;
 	}
-
-	public void viewCard()
-	{
-		String cardString = "Name: " + getName() +
-										"\nAttribute 1: " + attribute1+
-										"\nAttribute 2: " + attribute2+
-										"\nAttribute 3: " + attribute3+
-										"\nAttribute 4: " + attribute4+
-										"\nAttribute 5: " + attribute5;
-		System.out.println(cardString);
+	
+	public String getAttributeName(int index) {
+		return this.criterias.get(index);
 	}
+	/**kw
+	 * Get an attribute based on the selected criteria number
+	 * @param selectionCriteriaNumber
+	 * @return 
+	 */
+	
+	public int getAttribute(int selectionCriteriaNumber) {
+		int value = 0;
+		switch (selectionCriteriaNumber) {
+		case 1: {
+			value = this.getAttribute1();
+			 break;
+		}
+		case 2: {
+			value = this.getAttribute2();
+			break;
+		}
+		case 3: {
+			 value =this.getAttribute3();
+			 break;
+		}
+		case 4: {
+			 value  = this.getAttribute4();
+			 break;
+		}
+		case 5: {
+			value = this.getAttribute5();
+			break;
+		}
+		default: {
+			break;
+		}
+		}
+		return value;
+	}
+	
+//	public String viewCard()
+//	{
+//		String cardString = "Name: " + getName() +
+//										" Att 1: " + attribute1+
+//										" Att 2: " + attribute2+
+//										" Att 3: " + attribute3+
+//										" Att 4: " + attribute4+
+//										" Att 5: " + attribute5;
+//		System.out.println(cardString);
+//		
+//		return cardString;
+//	}
+	
+	//TODO: remove this method and replace all references to it with getAttribute
+	public int returnSelectedAttr(int att) {
+		
+		if(att == 1) {
+			return getAttribute1();
+		}else if(att == 2) {
+			return getAttribute2();
+		}else if(att == 3) {
+			return getAttribute3();
+		}else if(att == 4) {
+			return getAttribute4();
+		}else if(att == 5) {
+			return getAttribute5();
+		}
+		
+		return -1;
+	}
+	@Override
+	public String toString() {
+		return "Card [name=" + name + "]";
+	}	
+	
+	public String viewCard() {
+		String cardString = "";
+			cardString =  "Name: " + getName() + "\n" + 
+					this.criterias.get(1) + ": "+ attribute1+"\n" + 
+					this.criterias.get(2) + ": " + attribute2+ "\n" + 
+					this.criterias.get(3) + ": "+ attribute3+"\n" + 
+					this.criterias.get(4) + ": "+ attribute4+"\n" + 
+					this.criterias.get(5)+ ": " + attribute5;
+			
+//			System.out.println(cardString);
+
+			return cardString;
+	}
+	/*temporary test
+	public static void main (String[] args) {
+		Card card = new Card();
+		card.setName("Kevin");
+		card.setAttribute1(10);
+		card.setAttribute2(2);
+		card.setAttribute3(3);
+		card.setAttribute4(5);
+		card.setAttribute5(5);
+		System.out.println(card.getAttribute(1));
+	}*/
 }
