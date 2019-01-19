@@ -168,7 +168,7 @@ public class GameManager {
 			
 		int playerChoice = 0;
 		if(lastWinner ==0 && !players.get(0).userLoses()) {			
-			playerChoice = getUserInput(); // I RECCOMEND just choosing an integer for testing! (There can be 200-400 rounds)
+			playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
 		}else {
 			//Seperate method for AI choosing card goes here
 			playerChoice = r.nextInt(5) + 1;
@@ -189,7 +189,7 @@ public class GameManager {
 		InputReader reader = new InputReader();
 		
 		System.out.printf("Here is the card at the top of your deck...\n"
-				+ players.get(0).showTopCardCriteria()
+				+ players.get(0).showTopCard()
 				+ "\nwhich attribute would you like to trump your enemies with?\n\nPlease type a number between 1 and 5 and press enter!\n");
 		
 		int choice = 0;

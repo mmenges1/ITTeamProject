@@ -3,20 +3,28 @@ package CoreGameTopTrumps;
 import java.util.ArrayList;
 
 public class Card {
-	private ArrayList<Integer> attributes;
+	private ArrayList<Integer> attributes; // list of values for each criteria (Values for Size Speed Range Firepower Cargo respectively)
 	protected int attribute1;
 	protected int attribute2;
 	protected int attribute3;
 	protected int attribute4;
 	protected int attribute5;
 	protected String name;
-	protected ArrayList<String> criterias; //adding a criterias/attributes
+	protected ArrayList<String> criterias; // list of criterias (e.g. Size Speed Range Firepower Cargo)
 	
 	public Card() {
-//		this.name = name;
+		this.name = "";
 		this.attributes = new ArrayList<Integer>();
 		this.criterias = new ArrayList<String>();
 	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public ArrayList<String> getCriterias() {
 		return this.criterias;
 	}
@@ -27,17 +35,12 @@ public class Card {
 	public void setCriteria(ArrayList<String> criteria) {
 		this.criterias = criteria;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 	
 	public ArrayList<Integer> getAttributes() {
 		return this.attributes;
 	}
-	public int getAttribute1(int index) {
+	public int getAttributeFromArrayList(int index) {
 		return this.attributes.get(index);
 	}
 	
@@ -75,7 +78,7 @@ public class Card {
 		this.attribute5 = attribute5;
 	}
 	
-	public String getAttributeName(int index) {
+	public String getCriteriaName(int index) {
 		return this.criterias.get(index);
 	}
 	
@@ -98,27 +101,27 @@ public class Card {
 		switch (selectionCriteriaNumber) {
 		case 1: {
 //			value = this.getAttribute1();
-			value = this.getAttribute(1-n);
+			value = this.getAttributeFromArrayList(1-n);
 			 break;
 		}
 		case 2: {
 //			value = this.getAttribute2();
-			value = this.getAttribute(2-n);
+			value = this.getAttributeFromArrayList(2-n);
 			break;
 		}
 		case 3: {
 //			 value =this.getAttribute3();
-			value = this.getAttribute(3-n);
+			value = this.getAttributeFromArrayList(3-n);
 			 break;
 		}
 		case 4: {
 //			 value  = this.getAttribute4();
-			value = this.getAttribute(4-n);
+			value = this.getAttributeFromArrayList(4-n);
 			 break;
 		}
 		case 5: {
 //			value = this.getAttribute5();
-			value = this.getAttribute(5-n);
+			value = this.getAttributeFromArrayList(5-n);
 			break;
 		}
 		default: {
@@ -167,27 +170,15 @@ public class Card {
 		String cardString = "";
 		{
 			cardString = "Name: " + getName() + "\n" +
-					this.criterias.get(0) + ": " + this.getAttribute(0)+ "\n" +
-					this.criterias.get(1) + ": " + this.getAttribute(1)+ "\n" + 
-					this.criterias.get(2) + ": "+ this.getAttribute(2)+"\n" + 
-					this.criterias.get(3) + ": "+ this.getAttribute(3)+"\n" + 
-					this.criterias.get(4)+ ": " + this.getAttribute(4);
-			System.out.println(cardString);
-
-			cardString =  "Name: " + getName() + "\n" + 
-					this.criterias.get(1) + ": "+ attribute1+"\n" + 
-					this.criterias.get(2) + ": " + attribute2+ "\n" + 
-					this.criterias.get(3) + ": "+ attribute3+"\n" + 
-					this.criterias.get(4) + ": "+ attribute4+"\n" + 
-					this.criterias.get(5)+ ": " + attribute5;
-			
-//			System.out.println(cardString);
->>>>>>> 76f498c4c57703c7b899ff933b3da9cc9fd1fe80
-
+					this.criterias.get(0) + ": " + this.getAttribute(1)+ "\n" +
+					this.criterias.get(1) + ": " + this.getAttribute(2)+ "\n" + 
+					this.criterias.get(2) + ": "+ this.getAttribute(3)+"\n" + 
+					this.criterias.get(3) + ": "+ this.getAttribute(4)+"\n" + 
+					this.criterias.get(4)+ ": " + this.getAttribute(5);
+//					System.out.println(cardString);
 			return cardString;
+		}
 	}
-<<<<<<< HEAD
-	
 	//temporary test
 	public static void main (String[] args) {
 		Card card = new Card();
@@ -205,19 +196,6 @@ public class Card {
 		attributes.add(5);
 		card.setAttributes(attributes);
 //		card.viewCard();
-		System.out.println(card.getValueforAttribute(3));
+		System.out.println(card.getAttribute(3));
 	}
-=======
-	/*temporary test
-	public static void main (String[] args) {
-		Card card = new Card();
-		card.setName("Kevin");
-		card.setAttribute1(10);
-		card.setAttribute2(2);
-		card.setAttribute3(3);
-		card.setAttribute4(5);
-		card.setAttribute5(5);
-		System.out.println(card.getAttribute(1));
-	}*/
->>>>>>> 76f498c4c57703c7b899ff933b3da9cc9fd1fe80
 }

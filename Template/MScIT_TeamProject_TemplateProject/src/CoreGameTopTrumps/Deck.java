@@ -9,6 +9,7 @@ import java.util.Collections;
 
 public class Deck {
 	ArrayList<String> criteria = new ArrayList<String>();
+	ArrayList<Card> startingDeck = new ArrayList<Card>();
 	
 	/*
 	 * This method creates list of cards from the deck text file
@@ -70,6 +71,7 @@ public class Deck {
 		}
 		newCard.setAttributes(attributes);
 		newCard.setCriteria(criteria); //kw
+		this.startingDeck.add(newCard);
 		return newCard;
 	}
 //A temporary test
@@ -90,6 +92,9 @@ public class Deck {
 		c.viewCard();
 //			}
 //		}	
+	}
+	public int startingDeckSize() {
+		return this.startingDeck.size();
 	}
 
 }

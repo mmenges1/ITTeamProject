@@ -15,7 +15,7 @@ public class AIPlayer extends User {
 	}
 	
 	public AIPlayer() {
-		this.hand = new ArrayList<Card>();
+		super();
 	}
 	
 	/**
@@ -24,9 +24,9 @@ public class AIPlayer extends User {
 	 * @returns the name of the criteria associated with the highest skill number
 	 */
 	public String getCriteriaName(Card topCard) {
-		int value = getHighestValueAttribute(topCard);
-		int positioninCriteria = topCard.getIndexOfValue(value);
-		return topCard.getAttributeName(positioninCriteria);
+		int highestValue = getHighestValueAttribute(topCard);
+		int positioninCriteria = topCard.getIndexOfValue(highestValue);
+		return topCard.getCriteriaName(positioninCriteria);
 	}
 	
 	/**
@@ -35,11 +35,11 @@ public class AIPlayer extends User {
 	 * @return the position of the criteria that is associated with the highest skill number
 	 */
 	public int getHighestValueAttribute(Card topCard) {
-		int maxValue = topCard.getValueforAttribute(1);
+		int maxValue = topCard.getAttribute(1);
 		int noOfCriteria = topCard.getCriterias().size();
-		for (int i = 1; i <= noOfCriteria; i++) {
-			if (maxValue <= topCard.getValueforAttribute(i)) {
-				maxValue = topCard.getValueforAttribute(i);
+		for (int i = 2; i <= noOfCriteria; i++) {
+			if (maxValue <= topCard.getAttribute(i)) {
+				maxValue = topCard.getAttribute(i);
 			}
 		}
 			return maxValue;
@@ -55,15 +55,22 @@ public class AIPlayer extends User {
 		Deck d = new Deck();
 		ArrayList<Card> list = new ArrayList<Card>();
 		ArrayList<Card> hand = new ArrayList<Card>();
+		AIPlayer ai = new AIPlayer();
 		list = d.createDeck("StarCitizenDeck.txt");
 		//This method shuffles the list
 		Collections.shuffle(list);
 		Card c = list.get(0);
 		Card c2 = list.get(1);
 		hand.add(c);
-		c.viewCard();
 		hand.add(c2);
-		AIPlayer ai = new AIPlayer();
-		System.out.println("ai chooses " + ai.getCriteriaName(c));
+		ai.setHand(hand);
+		while (ai.getHandSize() != 0) {
+			Card topCard = ai.getTopCard();
+			topCard.viewCard();
+			System.out.println("AI chooses " + ai.getCriteriaName(hand.get(0)));
+			ai.discardTopCard();
+			System.out.println("AI has " + ai.getHandSize() + " cards remaining");
+			System.out.println();
+		}
 	}
 }
