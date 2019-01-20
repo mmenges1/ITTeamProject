@@ -57,19 +57,21 @@ public class GameManager {
 		while (true) {			
 			choice = in.parseInt();
 			if(choice <= 3 && choice > 0) {
-				break;
+				return choice; // with this line, don't need lines 68 - 74
+//				break;
 			} else {
 				System.out.println("Please enter within the range");
 			}
 		}
-		
-		if(choice == 1) {
-			return 1;
-		} else if (choice == 2) {
-			return 2;
-		} 		
-		return 3;
 	}
+	
+//		if(choice == 1) {
+//			return 1;
+//		} else if (choice == 2) {
+//			return 2;
+//		} 		
+//		return 3;
+//	}
 	
 	//This is called by initialPLayerChoice, to be populated with database info
 	private String displayPriviousGameStats() {

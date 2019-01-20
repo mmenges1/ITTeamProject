@@ -101,4 +101,8 @@ abstract public class User {
 		}
 		return false;
 	}
+	
+	public String toString() {
+		return this.name + ": You have " + this.getHandSize() + " cards in your deck.";
+	}
 }

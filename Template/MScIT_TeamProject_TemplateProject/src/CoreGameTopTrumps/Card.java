@@ -3,14 +3,14 @@ package CoreGameTopTrumps;
 import java.util.ArrayList;
 
 public class Card {
+	protected String name;
+	protected ArrayList<String> criterias; // list of criterias (e.g. Size Speed Range Firepower Cargo)
 	private ArrayList<Integer> attributes; // list of values for each criteria (Values for Size Speed Range Firepower Cargo respectively)
 	protected int attribute1;
 	protected int attribute2;
 	protected int attribute3;
 	protected int attribute4;
 	protected int attribute5;
-	protected String name;
-	protected ArrayList<String> criterias; // list of criterias (e.g. Size Speed Range Firepower Cargo)
 	
 	public Card() {
 		this.name = "";

@@ -22,9 +22,9 @@ public class Human extends User {
 	}
 
 	// To display user and their number of cards
-			public String toString() {
-				return this.name + ": You have " + this.getHandSize() + " cards in your hand.";
-			}
+//			public String toString() {
+//				return this.name + ": You have " + this.getHandSize() + " cards in your hand.";
+//			}
 			
 			//should either be sys.out or return the argument back??
 			@Override
