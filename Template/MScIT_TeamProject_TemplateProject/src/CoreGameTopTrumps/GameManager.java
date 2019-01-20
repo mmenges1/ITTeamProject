@@ -230,6 +230,7 @@ public class GameManager {
 	 * 6) trigger displayRoundSummery() to print the key info to the player
 	 * 
 	 * 7) Finally, gameOver() is used to check if the game is over (only one player has cards)
+	 *   And also removes players who have an empty hand.
 	 * it is phrased as "return !gameOver();" because the loop continues if the game is NOT over 
 	 * (its dependent on a true). if the gameOver() returns a true (aka --> the game is indeed over),
 	 *  then this becomes a false which ends the loop! 
@@ -273,11 +274,24 @@ public class GameManager {
 		return !gameOver();
 	}
 	
+	/* displayRoundSummery() displays the text that the user sees on the screen.
+	*  it uses turnStats to get the necissary data
+	*  
+	*  1) Intantiates the integer which represents the current turn within the turnStats arraylist
+	*  2) Loops through players to print format their name, card, attribute and remaining deck size.
+		The if condition can probibly be removed as now gameOver() removes players with no cards
+	*  3) I offer this place as a suggestion to put the game stats object, to relay the number of points 
+		each player has
+	*  4) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
+	   
+	*/
 	private void displayRoundSummery() {
 		
+		// 1)
 		int currentTurnStats = turnStats.size()-1;
 		int cardPlayedIndex = 0;
-				
+		
+		// 2)
 		for(int i = 0; i < players.size(); i++) {
 			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
 				
@@ -292,10 +306,12 @@ public class GameManager {
 			}
 		}
 		
+		// 3)
 		//TODO Implement a GameStats here to convey a points system for each player
 		
 		String roundString = "";
 		
+		// 4)
 		if(turnStats.get(currentTurnStats).isDraw) {			
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
 					+ "\n\nCommunity deck size is currently:%d", 
