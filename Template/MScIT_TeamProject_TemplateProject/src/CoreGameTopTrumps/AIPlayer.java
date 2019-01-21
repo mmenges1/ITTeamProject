@@ -51,10 +51,10 @@ public class AIPlayer extends User {
 		}
 	
 	// Displays a message stating which attribute was chosen by the AI
-	@Override
-	public String playerChoosesMessage(Card topCard) {
-		return this.name + " chooses attribute " + this.getIndexofCriteriaWithHighestValue(topCard) + ": " + this.getCriteriaName(topCard);
-	}
+//	@Override
+//	public String playerChoosesMessage(Card topCard) {
+//		return this.name + " chooses attribute " + this.getIndexofCriteriaWithHighestValue(topCard) + ": " + this.getCriteriaName(topCard);
+//	}
 	// if ai win, this method will print their card name
 	@Override
 	String getTopCardName() {
