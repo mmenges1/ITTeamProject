@@ -57,19 +57,21 @@ public class GameManager {
 		while (true) {			
 			choice = in.parseInt();
 			if(choice <= 3 && choice > 0) {
-				break;
+				return choice; // with this line, don't need lines 68 - 74
+//				break;
 			} else {
 				System.out.println("Please enter within the range");
 			}
 		}
-		
-		if(choice == 1) {
-			return 1;
-		} else if (choice == 2) {
-			return 2;
-		} 		
-		return 3;
 	}
+	
+//		if(choice == 1) {
+//			return 1;
+//		} else if (choice == 2) {
+//			return 2;
+//		} 		
+//		return 3;
+//	}
 	
 	//This is called by initialPLayerChoice, to be populated with database info
 	private String displayPriviousGameStats() {
@@ -168,7 +170,7 @@ public class GameManager {
 			
 		int playerChoice = 0;
 		if(lastWinner ==0 && !players.get(0).userLoses()) {			
-			playerChoice = getUserInput(); // I RECCOMEND just choosing an integer for testing! (There can be 200-400 rounds)
+			playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
 		}else {
 			//Seperate method for AI choosing card goes here
 			playerChoice = r.nextInt(5) + 1;
@@ -189,7 +191,7 @@ public class GameManager {
 		InputReader reader = new InputReader();
 		
 		System.out.printf("Here is the card at the top of your deck...\n"
-				+ players.get(0).showTopCardCriteria()
+				+ players.get(0).showTopCard()
 				+ "\nwhich attribute would you like to trump your enemies with?\n\nPlease type a number between 1 and 5 and press enter!\n");
 		
 		int choice = 0;
