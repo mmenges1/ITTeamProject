@@ -1,9 +1,10 @@
 package CoreGameTopTrumps;
 
+import java.util.ArrayList;
 
 //Specification
 //The program should then print to standard out the selected category, who won (or
-//		whether it was a draw), the winning card and whether the player has been eliminated (they have no cards left).
+//	whether it was a draw), the winning card and whether the player has been eliminated (they have no cards left).
 
 
 
@@ -11,20 +12,23 @@ package CoreGameTopTrumps;
  * Class is responsible for holding the statistics related to each turn of the game played
  */
 public class TurnStats {
+	ArrayList<User> players;
 	String selectedCategory;
 	String result;
 	String winningCard;
 	boolean playerEliminated;
+	User winningPlayer;
 
 	//Constructor parameters are the individual game turn statistics
 	//Set methods for each attribute
 
 	public TurnStats(String selectedCategory, String result, String winningCard, boolean playerEliminated) {
-
 	setSelectedCategory(selectedCategory);
 	setResult(result);
 	setWinningCard(winningCard);
 	setPlayerEliminated(playerEliminated);
+	winningPlayer = null;
+	this.players = new ArrayList<User>();
 	}
 
 	//This method sets the card category selected during the turn
@@ -65,6 +69,14 @@ public class TurnStats {
 	//This method gets the playerEliminated attribute
 	public boolean getPlayerEliminated() {
 		return playerEliminated;
+	}
+	
+	public void setWinningPlayer(int index) {
+		this.winningPlayer = this.players.get(index);
+	}
+	
+	public void setPlayers(ArrayList<User> playerList) {
+		this.players = playerList;
 	}
 
 	//This method is called at the end of each turn

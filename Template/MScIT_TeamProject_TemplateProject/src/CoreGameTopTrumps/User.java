@@ -21,7 +21,8 @@ abstract public class User {
 	public String getName() {
 		return this.name;
 	}
-
+	abstract String getCriteriaName(Card topCard);
+	abstract  int getIndexofCriteriaWithHighestValue(Card topCard);
 	// set user's name (might not be necessary)
 	public void setName(String name) {
 		this.name = name;
@@ -39,7 +40,7 @@ abstract public class User {
 	}
 	
 	abstract String getTopCardName();
-
+abstract public String playerChoosesMessage(Card topCard);
 	// This method will print the topCard
 	public String showTopCard() {
 		Card topCard = this.hand.get(0);

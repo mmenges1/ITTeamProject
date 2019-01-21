@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TurnStatsHelper {
 	ArrayList<Card> cardsPlayed;
 	ArrayList<User> players;
-	
+	String attributeName;
 	int turnNumber;
 	int winner;
 	int attributeNumberPlayed;
@@ -45,6 +45,8 @@ public class TurnStatsHelper {
 	public ArrayList<Card> passCardsPlayed(){
 		return cardsPlayed;
 	}
+	
+
 	
 	// Returns -1 if its a draw, other wise the index of the winner
 	// Loops through the chosen attribute of each top card and finds the highest/draw-y-est
