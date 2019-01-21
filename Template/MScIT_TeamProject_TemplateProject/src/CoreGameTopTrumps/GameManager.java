@@ -139,25 +139,15 @@ public class GameManager {
 		
 		do {
 //			counter ++;
-			for (int i = 0; i < this.players.size(); i++) {
-				if (checkWhetherPlayerIsOut(this.players.get(i), i)){
-					} else {
-						this.players.add(this.players.get(i));
-					}
-			}
+			
+			
 //			//This is here for testing
 //			if(counter>=3) {
 //				break;
 //			}
 		}while(playRound(getCardChoice()));
 	}
-	
-	public boolean checkWhetherPlayerIsOut(User player, int index) {
-		if (player.getHandSize() <= 0 && !(index == this.lastWinner)) {
-			return true;
-		}
-		return false;
-	}
+
 	/*
 	 * This method gets the players choice.
 	 * It uses lastWinner to determine if it is the users turn
@@ -183,7 +173,7 @@ public class GameManager {
 			
 		int playerChoice = 0;
 		if (totalRounds == 1) {
-			if(this.startingPlayer == 0  && !players.get(0).userLoses()) {
+			if(this.startingPlayer == 0) {
 				//		if(lastWinner ==0 && !players.get(0).userLoses()) {			
 				System.out.println(players.get(this.startingPlayer).getName() + " will make the first choice ! \n");
 				playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
@@ -279,12 +269,11 @@ public class GameManager {
 		
 		// 1)
 		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players));
-		int currentTurnStats = turnStats.size()-1;
+		int currentTurnStats = turnStats.size()-1; // I don't understand this line.
 		
 		// 2)
 		for(int i = 0; i < players.size(); i++ ) {
 			if(!(turnStats.get(currentTurnStats).getPlayer(i).getHandSize() >0)) {
-				i++;
 			} else {
 				turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());	
 				players.get(i).discardTopCard();
@@ -321,27 +310,29 @@ public class GameManager {
 		int cardPlayedIndex = 0;
 				
 		for(int i = 0; i < players.size(); i++) {
+			
 //			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
 			if (turnStats.get(currentTurnStats).getPlayer(i).getHandSize() <0) {
+				s = s + turnStats.get(currentTurnStats).getPlayer(i).getName() + "  is eliminated! + \n";
+				System.out.println(s);
+				this.players.remove(i);
 				break;
 			}
 			else if (turnStats.get(currentTurnStats).getPlayer(i).getHandSize() >= 0) {
+				
+				
 				System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n", 
 						turnStats.get(currentTurnStats).getPlayer(i).getName(), 
 						turnStats.get(currentTurnStats).getUserCardName(cardPlayedIndex),
 						turnStats.get(currentTurnStats).getAnyCardTopAttribute(cardPlayedIndex), 
 						players.get(i).getHandSize());
 						
-				if (turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
-					s = s + turnStats.get(currentTurnStats).getPlayer(i).getName() + "  is eliminated! + \n";
-				}
-				cardPlayedIndex++;
+//				if (turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
+//					s = s + turnStats.get(currentTurnStats).getPlayer(i).getName() + "  is eliminated! + \n";
+//				}
+				
 			} 
-//			else {
-//				
-//				this.players.remove(i);
-//			}
-			
+			cardPlayedIndex++;
 		}
 		
 		//TODO Implement a GameStats here to convey a points system for each player

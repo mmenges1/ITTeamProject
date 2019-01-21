@@ -18,7 +18,7 @@ public class TurnStatsHelper {
 	public void addCardToCardsPlayed(Card card) {
 		cardsPlayed.add(card);
 	}
-	
+	//What is turnNumber for?
 	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players) {
 		this.turnNumber = turnNumber;
 		this.attributeNumberPlayed = attributeNumberPlayed;
