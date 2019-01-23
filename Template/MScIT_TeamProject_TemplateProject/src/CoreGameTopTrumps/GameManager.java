@@ -62,7 +62,7 @@ public class GameManager {
 		while (true) {
 			choice = in.parseInt();
 			if(choice <= 3 && choice > 0) {
-				return choice; // with this line, don't need lines 68 - 74
+				return choice; 
 //				break;
 			} else {
 				System.out.println("Please enter within the range");
@@ -70,13 +70,6 @@ public class GameManager {
 		}
 	}
 
-//		if(choice == 1) {
-//			return 1;
-//		} else if (choice == 2) {
-//			return 2;
-//		}
-//		return 3;
-//	}
 
 	//This is called by initialPLayerChoice, to be populated with database info
 	private void displayPriviousGameStats() {
@@ -183,8 +176,8 @@ public class GameManager {
 
 
 		int playerChoice = 0;
-		if(lastWinner ==0 && !players.get(0).userLoses()) {
-			playerChoice = 2; //getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
+		if(lastWinner ==0 && players.get(0) instanceof Human ) {
+			playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
 		}else {
 			//Seperate method for AI choosing card goes here
 			playerChoice = r.nextInt(5) + 1;
