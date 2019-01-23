@@ -251,7 +251,7 @@ public class GameManager {
 		gameStatsData.setNumberOfRoundsInGamePlusOne();
 
 		// 1)
-		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players));
+		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
 		int currentTurnStats = turnStats.size()-1;
 
 		// 2)
@@ -269,6 +269,9 @@ public class GameManager {
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
+			
+//			System.out.println("PLAYROUND() LAST WINNER " + lastWinner);
+			
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 
 			players.get(lastWinner).addCards(community);
@@ -313,21 +316,14 @@ public class GameManager {
 
 		// 1)
 		int currentTurnStats = turnStats.size()-1;
-		int cardPlayedIndex = 0;
 
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
-			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
-
-				System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n",
-						turnStats.get(currentTurnStats).getPlayer(cardPlayedIndex).getName(),
-						turnStats.get(currentTurnStats).getUserCardName(cardPlayedIndex),
-						turnStats.get(currentTurnStats).getAnyCardTopAttribute(cardPlayedIndex),
-						players.get(i).getHandSize() );
-
-
-				cardPlayedIndex++;
-			}
+			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n",
+					turnStats.get(currentTurnStats).getPlayer(i).getName(),
+					turnStats.get(currentTurnStats).getUserCardName(i),
+					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					players.get(i).getHandSize() );
 		}
 
 		// 3)
