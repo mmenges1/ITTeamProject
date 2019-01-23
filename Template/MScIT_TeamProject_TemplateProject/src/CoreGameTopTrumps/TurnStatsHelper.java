@@ -11,21 +11,28 @@ public class TurnStatsHelper {
 	int attributeNumberPlayed;
 	int communitySize;
 	boolean isDraw;
+	int nextChoice;
 	
 	//This is what the user will see which summarises the round
 	String roundString;
-	
+	public int getNextChoice() {
+		return this.nextChoice;
+	}
 	public void addCardToCardsPlayed(Card card) {
 		cardsPlayed.add(card);
 	}
 	//What is turnNumber for?
-	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players) {
+	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players, int nextChoice) {
 		this.turnNumber = turnNumber;
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
 		this.players = new ArrayList<User>(players);
+		this.nextChoice = nextChoice;
 	}
 	
+	public int getPlayerSize() {
+		return this.players.size();
+	}
 	public void addPlayers(ArrayList<User> players) {
 		this.players = new ArrayList<User>(players);
 	}
@@ -63,7 +70,8 @@ public class TurnStatsHelper {
 				this.winner = i;
 				isDraw = false;
 			} else if (currentStat == highestStat) {
-				this.winner = -1;
+//				this.winner = -1;
+				this.winner = nextChoice;
 				isDraw = true;
 			}
 			

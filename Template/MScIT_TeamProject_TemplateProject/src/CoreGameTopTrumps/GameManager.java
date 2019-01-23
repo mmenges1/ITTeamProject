@@ -8,9 +8,12 @@ public class GameManager {
 	int totalPlayers = 0;
 	int totalTurns = 0;
 	int totalRounds = 1;
+	boolean roundOne = true;
 	int lastWinner = 0;
 	int startingPlayer;
 	int playerTurn;
+	String lastWinner2;
+	int nextChoice;
 	
 	ArrayList<TurnStatsHelper> turnStats = new ArrayList<TurnStatsHelper>();
 	ArrayList<Card> community = new ArrayList<Card>();
@@ -140,7 +143,11 @@ public class GameManager {
 		do {
 //			counter ++;
 			
-			
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).getHandSize() <= 0) {
+					players.remove(i);
+				}
+			}
 //			//This is here for testing
 //			if(counter>=3) {
 //				break;
@@ -158,7 +165,7 @@ public class GameManager {
 	private int getCardChoice() {
 		Random r = new Random();		
 		this.startingPlayer = r.nextInt(5);
-		
+		User currentAIOpponent;
 		
 		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
 		
@@ -172,14 +179,16 @@ public class GameManager {
 //		}
 			
 		int playerChoice = 0;
-		if (totalRounds == 1) {
+		if (roundOne) {
 			if(this.startingPlayer == 0) {
 				//		if(lastWinner ==0 && !players.get(0).userLoses()) {			
 				System.out.println(players.get(this.startingPlayer).getName() + " will make the first choice ! \n");
 				playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
+				nextChoice = 0;
+				roundOne = false;
 			}else {
 				//Seperate method for AI choosing card goes here
-				User currentAIOpponent = this.players.get(this.startingPlayer); // current ai player from 1-4
+				 currentAIOpponent = this.players.get(this.startingPlayer); // current ai player from 1-4
 				System.out.println(currentAIOpponent.getName() + " will make the first choice!  \n");
 //				System.out.println(currentAIOpponent.getName() + " will be the first player");
 				Card topCard = currentAIOpponent.getTopCard(); // that ai player's top card
@@ -187,24 +196,48 @@ public class GameManager {
 				System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
 				System.out.println(currentAIOpponent.playerChoosesMessage(topCard)); // prints the category that ai has chosen (i.e. highest in their card)
 				System.out.println();
+				nextChoice = startingPlayer;
+				roundOne = false;
 				//			playerChoice = r.nextInt(5) + 1;
 			}
-		} else if (this.lastWinner == 0 && !players.get(0).userLoses()) {
+//		} else if (.lastWinner == 0 && !players.get(0).userLoses()) {
+		} else if (lastWinner2.equals("You")) {
 				//		if(lastWinner ==0 && !players.get(0).userLoses()) {			
-				System.out.println(this.players.get(this.lastWinner).getName() + " will choose the category for this round  \n.");
+				System.out.println(this.players.get(this.lastWinner).getName() + " will choose the category for this round.  \n");
+				nextChoice = 0;
 				playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
-			}else {
+			}else if (this.lastWinner != 0 && !players.get(0).userLoses()) {
 				//Separate method for AI choosing card goes here
-				User currentAIOpponent = this.players.get(lastWinner);
-				System.out.println(currentAIOpponent.getName() + " will choose the category for this round  \n.");
+				if (players.size() < 5) {
+					 currentAIOpponent = this.players.get(players.size() -lastWinner);
+					} else {
+						 currentAIOpponent = this.players.get(lastWinner);
+					}
+				System.out.println(currentAIOpponent.getName() + " will choose the category for this round.  \n");
 				Card topCard = currentAIOpponent.getTopCard();
 				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
 				if (!(this.players.get(0).getHandSize() < 0)) {
 				System.out.println(this.players.get(0).showTopCard() + "\n");
 				}
+				nextChoice = lastWinner;
 				System.out.println(currentAIOpponent.getName() + " has chosen " + currentAIOpponent.getCriteriaName(topCard));
 				System.out.println();
 				//			playerChoice = r.nextInt(5) + 1;
+			}
+			else {
+				if (players.size() < 5) {
+				 currentAIOpponent = this.players.get(players.size() -lastWinner);
+				} else {
+					 currentAIOpponent = this.players.get(lastWinner);
+				}
+				System.out.println(currentAIOpponent.getName() + " will choose the category for this round  \n.");
+				Card topCard = currentAIOpponent.getTopCard();
+				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
+//				if (!(this.players.get(0).getHandSize() < 0)) {
+//				System.out.println(this.players.get(0).showTopCard() + "\n");
+//				}
+				System.out.println(currentAIOpponent.getName() + " has chosen " + currentAIOpponent.getCriteriaName(topCard));
+				System.out.println();
 			}
 		totalRounds++;
 		return playerChoice;
@@ -266,18 +299,25 @@ public class GameManager {
 	 */
 	private boolean playRound(int cardChoice) {
 		
-		
-		// 1)
-		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players));
-		int currentTurnStats = turnStats.size()-1; // I don't understand this line.
+		if (gameOver()) {
+			return gameOver();
+		} else {
+		// 1)turnstats if a list of turnstatshelpers
+//		for (int i = 0; i < players.size(); i++) {
+//			if (players.get(i).getHandSize() <= 0) {
+//				players.remove(i);
+//			}
+//		}
+		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players, nextChoice));
+		int currentTurnStats = turnStats.size()-1; 
 		
 		// 2)
-		for(int i = 0; i < players.size(); i++ ) {
-			if(!(turnStats.get(currentTurnStats).getPlayer(i).getHandSize() >0)) {
-			} else {
+		for(int i = 0; i < players.size(); i++) {
+//			if(!(turnStats.get(currentTurnStats).getPlayer(i).getHandSize() >0)) {
+//			} else {
 				turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());	
 				players.get(i).discardTopCard();
-			}			
+//			}			
 		}
 		
 		// 3)
@@ -285,13 +325,17 @@ public class GameManager {
 		
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {			
-			this.lastWinner = turnStats.get(currentTurnStats).getWinner();			
+			lastWinner = turnStats.get(currentTurnStats).getWinner();
+//			lastWinner = turnStats.get(currentTurnStats).getNextChoice();
+			lastWinner2 = players.get(lastWinner).getName();
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			players.get(lastWinner).addCards(community);			
 			community.clear();
 			
 		} else {
-			// 5)		
+			// 5)	
+			lastWinner = turnStats.get(currentTurnStats).getWinner();
+			lastWinner2 = players.get(lastWinner).getName();
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 		}
 		
@@ -302,37 +346,35 @@ public class GameManager {
 		// 7)
 		return !gameOver();
 	}
+	}
 	
 	
 	private void displayRoundSummery() {
 		String s = "";
 		int currentTurnStats = turnStats.size()-1;
-		int cardPlayedIndex = 0;
+//		int cardPlayedIndex = 0; legacy code??
 				
 		for(int i = 0; i < players.size(); i++) {
-			
 //			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
-			if (turnStats.get(currentTurnStats).getPlayer(i).getHandSize() <0) {
-				s = s + turnStats.get(currentTurnStats).getPlayer(i).getName() + "  is eliminated! + \n";
-				System.out.println(s);
-				this.players.remove(i);
-				break;
-			}
-			else if (turnStats.get(currentTurnStats).getPlayer(i).getHandSize() >= 0) {
-				
-				
+//			if (turnStats.get(currentTurnStats).getPlayer(i).getHandSize() == 0) {
+//				s = s + turnStats.get(currentTurnStats).getPlayer(i).getName() + "  is eliminated!  \n";
+//				System.out.println(s);
+//				this.players.remove(i);
+//				break;
+//			}
+//			else if (turnStats.get(currentTurnStats).getPlayer(i).getHandSize() > 0) {
 				System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n", 
 						turnStats.get(currentTurnStats).getPlayer(i).getName(), 
-						turnStats.get(currentTurnStats).getUserCardName(cardPlayedIndex),
-						turnStats.get(currentTurnStats).getAnyCardTopAttribute(cardPlayedIndex), 
+						turnStats.get(currentTurnStats).getUserCardName(i),
+						turnStats.get(currentTurnStats).getAnyCardTopAttribute(i), 
 						players.get(i).getHandSize());
 						
 //				if (turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
 //					s = s + turnStats.get(currentTurnStats).getPlayer(i).getName() + "  is eliminated! + \n";
 //				}
 				
-			} 
-			cardPlayedIndex++;
+//			} 
+//			cardPlayedIndex++; legacy code??
 		}
 		
 		//TODO Implement a GameStats here to convey a points system for each player
@@ -341,33 +383,47 @@ public class GameManager {
 		
 		if(turnStats.get(currentTurnStats).isDraw) {			
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
-					+ "\n\n Community deck size is currently: %d", 
+					+ "\n\nCommunity deck size is currently: %d", 
 					community.size());			
 		} else {
 			roundString = String.format("\n%s won using %s. "
-					+ "\n\n Community deck size is currently: %d", 
-					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
+					+ "\n\nCommunity deck size is currently: %d", 
+//					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
+					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getUserCardName(lastWinner), community.size());
+					for (int i = 0; i < players.size();i++) {
+						if (this.players.get(i).getHandSize() == 0) {
+							System.out.println(this.players.get(i).getName() + " has been knocked out!");
+						}
+					}
 		}
 		
 		System.out.println(roundString);
-		System.out.println(s);
 	}
 	
 	//This helps playRound 
 	// It checks if the game is over AND deletes players with no cards
 	private boolean gameOver() {
 		
-		int count = 0;
+//		int count = 0;
 		
 //		for(int i = 0; i< players.size(); i++){
 //			if(players.get(i).userLoses()) {
 //				players.remove(i);
 //			}
 //		}
-		
-		if(players.size() == 1) {
-			return true;
+		for (int i = 0 ; i < players.size(); i++) {
+			if (players.get(i).getHandSize() == 40) {
+				System.out.println(players.get(i).getName() + " is the overall winner!");
+				return true;
+			} else if (players.get(i).getHandSize() + this.community.size() == 40) {
+				System.out.println(players.get(i).getName() + " is the overall winner!");
+				return true;
+			}
 		}
+		
+//		if(players.size() == 1) {
+//			return true;
+//		}
 		
 		return false;
 	}

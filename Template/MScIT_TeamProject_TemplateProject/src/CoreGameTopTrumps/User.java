@@ -100,7 +100,7 @@ abstract public class User {
 	// checks to see if a user's hand is <= 0 needed to keep them in the players arraylist?
 	// return true (i.e. a player is out).
 	public boolean userLoses() {
-		if (this.hand.size() < 0) {
+		if (this.hand.size() <= 0) {
 			return true;
 		}
 		return false;
