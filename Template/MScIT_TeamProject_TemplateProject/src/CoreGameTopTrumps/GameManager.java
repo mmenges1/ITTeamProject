@@ -17,7 +17,7 @@ public class GameManager {
 	ArrayList<User> players;
 
 	GameStats gameStatsData = new GameStats(0,0,0,0,0);
-	
+
 	TestLog testLog = new TestLog();
 
 	//TEMP MAIN for testing
@@ -79,7 +79,7 @@ public class GameManager {
 
 	//This is called by initialPLayerChoice, to be populated with database info
 	private void displayPriviousGameStats() {
-		PreviousStats  previousGamesStatistics = new PreviousStats(); 
+		PreviousStats  previousGamesStatistics = new PreviousStats();
 	}
 
 	/*
@@ -293,7 +293,7 @@ public class GameManager {
 			System.out.println(true);
 			gameStatsData.setNumberOfCPURoundWinsPlusOne();
 		}
-		
+
 		// 7)
 		return !gameOver();
 	}
@@ -353,12 +353,12 @@ public class GameManager {
 	// It checks if the game is over AND deletes players with no cards
 	private boolean gameOver() {
 
-//		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());	
+//		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
 //		System.out.println(gameStatsData.getNumberOfCPURoundWins());
 //		System.out.println(gameStatsData.getNumberOfDrawsInGame());
 //		System.out.println(gameStatsData.getNumberOfRoundsInGame());
 //		System.out.println(gameStatsData.getGameWinner());
-		
+
 		int count = 0;
 
 		for(int i = 0; i< players.size(); i++){
@@ -368,7 +368,7 @@ public class GameManager {
 		}
 
 		if(players.size() == 1) {
-			
+
 			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
 			testLog.printToFile();

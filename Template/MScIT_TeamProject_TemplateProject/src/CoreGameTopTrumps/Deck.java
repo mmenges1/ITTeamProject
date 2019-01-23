@@ -10,7 +10,7 @@ import java.util.Collections;
 public class Deck {
 	ArrayList<String> criteria = new ArrayList<String>();
 	ArrayList<Card> startingDeck = new ArrayList<Card>();
-	
+
 	/*
 	 * This method creates list of cards from the deck text file
 	 */
@@ -33,7 +33,7 @@ public class Deck {
 				if (count > 0) {
 					cardList.add(createCard(data));
 				} else {
-					readCriterias(data); //kw - read the top line and stores in an arraylist of strings 
+					readCriterias(data); //kw - read the top line and stores in an arraylist of strings
 				}
 				count++;
 			}
@@ -45,12 +45,12 @@ public class Deck {
 			e.printStackTrace();
 		}
 		Collections.shuffle(cardList);
-		
+
 		return cardList;
 	}
-	
+
 	public void readCriterias(String[] data) {
-		
+
 		for (int j = 1; j<data.length; j++) {
 			criteria.add(data[j]);
 		}
@@ -59,7 +59,7 @@ public class Deck {
 	public Card createCard(String[] data) {
 		Card newCard = new Card();
 		ArrayList<Integer> attributes = new ArrayList<Integer>();
-		
+
 		newCard.setName(data[0]);
 		newCard.setAttribute1(Integer.parseInt(data[1]));
 		newCard.setAttribute2(Integer.parseInt(data[2]));
@@ -91,12 +91,12 @@ public class Deck {
 //			for (int j = 0; j<c.getAttributes().size(); j++) {
 		c.viewCard();
 //			}
-//		}	
+//		}
 	}
 	public int startingDeckSize() {
 		return this.startingDeck.size();
 	}
-	
+
 	public ArrayList<Card> startingDeck()
 	{
 		return this.startingDeck;
