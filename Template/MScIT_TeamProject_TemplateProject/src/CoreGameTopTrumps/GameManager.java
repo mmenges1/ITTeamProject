@@ -2,6 +2,7 @@ package CoreGameTopTrumps;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Random;
 
 public class GameManager {
@@ -13,7 +14,7 @@ public class GameManager {
 	int playerTurn;
 
 	ArrayList<TurnStatsHelper> turnStats = new ArrayList<TurnStatsHelper>();
-	ArrayList<Card> community = new ArrayList<Card>();
+	ArrayList<Card> community;
 	ArrayList<User> players;
 
 	GameStats gameStatsData = new GameStats(0,0,0,0,0);
@@ -145,6 +146,10 @@ public class GameManager {
 	 */
 	private void manageTurn() {
 		int counter = 0;
+		
+		//Reset the number of rounds!
+		totalRounds = 1;
+		community = new ArrayList<Card>();
 
 		do {
 			counter ++;
@@ -179,7 +184,7 @@ public class GameManager {
 
 		int playerChoice = 0;
 		if(lastWinner ==0 && !players.get(0).userLoses()) {
-			playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
+			playerChoice = 2; //getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
 		}else {
 			//Seperate method for AI choosing card goes here
 			playerChoice = r.nextInt(5) + 1;
@@ -316,6 +321,16 @@ public class GameManager {
 
 		// 1)
 		int currentTurnStats = turnStats.size()-1;
+		
+		//Test - iterate through players to see why it randomly fails
+		
+//		for(User p: players) {
+//			System.out.println(p);
+//		}
+		
+		System.out.println("display() pre display players.size = " + players.size());
+		
+		int testDeckSize = 0;
 
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
@@ -324,6 +339,8 @@ public class GameManager {
 					turnStats.get(currentTurnStats).getUserCardName(i),
 					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
 					players.get(i).getHandSize() );
+			
+			testDeckSize += players.get(i).getHandSize();
 		}
 
 		// 3)
@@ -341,34 +358,55 @@ public class GameManager {
 					+ "\n\nCommunity deck size is currently: %d",
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
+		
 
 		System.out.println(roundString);
+		
+		System.out.println("display() test deck size " + testDeckSize);
 	}
 
 	//This helps playRound
 	// It checks if the game is over AND deletes players with no cards
+	
+	/*
+	 * This implements an iterator because simply looping through the players ArrayList
+	 * was causing it to randomly skip a player on rare occasions. The iterater is much safer.
+	 */
 	private boolean gameOver() {
-
 //		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
 //		System.out.println(gameStatsData.getNumberOfCPURoundWins());
 //		System.out.println(gameStatsData.getNumberOfDrawsInGame());
 //		System.out.println(gameStatsData.getNumberOfRoundsInGame());
 //		System.out.println(gameStatsData.getGameWinner());
 
-		int count = 0;
+		
+//		System.out.println("gameOver() pre loop players.size = " + tempPlayerSize);
+		
+		Iterator<User> playersIterator = players.iterator();
 
-		for(int i = 0; i< players.size(); i++){
-			if(players.get(i).userLoses()) {
-				players.remove(i);
+		//for(int i = 0; i< tempPlayerSize; i++)
+		
+		
+		
+		while(playersIterator.hasNext()){
+			
+			User p = playersIterator.next();
+			
+			if(p.userLoses()) {
+//				System.out.println("gameOver() removing user" + p);
+				playersIterator.remove();
+			}else {
+//			System.out.println("gameOver() NOT removing user" + p);
 			}
+			
 		}
 
 		if(players.size() == 1) {
 
-			gameStatsData.setGameWinner(lastWinner);
+//			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
 			testLog.printToFile();
-			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+//			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 
