@@ -28,7 +28,6 @@ Connection connectionToDatabase;
 	//On creation of class, methods will create report on previous game statistics which will be printed to a text file
 	public PreviousStats() {
 		buildPreviousGameStatisticsReport();
-		writeReportToTextFile();
 	}
 	
 	//This method establishes a connection to the 'Top Trumps Game' database,
@@ -42,15 +41,15 @@ Connection connectionToDatabase;
 		// Header of report	
 		report.append("Statistics Of Previous Games Report\n\n");
 		// shows the number of overall games
-		report.append("Number of Previous Games:\t\t\t");
+		report.append("Number of Previous Games:\t\t");
 		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(gameid) FROM game", "COUNT(gameid)"));
 		report.append("\n");
 		// shows the number of times the computer won
-		report.append("Number of CPU Wins:\t\t\t\t\t");
+		report.append("Number of CPU Wins:\t\t\t");
 		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(gameid) FROM game WHERE winner = 'CPU'", "COUNT(gameid)"));
 		report.append("\n");
 		// shows the number of times the human player won
-		report.append("Number of Human Wins:\t\t\t\t");
+		report.append("Number of Human Wins:\t\t\t");
 		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(gameid) FROM game WHERE winner = 'PLAYER'", "COUNT(gameid)"));
 		report.append("\n");
 		// shows the average number of draws per game
@@ -61,6 +60,7 @@ Connection connectionToDatabase;
 		report.append("Highest Number of Rounds Played:\t");
 		report.append(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM game", "MAX(nos_rounds)"));	
 		reportFileText = report.toString();
+		System.out.println(reportFileText);
 		DBCon.closeConnectionToTopTrumpsGameDataBase();
 	}
 	
@@ -80,16 +80,5 @@ Connection connectionToDatabase;
 			e.printStackTrace();
 		}
 		return stringBuilder.toString();
-	}
-	
-	//This method writes the created statistics report to a text file
-	private void writeReportToTextFile() {
-		try {
-			FileWriter fw;
-			fw = new FileWriter("PreviousGameStatistics.txt");
-			fw.write(reportFileText);
-			fw.close(); }
-		catch (IOException i) {
-		}
 	}
 }
