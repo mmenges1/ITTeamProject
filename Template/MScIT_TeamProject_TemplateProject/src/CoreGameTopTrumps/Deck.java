@@ -96,5 +96,10 @@ public class Deck {
 	public int startingDeckSize() {
 		return this.startingDeck.size();
 	}
+	
+	public ArrayList<Card> startingDeck()
+	{
+		return this.startingDeck;
+	}
 
 }

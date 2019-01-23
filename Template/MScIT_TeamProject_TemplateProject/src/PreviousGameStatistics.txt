@@ -1,0 +1,7 @@
+Statistics Of Previous Games Report
+
+Number of Previous Games:			4
+Number of CPU Wins:					0
+Number of Human Wins:				4
+Average Number of Games Drawn:		3
+Highest Number of Rounds Played:	28

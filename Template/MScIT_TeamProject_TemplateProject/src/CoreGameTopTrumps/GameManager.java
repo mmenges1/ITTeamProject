@@ -16,6 +16,8 @@ public class GameManager {
 	ArrayList<Card> community = new ArrayList<Card>();
 	ArrayList<User> players;
 
+	GameStats gameStatsData = new GameStats(0,0,0,0,0);
+	
 	TestLog testLog = new TestLog();
 
 	//TEMP MAIN for testing
@@ -30,7 +32,7 @@ public class GameManager {
 			playerChoice = gm.initialPlayerChoice();
 
 			if(playerChoice == 1) {
-				System.out.println(gm.displayPriviousGameStats());
+				gm.displayPriviousGameStats();
 			} else if (playerChoice == 2){
 				//Inputting the number of desired AI players.
 				gm.deal(4);
@@ -76,8 +78,8 @@ public class GameManager {
 //	}
 
 	//This is called by initialPLayerChoice, to be populated with database info
-	private String displayPriviousGameStats() {
-		return "Put your object here\n";
+	private void displayPriviousGameStats() {
+		PreviousStats  previousGamesStatistics = new PreviousStats(); 
 	}
 
 	/*
@@ -246,6 +248,7 @@ public class GameManager {
 	 */
 	private boolean playRound(int cardChoice) {
 
+		gameStatsData.setNumberOfRoundsInGamePlusOne();
 
 		// 1)
 		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players));
@@ -274,6 +277,7 @@ public class GameManager {
 
 		} else {
 			// 5)
+			gameStatsData.setNumberOfDrawsInGamePlusOne();
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 			testLog.addCommunalDeck(community);
 		}
@@ -281,7 +285,15 @@ public class GameManager {
 		// 6)
 		displayRoundSummery();
 
-
+		if (turnStats.get(currentTurnStats).getWinner() == 0) {
+			System.out.println(false);
+			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
+		}
+		else if (turnStats.get(currentTurnStats).getWinner() > 0) {
+			System.out.println(true);
+			gameStatsData.setNumberOfCPURoundWinsPlusOne();
+		}
+		
 		// 7)
 		return !gameOver();
 	}
@@ -341,6 +353,12 @@ public class GameManager {
 	// It checks if the game is over AND deletes players with no cards
 	private boolean gameOver() {
 
+//		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());	
+//		System.out.println(gameStatsData.getNumberOfCPURoundWins());
+//		System.out.println(gameStatsData.getNumberOfDrawsInGame());
+//		System.out.println(gameStatsData.getNumberOfRoundsInGame());
+//		System.out.println(gameStatsData.getGameWinner());
+		
 		int count = 0;
 
 		for(int i = 0; i< players.size(); i++){
@@ -350,8 +368,11 @@ public class GameManager {
 		}
 
 		if(players.size() == 1) {
+			
+			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
 			testLog.printToFile();
+			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 
