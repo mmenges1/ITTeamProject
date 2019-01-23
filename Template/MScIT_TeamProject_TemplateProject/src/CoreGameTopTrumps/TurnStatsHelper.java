@@ -109,5 +109,9 @@ public class TurnStatsHelper {
 	public User getPlayer(int index) {
 		return players.get(index);
 	}
+	
+	public int getAttributeNumberPlayed() {
+		return this.attributeNumberPlayed;
+	}
 
 }

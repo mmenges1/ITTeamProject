@@ -340,7 +340,8 @@ public class GameManager {
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
 		
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
+		//currentAttribute
+		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 
 		System.out.println(roundString);
 	}
