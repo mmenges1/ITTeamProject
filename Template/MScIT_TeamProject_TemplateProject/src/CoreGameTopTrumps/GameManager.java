@@ -98,7 +98,7 @@ public class GameManager {
 	private void deal(int numberOfAIPlayers) {
 		Deck d = new Deck();
 		ArrayList<Card> newdeck = d.createDeck("StarCitizenDeck.txt");
-		testLog.addInitialDeck(d.startingDeck());
+//		testLog.addInitialDeck(d.startingDeck());
 		testLog.addShuffledDeck(newdeck);
 		players = new ArrayList<User>();
 		totalPlayers = 1 + numberOfAIPlayers;
