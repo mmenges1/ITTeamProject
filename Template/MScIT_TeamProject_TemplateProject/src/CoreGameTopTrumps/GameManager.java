@@ -267,9 +267,6 @@ public class GameManager {
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
-			
-//			System.out.println("PLAYROUND() LAST WINNER " + lastWinner);
-			
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 
 			players.get(lastWinner).addCards(community);
@@ -315,14 +312,6 @@ public class GameManager {
 		// 1)
 		int currentTurnStats = turnStats.size()-1;
 		
-		//Test - iterate through players to see why it randomly fails
-		
-//		for(User p: players) {
-//			System.out.println(p);
-//		}
-		
-		System.out.println("display() pre display players.size = " + players.size());
-		
 		int testDeckSize = 0;
 
 		// 2)
@@ -332,8 +321,7 @@ public class GameManager {
 					turnStats.get(currentTurnStats).getUserCardName(i),
 					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
 					players.get(i).getHandSize() );
-			
-			testDeckSize += players.get(i).getHandSize();
+		
 		}
 
 		// 3)
@@ -352,17 +340,16 @@ public class GameManager {
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
 		
+		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
 
 		System.out.println(roundString);
-		
-		System.out.println("display() test deck size " + testDeckSize);
 	}
 
 	//This helps playRound
 	// It checks if the game is over AND deletes players with no cards
 	
 	/*
-	 * This implements an iterator because simply looping through the players ArrayList
+	 * This implements an iterator because by simply looping through the players ArrayList
 	 * was causing it to randomly skip a player on rare occasions. The iterater is much safer.
 	 */
 	private boolean gameOver() {
@@ -373,13 +360,7 @@ public class GameManager {
 //		System.out.println(gameStatsData.getGameWinner());
 
 		
-//		System.out.println("gameOver() pre loop players.size = " + tempPlayerSize);
-		
 		Iterator<User> playersIterator = players.iterator();
-
-		//for(int i = 0; i< tempPlayerSize; i++)
-		
-		
 		
 		while(playersIterator.hasNext()){
 			
@@ -396,10 +377,10 @@ public class GameManager {
 
 		if(players.size() == 1) {
 
-//			gameStatsData.setGameWinner(lastWinner);
+			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
 			testLog.printToFile();
-//			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 
