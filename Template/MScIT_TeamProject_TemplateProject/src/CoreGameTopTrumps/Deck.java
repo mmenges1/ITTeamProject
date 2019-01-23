@@ -49,6 +49,7 @@ public class Deck {
 		return cardList;
 	}
 	
+	
 	public void readCriterias(String[] data) {
 		
 		for (int j = 1; j<data.length; j++) {
@@ -96,5 +97,11 @@ public class Deck {
 	public int startingDeckSize() {
 		return this.startingDeck.size();
 	}
+	
+	public ArrayList<Card> startingDeck()
+	{
+		return this.startingDeck;
+	}
+
 
 }
