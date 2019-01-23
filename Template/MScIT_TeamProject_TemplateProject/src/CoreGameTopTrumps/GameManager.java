@@ -345,6 +345,7 @@ public class GameManager {
 					+ "\n\nCommunity deck size is currently: %d",
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
+		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
 
 		System.out.println(roundString);
 	}
