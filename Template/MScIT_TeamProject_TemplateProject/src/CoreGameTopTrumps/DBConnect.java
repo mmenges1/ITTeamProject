@@ -1,37 +1,33 @@
 package CoreGameTopTrumps;
-
-import java.sql.*;
-
-/*
- * Responsibility to establish a connection to the 'Top Trumps Game' database; close the connection to the database after query execution
- */
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnect {
-
-	public Connection connection;
-
-	//New class calls method to establish database connection
+	
+	public static Connection connection;
+	
 	public DBConnect() {
 		connectToTopTrumpsGameDataBase();
 	}
-
-	//Initial connection to 'Top Trumps Game' database;
-	//returns the connection; allows for other methods to execute queries on the database
-	public Connection connectToTopTrumpsGameDataBase(){
-		String nameOfDataBase = "?????";
-		String userName = "?????";
-	  	String password = "?????";
+	
+	public static Connection connectToTopTrumpsGameDataBase(){
+		String url = "jdbc:mysql://localhost:3306/sys";
+		String userName = "root";
+		String password = "931112";
 
 	  	try {
-	  		connection = DriverManager.getConnection("jdbc:postgresql://??????" + nameOfDataBase, userName, password);
+	  		Class.forName("com.mysql.jdbc.Driver");// include this line in your code.
+	  		connection = DriverManager.getConnection(url, userName, password);
 	  	}
-	  	catch (SQLException e) {
-	  		e.printStackTrace();
-	  	}
+	    catch (SQLException | ClassNotFoundException e)
+	    {
+	    	System.err.println("Connection failed!");
+	    	e.printStackTrace();
+	    }
 	  	return connection;
 	}
-
-	//Closes connections to 'Top Trumps Game' database
+	
 	public void closeConnectionToTopTrumpsGameDataBase() {
 		try {
 			connection.close();

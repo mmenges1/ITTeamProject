@@ -170,10 +170,10 @@ public class GameManager {
 		//Last winner stay at zero for now for testing, so that user is always
 		// the one controlling.
 
-		if(totalRounds == 1) {
-			lastWinner = 0;
-		}
-
+//		if(totalRounds == 1) {
+//			lastWinner = 0;
+//		}
+		lastWinner = 0;
 
 		int playerChoice = 0;
 		if(lastWinner ==0 && !players.get(0).userLoses()) {

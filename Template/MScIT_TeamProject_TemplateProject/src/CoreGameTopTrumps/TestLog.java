@@ -1,14 +1,6 @@
 /*
-The contents of the complete deck once it has been read in and constructed
-The contents of the complete deck after it has been shuffled
-The contents of the user's deck and the computer's deck(s) once they have been allocated. 
-	Be sure to indicate which the user's deck is and which the computer's deck(s) is.
 The contents of the communal pile when cards are added or removed from it
-The contents of the current cards in play (the cards from the top of the user's deck and 
-	the computer's deck(s))
 The category selected and corresponding values when a user or computer selects a category
-The contents of each deck after a round
-The winner of the game
 */
 package CoreGameTopTrumps;
 
@@ -81,8 +73,9 @@ public class TestLog
 	  fileString += "\n---------------------------------------------------------------\n";
   }
 // The category selected and corresponding values when a user or computer selects a category
-  public void addCategorySelected()
+  public void addCategorySelected(String name, String topCardByAttribute)
   {
+	  fileString += name + " chose " + topCardByAttribute;
 	  fileString += "\n---------------------------------------------------------------\n";
   }
 //The winner of the game
@@ -91,4 +84,5 @@ public class TestLog
 	  fileString += "Winner: " + user.getName();
 	  fileString += "\n---------------------------------------------------------------\n";
   }
+
 }
