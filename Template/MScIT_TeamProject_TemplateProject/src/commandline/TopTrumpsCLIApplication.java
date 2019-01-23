@@ -10,26 +10,26 @@ public class TopTrumpsCLIApplication {
 	 * command line mode. The contents of args[0] is whether we should write game logs to a file.
  	 * @param args
 	 */
-	public static void main(String[] args) {
-
-		boolean writeGameLogsToFile = false; // Should we write game logs to file?
-		if (args[0].equalsIgnoreCase("true")) writeGameLogsToFile=true; // Command line selection
-		System.out.print("hello");
-		// State
-		boolean userWantsToQuit = false; // flag to check whether the user wants to quit the application
-		
-		// Loop until the user wants to exit the game
-		while (!userWantsToQuit) {
-
-			// ----------------------------------------------------
-			// Add your game logic here based on the requirements
-			// ----------------------------------------------------
-			
-			userWantsToQuit=true; // use this when the user wants to exit the game
-			
-		}
-
-
-	}
+//	public static void main(String[] args) {
+//
+//		boolean writeGameLogsToFile = false; // Should we write game logs to file?
+//		if (args[0].equalsIgnoreCase("true")) writeGameLogsToFile=true; // Command line selection
+//		System.out.print("hello");
+//		// State
+//		boolean userWantsToQuit = false; // flag to check whether the user wants to quit the application
+//		
+//		// Loop until the user wants to exit the game
+//		while (!userWantsToQuit) {
+//
+//			// ----------------------------------------------------
+//			// Add your game logic here based on the requirements
+//			// ----------------------------------------------------
+//			
+//			userWantsToQuit=true; // use this when the user wants to exit the game
+//			
+////		}
+//
+//
+//	}
 
 }
