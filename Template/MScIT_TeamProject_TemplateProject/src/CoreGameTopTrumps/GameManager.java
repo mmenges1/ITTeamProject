@@ -177,7 +177,7 @@ public class GameManager {
 			
 		int playerChoice = 0;
 		if(lastWinner ==0 && !players.get(0).userLoses()) {			
-			playerChoice = 2; //getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
+			playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
 		}else {
 			//Seperate method for AI choosing card goes here
 			playerChoice = r.nextInt(5) + 1;
@@ -338,7 +338,7 @@ public class GameManager {
 					+ "\n\nCommunity deck size is currently: %d", 
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getUserCardName(--cardPlayedIndex));
+		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
 
 		System.out.println(roundString);
 	}
