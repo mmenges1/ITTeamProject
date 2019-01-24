@@ -181,7 +181,11 @@ public class GameManager {
 		}else {
 			//Seperate method for AI choosing card goes here
 			playerChoice = r.nextInt(5) + 1;
+			
 		}
+		
+		
+		
 
 		totalRounds++;
 
@@ -199,7 +203,7 @@ public class GameManager {
 
 		System.out.printf("Here is the card at the top of your deck...\n"
 				+ players.get(0).showTopCard()
-				+ "\nwhich attribute would you like to trump your enemies with?\n\nPlease type a number between 1 and 5 and press enter!\n");
+				+ "\nwhich attribute would you like to trump your enemies with?\n\nPlease choose from 1 to 5 and press enter!\n");
 
 		int choice = 0;
 
@@ -340,8 +344,7 @@ public class GameManager {
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
 		
-		//currentAttribute
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
+//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 
 		System.out.println(roundString);
 	}
@@ -369,6 +372,12 @@ public class GameManager {
 			
 			if(p.userLoses()) {
 //				System.out.println("gameOver() removing user" + p);
+				
+				if(p instanceof Human) {
+					System.out.println("\nYou are out of cards! AI taking over ");
+					InputReader in = new InputReader();
+					in.pressEnter();
+				}
 				playersIterator.remove();
 			}else {
 //			System.out.println("gameOver() NOT removing user" + p);
