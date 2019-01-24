@@ -44,7 +44,21 @@ public class AIPlayer extends User {
 		}
 			return maxValue;
 		}
+	
+	//Overloaded method - leave empty to choose the top card on the deck
+	public int getHighestValueAttribute() {
+		Card topCard = hand.get(0);
 		
+		int maxValue = topCard.getAttribute(1);
+		int noOfCriteria = topCard.getCriterias().size();
+		for (int i = 2; i <= noOfCriteria; i++) {
+			if (maxValue <= topCard.getAttribute(i)) {
+				maxValue = topCard.getAttribute(i);
+			}
+		}
+			return maxValue;
+		}
+	
 	// if ai win, this method will print their card name
 	@Override
 	String getTopCardName() {
