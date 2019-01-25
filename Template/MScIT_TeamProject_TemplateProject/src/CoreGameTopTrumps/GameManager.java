@@ -22,10 +22,10 @@ public class GameManager {
 //	GameStats gameStatsData = new GameStats(0,0,0,0,0);
 //	GameStats gameStatsData = new GameStats(0,0,0,0,0);
 
-	TestLog testLog = new TestLog();
+	static TestLog testLog = new TestLog();
 
 	//TEMP MAIN for testing
-	public static void main(String[] args) {
+	public static void mainGame() {
 		GameManager gm = new GameManager();
 
 
@@ -519,7 +519,7 @@ public class GameManager {
 		}
 
 		
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
+//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 
 //		System.out.println(roundString);
 	}
@@ -623,5 +623,11 @@ public class GameManager {
 
 		return false;
 }
+}
+
+	public static void printLogFile() {
+		testLog.printToFile();
+	}
 
 }
+
