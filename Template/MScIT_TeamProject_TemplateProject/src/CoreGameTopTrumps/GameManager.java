@@ -22,10 +22,10 @@ public class GameManager {
 //	GameStats gameStatsData = new GameStats(0,0,0,0,0);
 //	GameStats gameStatsData = new GameStats(0,0,0,0,0);
 
-	TestLog testLog = new TestLog();
+	static TestLog testLog = new TestLog();
 
 	//TEMP MAIN for testing
-	public static void main(String[] args) {
+	public static void mainGame() {
 		GameManager gm = new GameManager();
 
 		int playerChoice = 0;
@@ -390,7 +390,12 @@ public class GameManager {
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getWinningCardName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
 
+
 		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
+
+		
+//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
+
 
 		System.out.println(roundString);
 		
@@ -455,8 +460,15 @@ public class GameManager {
 //			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
 //			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+	//		gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 		return false;
+	}
+
+
+
+	public static void printLogFile() {
+		testLog.printToFile();
 	}
 }

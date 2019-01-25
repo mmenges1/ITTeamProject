@@ -1,7 +1,5 @@
 package CoreGameTopTrumps;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,15 +13,8 @@ import java.sql.Statement;
  * Writing the report to a text file in the directory
  */
 public class PreviousStats {
-
-int numberOfPlayerRoundWins;
-int numberOfCPURoundWins;
-int numberOfRoundsInGame;
-int numberOfDrawsInGame;
-String gameWinner;
 private DBConnect DBCon;
-String reportFileText;
-Connection connectionToDatabase;
+private Connection connectionToDatabase;
 	
 	//On creation of class, methods will create report on previous game statistics which will be printed to a text file
 	public PreviousStats() {
@@ -36,7 +27,7 @@ Connection connectionToDatabase;
 	//The connection to the database is then closed
 	private void buildPreviousGameStatisticsReport() {
 		DBCon = new DBConnect();
-		connectionToDatabase = DBCon.connectToTopTrumpsGameDataBase();
+		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
 		StringBuilder report = new StringBuilder();
 		// Header of report	
 		report.append("Statistics Of Previous Games Report\n\n");
@@ -59,8 +50,7 @@ Connection connectionToDatabase;
 		// shows the maximum number of rounds played
 		report.append("Highest Number of Rounds Played:\t");
 		report.append(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM game", "MAX(nos_rounds)"));	
-		reportFileText = report.toString();
-		System.out.println(reportFileText);
+		System.out.println(report.toString());
 		DBCon.closeConnectionToTopTrumpsGameDataBase();
 	}
 	

@@ -105,5 +105,4 @@ public class Deck {
 	{
 		return this.startingDeck;
 	}
-
-}
+	}
