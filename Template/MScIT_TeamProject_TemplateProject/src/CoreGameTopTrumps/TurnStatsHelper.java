@@ -70,6 +70,9 @@ public class TurnStatsHelper {
 		return cardsPlayed;
 	}
 	
+	public String getWinningCardName() {
+		return this.attributeName;
+	}
 
 	
 	// Returns -1 if its a draw, other wise the index of the winner
@@ -94,7 +97,7 @@ public class TurnStatsHelper {
 			
 //			System.out.println("TurnStatsHelper.determineWinner currentStat : " + currentStat);
 		}
-		
+		this.attributeName = getUserCardName(this.winner);
 		return this.winner;		
 	}
 

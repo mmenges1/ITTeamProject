@@ -70,6 +70,7 @@ abstract public class User {
 		String attributeName = topCard.getCriteriaName(index);
 		return attributeName;
 	}
+	
 	// This method will return the number associated with a criteria 
 	public int getValue(int criteriaNumber) {
 		Card topCard = this.hand.get(0);
@@ -97,14 +98,10 @@ abstract public class User {
 		}
 	}
 
-	// checks to see if a user's hand is <= 0 needed to keep them in the players arraylist?
+	// checks to see if a user's hand is empty
 	// return true (i.e. a player is out).
 	public boolean userLoses() {
-		if (this.hand.size() == 0) {
-			return true;
-		} else {
-		return false;
-	}
+		return this.hand.size() ==0;
 	}
 	
 	public String toString() {
