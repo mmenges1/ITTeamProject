@@ -3,7 +3,6 @@ package CoreGameTopTrumps;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -234,6 +233,7 @@ public class GameManager {
 				Card topCard = currentAIOpponent.getTopCard(); // that ai player's top card
 				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard); 
 				if (this.players.get(0) instanceof Human) {
+					System.out.println("Here is the top of your deck: ");
 					System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
 				}
 				System.out.println(currentAIOpponent.playerChoosesMessage(topCard)); // prints the category that ai has chosen (i.e. highest in their card)
@@ -243,7 +243,7 @@ public class GameManager {
 			}
 		} // if the lastwinner is 0th index in players' list and the 0th index in that list is a human 
 		else if (lastWinner == 0 && players.get(0) instanceof Human) {	
-				System.out.println(this.players.get(this.lastWinner).getName() + " will choose the category for this round.  \n");
+				System.out.println("\n" + this.players.get(this.lastWinner).getName() + " will choose the category for this round.  \n");
 				playerChoice = getUserInput();
 				this.currentChoice = lastWinner;
 			}
@@ -252,7 +252,7 @@ public class GameManager {
 				currentAIOpponent = this.players.get(lastWinner);	
 				System.out.println(currentAIOpponent.getName() + " will choose the category for this round.  \n");
 				Card topCard = currentAIOpponent.getTopCard();
-				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
+				playerChoice = currentAIOpponent.getIwill cndexofCriteriaWithHighestValue(topCard);
 				if (!(this.players.get(0).getHandSize() < 0)) {
 				System.out.println(this.players.get(0).showTopCard() + "\n");
 				}
@@ -263,10 +263,11 @@ public class GameManager {
 			}*/
 			else {
 				currentAIOpponent = this.players.get(lastWinner);
-				System.out.println(currentAIOpponent.getName() + " will choose the category for this round  \n.");
+				System.out.println("\n" + currentAIOpponent.getName() + " will choose the category for this round  \n.");
 				Card topCard = currentAIOpponent.getTopCard();
 				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
 				if (this.players.get(0) instanceof Human) {
+					System.out.println("Here is the top of your deck: ");
 					System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
 				}
 				System.out.println(currentAIOpponent.getName() + " has chosen " + currentAIOpponent.getCriteriaName(topCard));
@@ -339,17 +340,18 @@ public class GameManager {
 		// 1)
 		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, this.players, this.currentChoice));
 
-		gameStatsData.setNumberOfRoundsInGamePlusOne();
+//		gameStatsData.setNumberOfRoundsInGamePlusOne();
 
 		// 1)
-		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
+//		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
 		int currentTurnStats = turnStats.size()-1;
 
 		// 2)
 		for(int i = 0; i < players.size(); i++ ) {
 
 //		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
-			System.out.println(this.players.get(i).getName()); //checks who's cards are added to deck
+//			System.out.println(this.players.get(i).getName()); //checks who's cards are added to deck
+			turnStats.get(currentTurnStats).addPlayerHandSize(this.players.get(i).getHandSize());
 			turnStats.get(currentTurnStats).addCardToCardsPlayed(this.players.get(i).getTopCard());	
 			players.get(i).discardTopCard();
 	}
@@ -360,55 +362,40 @@ public class GameManager {
 
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
-			System.out.println(lastWinner);
+//			System.out.println(lastWinner);
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
-			System.out.println(lastWinner);
+//			System.out.println(lastWinner);
 //			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
-			for (int i = 0; i <= lastWinner; i++) {
-				if (players.get(i).userLoses()) {
-					sum = sum + 1;
-				} 
-			}
-			if (lastWinner >0) {
-				lastWinner = lastWinner - sum;
-			}
-			System.out.println(lastWinner);
+//			for (int i = 0; i <= lastWinner; i++) {
+//				if (players.get(i).userLoses()) {
+//					sum = sum + 1;
+//				} 
+//			}
+//			if (lastWinner >0) {
+//				lastWinner = lastWinner - sum;
+//			}
+//			System.out.println(lastWinner);
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
-
-			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
-				turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());
-				players.get(i).discardTopCard();
-			}
-		}
-		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
-
-		// 3)
-		turnStats.get(currentTurnStats).determineWinner();
-
-		// 4)
-		if(!turnStats.get(currentTurnStats).getIsDraw()) {
-			lastWinner = turnStats.get(currentTurnStats).getWinner();
-			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
-
 			players.get(lastWinner).addCards(community);
 			testLog.addCommunalDeck(community);
 			community.clear();
-
+			
+		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
 		} else {
 			// 5)
-			System.out.println(lastWinner);
+//			System.out.println(lastWinner);
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
-			for (int i = 0; i < lastWinner; i++) {
-				if (players.get(i).userLoses()) {
-					sum = sum + 1;
-				} 
-			}
-			if (lastWinner >0) {
-				lastWinner = lastWinner - sum;
-			}
-			System.out.println(lastWinner);
+//			for (int i = 0; i < lastWinner; i++) {
+//				if (players.get(i).userLoses()) {
+//					sum = sum + 1;
+//				} 
+//			}
+//			if (lastWinner >0) {
+//				lastWinner = lastWinner - sum;
+//			}
+//			System.out.println(lastWinner);
 //			gameStatsData.setNumberOfDrawsInGamePlusOne();
-			gameStatsData.setNumberOfDrawsInGamePlusOne();
+//			gameStatsData.setNumberOfDrawsInGamePlusOne();
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 			testLog.addCommunalDeck(community);
 		}
@@ -416,7 +403,10 @@ public class GameManager {
 		// 6)
 		displayRoundSummery();
 		
-		System.out.println(players.get(lastWinner).getName() + " will choose the category for the next round.");
+		if (gameOver()) {
+			return false;
+		}
+		System.out.println("\n" + players.get(lastWinner).getName() + " will choose the category for the next round.");
 		
 		if (players.get(0) instanceof Human) {
 			System.out.println();
@@ -458,30 +448,43 @@ public class GameManager {
 
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
-//			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
-
-				System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n",
-						turnStats.get(currentTurnStats).getPlayer(i).getName(),
-						turnStats.get(currentTurnStats).getUserCardName(i),
-						turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
-						players.get(i).getHandSize() );
-
-
-				cardPlayedIndex++;
-			}
-//		}
-		
-		int testDeckSize = 0;
-
-		// 2)
-		for(int i = 0; i < players.size(); i++) {
-			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n",
+			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
 					turnStats.get(currentTurnStats).getPlayer(i).getName(),
 					turnStats.get(currentTurnStats).getUserCardName(i),
 					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
-					players.get(i).getHandSize() );
-		
-		}
+					players.get(i).getHandSize(),
+					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i))
+			;
+//			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
+//			if (turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i) > 0) {
+//				System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (+%d))\n",
+//						turnStats.get(currentTurnStats).getPlayer(i).getName(),
+//						turnStats.get(currentTurnStats).getUserCardName(i),
+//						turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+//						players.get(i).getHandSize(),
+//						turnStats.get(currentTurnStats).getPlayerHandSize(i) - players.get(i).getHandSize()) ;
+//			}
+//				else {
+//					System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (-%d))\n",
+//							turnStats.get(currentTurnStats).getPlayer(i).getName(),
+//							turnStats.get(currentTurnStats).getUserCardName(i),
+//							turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+//							players.get(i).getHandSize(),
+//							turnStats.get(currentTurnStats).getPlayerHandSize(i) - players.get(i).getHandSize() );
+//				}
+
+				cardPlayedIndex++;
+			} 
+//		}
+//		// 2)
+//		for(int i = 0; i < players.size(); i++) {
+//			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n",
+//					turnStats.get(currentTurnStats).getPlayer(i).getName(),
+//					turnStats.get(currentTurnStats).getUserCardName(i),
+//					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+//					players.get(i).getHandSize() );
+//		
+//		}
 
 		// 3)
 		//TODO Implement a GameStats here to convey a points system for each player
@@ -503,19 +506,22 @@ public class GameManager {
 
 		System.out.println(roundString);
 		for (int i = 0; i < players.size();i++) {
-			if (this.players.get(i).getHandSize() == 0) {
+			if (this.players.get(i).userLoses()) {
 				System.out.println("\n" + this.players.get(i).getName() + " has been knocked out!");
+				if (i < this.lastWinner) {
+					this.lastWinner--;
+				}
 				this.players.remove(i);
 				i--;
 			} else {
-				System.out.println("\n" + this.players.get(i).getName() + " to play next round!");
+//				System.out.println("\n" + this.players.get(i).getName() + " to play next round!");
 			}
 		}
 
 		
 		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 
-		System.out.println(roundString);
+//		System.out.println(roundString);
 	}
 
 	//This helps playRound
@@ -524,28 +530,68 @@ public class GameManager {
 	 * This implements an iterator because by simply looping through the players ArrayList
 	 * was causing it to randomly skip a player on rare occasions. The iterater is much safer.
 	 */
+//	private boolean gameOver() {
+////		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
+////		System.out.println(gameStatsData.getNumberOfCPURoundWins());
+////		System.out.println(gameStatsData.getNumberOfDrawsInGame());
+////		System.out.println(gameStatsData.getNumberOfRoundsInGame());
+////		System.out.println(gameStatsData.getGameWinner());
+//		int count = 0;
+//
+////		for(int i = 0; i< players.size(); i++){
+////			if(players.get(i).userLoses()) {
+////				players.remove(i);
+////			}
+////		}
+//
+//		if(this.players.size() == 1) {
+//
+////			gameStatsData.setGameWinner(lastWinner);
+//			System.out.println(players.get(0) + " is the overall winner!!!");
+//			testLog.addWinner(players.get(0));
+//			testLog.printToFile();
+////			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+//
+//		Iterator<User> playersIterator = players.iterator();
+//		
+//		while(playersIterator.hasNext()){
+//			
+//			User p = playersIterator.next();
+//			
+//			if(p.userLoses()) {
+////				System.out.println("gameOver() removing user" + p);
+//				
+//				if(p instanceof Human) {
+//					System.out.println("\nYou are out of cards! AI taking over ");
+//					InputReader in = new InputReader();
+//					in.pressEnter();
+//				}
+//				playersIterator.remove();
+//			}else {
+////			System.out.println("gameOver() NOT removing user" + p);
+//			}
+//			
+//		}
+//
+//		if(players.size() == 1) {
+//
+////			gameStatsData.setGameWinner(lastWinner);
+//			testLog.addWinner(players.get(0));
+//			testLog.printToFile();
+////			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+//			return true;
+//		}
+//
+//		return false;
+//	}
 	private boolean gameOver() {
 //		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
 //		System.out.println(gameStatsData.getNumberOfCPURoundWins());
 //		System.out.println(gameStatsData.getNumberOfDrawsInGame());
 //		System.out.println(gameStatsData.getNumberOfRoundsInGame());
 //		System.out.println(gameStatsData.getGameWinner());
-		int count = 0;
 
-//		for(int i = 0; i< players.size(); i++){
-//			if(players.get(i).userLoses()) {
-//				players.remove(i);
-//			}
-//		}
-
-		if(this.players.size() == 1) {
-
-//			gameStatsData.setGameWinner(lastWinner);
-			System.out.println(players.get(0) + " is the overall winner!!!");
-			testLog.addWinner(players.get(0));
-			testLog.printToFile();
-//			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
-
+		
 		Iterator<User> playersIterator = players.iterator();
 		
 		while(playersIterator.hasNext()){
@@ -568,16 +614,14 @@ public class GameManager {
 		}
 
 		if(players.size() == 1) {
-
-			gameStatsData.setGameWinner(lastWinner);
+			System.out.println(players.get(0).getName() + " is the overall winner!!!");
+//			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
-			testLog.printToFile();
-			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+	//		gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 
 		return false;
-	}
-
 }
+
 }

@@ -12,6 +12,7 @@ public class TurnStatsHelper {
 	int communitySize;
 	boolean isDraw;
 	int currentChoice;
+	ArrayList<Integer> playerHandSizes;
 	
 	//This is what the user will see which summarises the round
 	String roundString;
@@ -28,6 +29,22 @@ public class TurnStatsHelper {
 		cardsPlayed = new ArrayList<Card>();
 		this.players = new ArrayList<User>(players);
 		this.currentChoice = currentChoice;
+		playerHandSizes = new ArrayList<Integer>(); // used to work out difference between old and new hand size 
+	}
+	
+	public void addPlayerHandSize(int handSize) {
+		this.playerHandSizes.add(handSize);
+	}
+	public String returnDifferenceHandSize(User x, int index) {
+		if (x.getHandSize() - this.getPlayerHandSize(index) < 0 ) {
+			return "" + (x.getHandSize() - this.getPlayerHandSize(index) + " card") ;
+		} else {
+		return  "+" + (x.getHandSize() - this.getPlayerHandSize(index) + " cards") ; 
+	}
+	}
+	
+	public int getPlayerHandSize(int index) {
+		return this.playerHandSizes.get(index);
 	}
 	
 	public int getPlayerSize() {
@@ -78,7 +95,7 @@ public class TurnStatsHelper {
 //			System.out.println("TurnStatsHelper.determineWinner currentStat : " + currentStat);
 		}
 		
-		return winner;		
+		return this.winner;		
 	}
 
 	@Override
@@ -105,7 +122,7 @@ public class TurnStatsHelper {
 	}
 	
 	public String getAnyCardTopAttribute(int playerIndex) {
-		return cardsPlayed.get(this.winner).getCriteriaName(attributeNumberPlayed-1) + " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
+		return cardsPlayed.get(playerIndex).getCriteriaName(attributeNumberPlayed-1) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
 	}
 	
 	public String getUserCardName(int index) {
