@@ -2,6 +2,7 @@ package CoreGameTopTrumps;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Random;
 
 public class GameManager {
@@ -13,7 +14,7 @@ public class GameManager {
 	int playerTurn;
 
 	ArrayList<TurnStatsHelper> turnStats = new ArrayList<TurnStatsHelper>();
-	ArrayList<Card> community = new ArrayList<Card>();
+	ArrayList<Card> community;
 	ArrayList<User> players;
 
 	GameStats gameStatsData = new GameStats(0,0,0,0,0);
@@ -61,7 +62,7 @@ public class GameManager {
 		while (true) {
 			choice = in.parseInt();
 			if(choice <= 3 && choice > 0) {
-				return choice; // with this line, don't need lines 68 - 74
+				return choice; 
 //				break;
 			} else {
 				System.out.println("Please enter within the range");
@@ -69,13 +70,6 @@ public class GameManager {
 		}
 	}
 
-//		if(choice == 1) {
-//			return 1;
-//		} else if (choice == 2) {
-//			return 2;
-//		}
-//		return 3;
-//	}
 
 	//This is called by initialPLayerChoice, to be populated with database info
 	private void displayPriviousGameStats() {
@@ -145,6 +139,10 @@ public class GameManager {
 	 */
 	private void manageTurn() {
 		int counter = 0;
+		
+		//Reset the number of rounds!
+		totalRounds = 1;
+		community = new ArrayList<Card>();
 
 		do {
 			counter ++;
@@ -178,12 +176,16 @@ public class GameManager {
 
 
 		int playerChoice = 0;
-		if(lastWinner ==0 && !players.get(0).userLoses()) {
+		if(lastWinner ==0 && players.get(0) instanceof Human ) {
 			playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
 		}else {
 			//Seperate method for AI choosing card goes here
 			playerChoice = r.nextInt(5) + 1;
+			
 		}
+		
+		
+		
 
 		totalRounds++;
 
@@ -201,7 +203,7 @@ public class GameManager {
 
 		System.out.printf("Here is the card at the top of your deck...\n"
 				+ players.get(0).showTopCard()
-				+ "\nwhich attribute would you like to trump your enemies with?\n\nPlease type a number between 1 and 5 and press enter!\n");
+				+ "\nwhich attribute would you like to trump your enemies with?\n\nPlease choose from 1 to 5 and press enter!\n");
 
 		int choice = 0;
 
@@ -251,7 +253,7 @@ public class GameManager {
 		gameStatsData.setNumberOfRoundsInGamePlusOne();
 
 		// 1)
-		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players));
+		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
 		int currentTurnStats = turnStats.size()-1;
 
 		// 2)
@@ -313,21 +315,17 @@ public class GameManager {
 
 		// 1)
 		int currentTurnStats = turnStats.size()-1;
-		int cardPlayedIndex = 0;
+		
+		int testDeckSize = 0;
 
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
-			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
-
-				System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n",
-						turnStats.get(currentTurnStats).getPlayer(cardPlayedIndex).getName(),
-						turnStats.get(currentTurnStats).getUserCardName(cardPlayedIndex),
-						turnStats.get(currentTurnStats).getAnyCardTopAttribute(cardPlayedIndex),
-						players.get(i).getHandSize() );
-
-
-				cardPlayedIndex++;
-			}
+			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n",
+					turnStats.get(currentTurnStats).getPlayer(i).getName(),
+					turnStats.get(currentTurnStats).getUserCardName(i),
+					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					players.get(i).getHandSize() );
+		
 		}
 
 		// 3)
@@ -345,27 +343,46 @@ public class GameManager {
 					+ "\n\nCommunity deck size is currently: %d",
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
+		
+//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 
 		System.out.println(roundString);
 	}
 
 	//This helps playRound
 	// It checks if the game is over AND deletes players with no cards
+	
+	/*
+	 * This implements an iterator because by simply looping through the players ArrayList
+	 * was causing it to randomly skip a player on rare occasions. The iterater is much safer.
+	 */
 	private boolean gameOver() {
-
 //		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
 //		System.out.println(gameStatsData.getNumberOfCPURoundWins());
 //		System.out.println(gameStatsData.getNumberOfDrawsInGame());
 //		System.out.println(gameStatsData.getNumberOfRoundsInGame());
 //		System.out.println(gameStatsData.getGameWinner());
 
-		int count = 0;
-
-		for(int i = 0; i< players.size(); i++){
-			if(players.get(i).userLoses()) {
-				players.remove(i);
+		
+		Iterator<User> playersIterator = players.iterator();
+		
+		while(playersIterator.hasNext()){
+			
+			User p = playersIterator.next();
+			
+			if(p.userLoses()) {
+//				System.out.println("gameOver() removing user" + p);
+				
+				if(p instanceof Human) {
+					System.out.println("\nYou are out of cards! AI taking over ");
+					InputReader in = new InputReader();
+					in.pressEnter();
+				}
+				playersIterator.remove();
+			}else {
+//			System.out.println("gameOver() NOT removing user" + p);
 			}
+			
 		}
 
 		if(players.size() == 1) {

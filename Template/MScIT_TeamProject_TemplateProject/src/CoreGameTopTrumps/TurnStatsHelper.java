@@ -91,11 +91,11 @@ public class TurnStatsHelper {
 	}
 	
 	public String getTopCardByAttribute() {
-		return cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed) + " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
+		return cardsPlayed.get(this.winner).getCriteriaName(attributeNumberPlayed-1) + " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
 	
 	public String getAnyCardTopAttribute(int playerIndex) {
-		return cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
+		return cardsPlayed.get(playerIndex).getCriteriaName(attributeNumberPlayed-1) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
 	}
 	
 	public String getUserCardName(int index) {
@@ -108,6 +108,10 @@ public class TurnStatsHelper {
 	
 	public User getPlayer(int index) {
 		return players.get(index);
+	}
+	
+	public int getAttributeNumberPlayed() {
+		return this.attributeNumberPlayed;
 	}
 
 }
