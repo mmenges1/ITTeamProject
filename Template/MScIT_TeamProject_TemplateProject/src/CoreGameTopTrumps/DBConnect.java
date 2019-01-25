@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public class DBConnect {
 	
-	public static Connection connection;
+	private static Connection connection;
 	
 	public DBConnect() {
 		connectToTopTrumpsGameDataBase();
