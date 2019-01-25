@@ -1,8 +1,8 @@
 package CoreGameTopTrumps;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class GameManager {
 	int totalPlayers = 0;
@@ -13,22 +13,18 @@ public class GameManager {
 	int startingPlayer;
 	int playerTurn;
 	String lastWinner2;
-	int nextChoice;
-	
+	int currentChoice;
 	ArrayList<TurnStatsHelper> turnStats = new ArrayList<TurnStatsHelper>();
 	ArrayList<Card> community = new ArrayList<Card>();
-//	ArrayList<User> players;
 	ArrayList<User> players = new ArrayList<User>();
 	
 	//TEMP MAIN for testing
 	public static void main(String[] args) {
 		GameManager gm = new GameManager();
-		
 		int playerChoice = 0;
 		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
 		while(true) {
 			playerChoice = gm.initialPlayerChoice();
-			
 			if(playerChoice == 1) {
 				System.out.println(gm.displayPriviousGameStats());
 			} else if (playerChoice == 2){
@@ -40,7 +36,6 @@ public class GameManager {
 				break;
 			}
 		}
-		
 	}
 	
 	/*
@@ -65,15 +60,7 @@ public class GameManager {
 			}
 		}
 	}
-	
-//		if(choice == 1) {
-//			return 1;
-//		} else if (choice == 2) {
-//			return 2;
-//		} 		
-//		return 3;
-//	}
-	
+		
 	//This is called by initialPLayerChoice, to be populated with database info
 	private String displayPriviousGameStats() {
 		return "Put your object here\n";		
@@ -97,13 +84,11 @@ public class GameManager {
 	private void deal(int numberOfAIPlayers) {		
 		Deck d = new Deck();
 		ArrayList<Card> newdeck = d.createDeck("StarCitizenDeck.txt");		
-//		players = new ArrayList<User>();		
 		totalPlayers = 1 + numberOfAIPlayers;
 		
 		// 1)
 		int mainCardEach = newdeck.size() / totalPlayers;
 		int remainderCards = newdeck.size() % totalPlayers;
-		
 		int divideCount = 0;
 		
 		// 2)
@@ -115,17 +100,15 @@ public class GameManager {
 				this.players.add(new AIPlayer("AI "+ i,new ArrayList<Card>(newdeck.subList(divideCount, divideCount + mainCardEach))));	
 				this.players.get(i).setName("AI " + i);
 			}
-			
 			divideCount += mainCardEach;
 		}
-		
 		
 		// 3)
 		for(int i = 0; i < remainderCards; i++) {
 			players.get(i).addSingleCard(newdeck.get(divideCount));
+//			players2.get(i).addSingleCard(newdeck.get(divideCount));
 			divideCount++;
 		}
-		
 	}
 	
 	/*
@@ -138,21 +121,16 @@ public class GameManager {
 	 * Within these are the game logic
 	 */
 	private void manageTurn() {
-//		int counter = 0;
-		
 		do {
-//			counter ++;
-			
 			for (int i = 0; i < players.size(); i++) {
-				if (players.get(i).getHandSize() <= 0) {
-					players.remove(i);
+				if (players.get(i).userLoses()) {
+					players.remove(i);	
 				}
 			}
-//			//This is here for testing
-//			if(counter>=3) {
-//				break;
-//			}
-		}while(playRound(getCardChoice()));
+			if (gameOver()) {
+				break;
+			}
+		} while(playRound(getCardChoice()));
 	}
 
 	/*
@@ -164,7 +142,8 @@ public class GameManager {
 	
 	private int getCardChoice() {
 		Random r = new Random();		
-		this.startingPlayer = r.nextInt(5);
+		this.startingPlayer = r.nextInt(4);  // generates random starting player
+//		this.startingPlayer = r.nextInt(4) + 1;
 		User currentAIOpponent;
 		
 		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
@@ -172,72 +151,62 @@ public class GameManager {
 		
 		//Last winner stay at zero for now for testing, so that user is always 
 		// the one controlling.
-		
-		
-//		if(totalRounds == 0) {
-//			lastWinner = 0;
-//		}
 			
 		int playerChoice = 0;
 		if (roundOne) {
-			if(this.startingPlayer == 0) {
-				//		if(lastWinner ==0 && !players.get(0).userLoses()) {			
+			// if it's round one and the 0th index is chosen and the 0th index is a human
+			if(this.startingPlayer == 0 && players.get(0) instanceof Human ) {	
 				System.out.println(players.get(this.startingPlayer).getName() + " will make the first choice ! \n");
 				playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
-				nextChoice = 0;
+				currentChoice = this.startingPlayer;
 				roundOne = false;
-			}else {
+			} 
+			// if it's round one and a number between 1-4 is chosen
+			else {
 				//Seperate method for AI choosing card goes here
-				 currentAIOpponent = this.players.get(this.startingPlayer); // current ai player from 1-4
+				currentAIOpponent = this.players.get(this.startingPlayer); // current ai player from 1-4
 				System.out.println(currentAIOpponent.getName() + " will make the first choice!  \n");
-//				System.out.println(currentAIOpponent.getName() + " will be the first player");
 				Card topCard = currentAIOpponent.getTopCard(); // that ai player's top card
 				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard); 
-				System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
+				if (this.players.get(0) instanceof Human) {
+					System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
+				}
 				System.out.println(currentAIOpponent.playerChoosesMessage(topCard)); // prints the category that ai has chosen (i.e. highest in their card)
 				System.out.println();
-				nextChoice = startingPlayer;
+				currentChoice = this.startingPlayer; // person to make next choice will be current player unless another player wins
 				roundOne = false;
-				//			playerChoice = r.nextInt(5) + 1;
 			}
-//		} else if (.lastWinner == 0 && !players.get(0).userLoses()) {
-		} else if (lastWinner2.equals("You")) {
-				//		if(lastWinner ==0 && !players.get(0).userLoses()) {			
+		} // if the lastwinner is 0th index in players' list and the 0th index in that list is a human 
+		else if (lastWinner == 0 && players.get(0) instanceof Human) {	
 				System.out.println(this.players.get(this.lastWinner).getName() + " will choose the category for this round.  \n");
-				nextChoice = 0;
 				playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
-			}else if (this.lastWinner != 0 && !players.get(0).userLoses()) {
+				currentChoice = lastWinner;
+			}
+		/*else if (players.get(0) instanceof Human) {
 				//Separate method for AI choosing card goes here
-				if (players.size() < 5) {
-					 currentAIOpponent = this.players.get(players.size() -lastWinner);
-					} else {
-						 currentAIOpponent = this.players.get(lastWinner);
-					}
+				currentAIOpponent = this.players.get(lastWinner);	
 				System.out.println(currentAIOpponent.getName() + " will choose the category for this round.  \n");
 				Card topCard = currentAIOpponent.getTopCard();
 				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
 				if (!(this.players.get(0).getHandSize() < 0)) {
 				System.out.println(this.players.get(0).showTopCard() + "\n");
 				}
-				nextChoice = lastWinner;
+				currentChoice = lastWinner;
 				System.out.println(currentAIOpponent.getName() + " has chosen " + currentAIOpponent.getCriteriaName(topCard));
 				System.out.println();
 				//			playerChoice = r.nextInt(5) + 1;
-			}
+			}*/
 			else {
-				if (players.size() < 5) {
-				 currentAIOpponent = this.players.get(players.size() -lastWinner);
-				} else {
-					 currentAIOpponent = this.players.get(lastWinner);
-				}
+				currentAIOpponent = this.players.get(lastWinner);
 				System.out.println(currentAIOpponent.getName() + " will choose the category for this round  \n.");
 				Card topCard = currentAIOpponent.getTopCard();
 				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
-//				if (!(this.players.get(0).getHandSize() < 0)) {
-//				System.out.println(this.players.get(0).showTopCard() + "\n");
-//				}
+				if (this.players.get(0) instanceof Human) {
+					System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
+				}
 				System.out.println(currentAIOpponent.getName() + " has chosen " + currentAIOpponent.getCriteriaName(topCard));
 				System.out.println();
+				currentChoice = lastWinner;
 			}
 		totalRounds++;
 		return playerChoice;
@@ -299,35 +268,39 @@ public class GameManager {
 	 */
 	private boolean playRound(int cardChoice) {
 		
-		if (gameOver()) {
-			return gameOver();
-		} else {
+//		if (gameOver()) {
+//			return gameOver();
+//		} else {
 		// 1)turnstats if a list of turnstatshelpers
 //		for (int i = 0; i < players.size(); i++) {
 //			if (players.get(i).getHandSize() <= 0) {
 //				players.remove(i);
 //			}
 //		}
-		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players, nextChoice));
+		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, players, currentChoice));
 		int currentTurnStats = turnStats.size()-1; 
 		
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
-//			if(!(turnStats.get(currentTurnStats).getPlayer(i).getHandSize() >0)) {
-//			} else {
+				System.out.println(players.get(i).getName());
 				turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());	
 				players.get(i).discardTopCard();
-//			}			
 		}
 		
 		// 3)
 		turnStats.get(currentTurnStats).determineWinner();
-		
+		int sum = 0;
 		// 4)
-		if(!turnStats.get(currentTurnStats).getIsDraw()) {			
+		if(!turnStats.get(currentTurnStats).getIsDraw()) {	
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
-//			lastWinner = turnStats.get(currentTurnStats).getNextChoice();
-			lastWinner2 = players.get(lastWinner).getName();
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).userLoses()) {
+					sum += 1;
+				} 
+			}
+			if (lastWinner >0) {
+				lastWinner -= sum;
+			}
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			players.get(lastWinner).addCards(community);			
 			community.clear();
@@ -335,18 +308,27 @@ public class GameManager {
 		} else {
 			// 5)	
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
-			lastWinner2 = players.get(lastWinner).getName();
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 		}
 		
 		// 6) 
 		displayRoundSummery();
-
+//		if (gameOver()) {
+//			return gameOver();
+//		} 
+//		else 
+			if (players.get(0) instanceof Human) {
+		System.out.println();
+		System.out.println("Press enter to continue");
+		Scanner s = new Scanner(System.in);
+		s.nextLine();
+		}
+		
 		
 		// 7)
 		return !gameOver();
 	}
-	}
+//	}
 	
 	
 	private void displayRoundSummery() {
@@ -390,42 +372,30 @@ public class GameManager {
 					+ "\n\nCommunity deck size is currently: %d", 
 //					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getUserCardName(lastWinner), community.size());
-					for (int i = 0; i < players.size();i++) {
-						if (this.players.get(i).getHandSize() == 0) {
-							System.out.println(this.players.get(i).getName() + " has been knocked out!");
-						}
-					}
+					
 		}
 		
 		System.out.println(roundString);
+		for (int i = 0; i < players.size();i++) {
+			if (this.players.get(i).getHandSize() == 0) {
+				System.out.println("\n" + this.players.get(i).getName() + " has been knocked out!");
+			}
+		}
 	}
 	
 	//This helps playRound 
 	// It checks if the game is over AND deletes players with no cards
 	private boolean gameOver() {
-		
-//		int count = 0;
-		
-//		for(int i = 0; i< players.size(); i++){
-//			if(players.get(i).userLoses()) {
-//				players.remove(i);
-//			}
-//		}
+		boolean gameIsOver = false;
 		for (int i = 0 ; i < players.size(); i++) {
 			if (players.get(i).getHandSize() == 40) {
 				System.out.println(players.get(i).getName() + " is the overall winner!");
-				return true;
+				gameIsOver = true;
 			} else if (players.get(i).getHandSize() + this.community.size() == 40) {
 				System.out.println(players.get(i).getName() + " is the overall winner!");
-				return true;
+			gameIsOver =  true;
 			}
 		}
-		
-//		if(players.size() == 1) {
-//			return true;
-//		}
-		
-		return false;
+		return gameIsOver;
 	}
-
 }
