@@ -466,8 +466,6 @@ public class GameManager {
 		return false;
 	}
 
-
-
 	public static void printLogFile() {
 		testLog.printToFile();
 	}
