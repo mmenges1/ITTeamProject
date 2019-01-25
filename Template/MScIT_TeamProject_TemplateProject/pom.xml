@@ -44,6 +44,7 @@
   <build>
   
   	<!-- Where do our Java sources come from? -->
+  	<finalName>TopTrumps</finalName>
     <sourceDirectory>src</sourceDirectory>
 	
 	<resources>
