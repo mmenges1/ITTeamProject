@@ -68,6 +68,7 @@ public class Deck {
 		newCard.setAttribute5(Integer.parseInt(data[5]));
 		for (int i = 1; i < data.length; i++) {
 			attributes.add(Integer.parseInt(data[i]));
+//			System.out.println(Integer.parseInt(data[i]));
 		}
 		newCard.setAttributes(attributes);
 		newCard.setCriteria(criteria); //kw
@@ -89,6 +90,9 @@ public class Deck {
 //			for (int j = list.size()-1; j >0; j--) {
 //			s = list.get(i).getName() + ": ";
 //			for (int j = 0; j<c.getAttributes().size(); j++) {
+		for (int j = 0; j <= c.getAttributes().size(); j++) {
+			System.out.println(c.getAttribute(j));
+		}
 		c.viewCard();
 //			}
 //		}
