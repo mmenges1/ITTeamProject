@@ -3,6 +3,9 @@ package CoreGameTopTrumps;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Random;
 
 public class GameManager {
 	int totalPlayers = 0;
@@ -17,6 +20,7 @@ public class GameManager {
 	ArrayList<Card> community = new ArrayList<Card>();
 	ArrayList<User> players = new ArrayList<User>() ;
 
+//	GameStats gameStatsData = new GameStats(0,0,0,0,0);
 //	GameStats gameStatsData = new GameStats(0,0,0,0,0);
 
 	TestLog testLog = new TestLog();
@@ -62,21 +66,13 @@ public class GameManager {
 		while (true) {
 			choice = in.parseInt();
 			if(choice <= 3 && choice > 0) {
-				return choice; // with this line, don't need lines 68 - 74
-//				break;
+				return choice; 
 			} else {
 				System.out.println("Please enter within the range");
 			}
 		}
 	}
 
-//		if(choice == 1) {
-//			return 1;
-//		} else if (choice == 2) {
-//			return 2;
-//		}
-//		return 3;
-//	}
 
 	//This is called by initialPLayerChoice, to be populated with database info
 	private void displayPriviousGameStats() {
@@ -146,9 +142,6 @@ public class GameManager {
 	 * Within these are the game logic
 	 */
 	private void manageTurn() {
-		// i'm not sure what's counter for
-//		int counter = 0; 
-
 		do {
 			//			counter ++;
 //			for (int i = 0; i < this.players.size(); i++) {
@@ -161,8 +154,22 @@ public class GameManager {
 //				if (gameOver()) {
 //					break;
 //				}
-				
-//			}
+//				
+//=======
+//		int counter = 0;
+//		
+//		//Reset the number of rounds!
+//		totalRounds = 1;
+//		community = new ArrayList<Card>();
+//
+//		do {
+//			counter ++;
+//
+////			//This is here for testing
+////			if(counter>=3) {
+////				break;
+//>>>>>>> 100b52683890addf356cea8538beb6f451fd516c
+////			}
 		}while(playRound(getCardChoice()));
 	}
 
@@ -269,7 +276,6 @@ public class GameManager {
 		totalRounds++;
 		return playerChoice;
 	}
-	
 
 	/*
 	 * This Class helps getCardChoice by getting the user input
@@ -283,7 +289,6 @@ public class GameManager {
 		System.out.printf("Here is the card at the top of your deck...\n"
 				+ players.get(0).showTopCard()
 				+ "\nwhich attribute would you like to trump your enemies with?\n\nPlease type a number between 1 and 5 and press enter!\n");
-
 		int choice = 0;
 
 		while (true) {
@@ -333,15 +338,16 @@ public class GameManager {
 
 		// 1)
 		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, this.players, this.currentChoice));
+
+		gameStatsData.setNumberOfRoundsInGamePlusOne();
+
+		// 1)
+		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
 		int currentTurnStats = turnStats.size()-1;
 
 		// 2)
 		for(int i = 0; i < players.size(); i++ ) {
-//			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
-//				turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());
-//				players.get(i).discardTopCard();
-//			}
-//		}
+
 //		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
 			System.out.println(this.players.get(i).getName()); //checks who's cards are added to deck
 			turnStats.get(currentTurnStats).addCardToCardsPlayed(this.players.get(i).getTopCard());	
@@ -368,6 +374,22 @@ public class GameManager {
 			}
 			System.out.println(lastWinner);
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
+
+			if(!turnStats.get(currentTurnStats).getPlayer(i).userLoses()) {
+				turnStats.get(currentTurnStats).addCardToCardsPlayed(players.get(i).getTopCard());
+				players.get(i).discardTopCard();
+			}
+		}
+		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
+
+		// 3)
+		turnStats.get(currentTurnStats).determineWinner();
+
+		// 4)
+		if(!turnStats.get(currentTurnStats).getIsDraw()) {
+			lastWinner = turnStats.get(currentTurnStats).getWinner();
+			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
+
 			players.get(lastWinner).addCards(community);
 			testLog.addCommunalDeck(community);
 			community.clear();
@@ -386,6 +408,7 @@ public class GameManager {
 			}
 			System.out.println(lastWinner);
 //			gameStatsData.setNumberOfDrawsInGamePlusOne();
+			gameStatsData.setNumberOfDrawsInGamePlusOne();
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 			testLog.addCommunalDeck(community);
 		}
@@ -402,6 +425,7 @@ public class GameManager {
 			s.nextLine();
 			}
 
+
 //		if (turnStats.get(currentTurnStats).getWinner() == 0) {
 //			System.out.println(false);
 //			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
@@ -413,7 +437,6 @@ public class GameManager {
 
 		// 7)
 		return !gameOver();
-		
 	}
 
 	/* displayRoundSummery() displays the text that the user sees on the screen.
@@ -447,6 +470,18 @@ public class GameManager {
 				cardPlayedIndex++;
 			}
 //		}
+		
+		int testDeckSize = 0;
+
+		// 2)
+		for(int i = 0; i < players.size(); i++) {
+			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d)\n",
+					turnStats.get(currentTurnStats).getPlayer(i).getName(),
+					turnStats.get(currentTurnStats).getUserCardName(i),
+					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					players.get(i).getHandSize() );
+		
+		}
 
 		// 3)
 		//TODO Implement a GameStats here to convey a points system for each player
@@ -463,6 +498,7 @@ public class GameManager {
 					+ "\n\nCommunity deck size is currently: %d",
 					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
 		}
+
 		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
 
 		System.out.println(roundString);
@@ -475,18 +511,25 @@ public class GameManager {
 				System.out.println("\n" + this.players.get(i).getName() + " to play next round!");
 			}
 		}
+
+		
+		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
+
+		System.out.println(roundString);
 	}
 
 	//This helps playRound
 	// It checks if the game is over AND deletes players with no cards
+	/*
+	 * This implements an iterator because by simply looping through the players ArrayList
+	 * was causing it to randomly skip a player on rare occasions. The iterater is much safer.
+	 */
 	private boolean gameOver() {
-
 //		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
 //		System.out.println(gameStatsData.getNumberOfCPURoundWins());
 //		System.out.println(gameStatsData.getNumberOfDrawsInGame());
 //		System.out.println(gameStatsData.getNumberOfRoundsInGame());
 //		System.out.println(gameStatsData.getGameWinner());
-
 		int count = 0;
 
 //		for(int i = 0; i< players.size(); i++){
@@ -502,10 +545,39 @@ public class GameManager {
 			testLog.addWinner(players.get(0));
 			testLog.printToFile();
 //			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+
+		Iterator<User> playersIterator = players.iterator();
+		
+		while(playersIterator.hasNext()){
+			
+			User p = playersIterator.next();
+			
+			if(p.userLoses()) {
+//				System.out.println("gameOver() removing user" + p);
+				
+				if(p instanceof Human) {
+					System.out.println("\nYou are out of cards! AI taking over ");
+					InputReader in = new InputReader();
+					in.pressEnter();
+				}
+				playersIterator.remove();
+			}else {
+//			System.out.println("gameOver() NOT removing user" + p);
+			}
+			
+		}
+
+		if(players.size() == 1) {
+
+			gameStatsData.setGameWinner(lastWinner);
+			testLog.addWinner(players.get(0));
+			testLog.printToFile();
+			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 
 		return false;
 	}
 
+}
 }
