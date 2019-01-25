@@ -6,11 +6,11 @@ import java.sql.Statement;
 
 public class GameStats {
 
-	int numberOfPlayerRoundWins;
-	int numberOfCPURoundWins;
-	int numberOfRoundsInGame;
-	int numberOfDrawsInGame;
-	String gameWinner;
+	private int numberOfPlayerRoundWins;
+	private int numberOfCPURoundWins;
+	private int numberOfRoundsInGame;
+	private int numberOfDrawsInGame;
+	private String gameWinner;
 	
 	/*
 	 *Responsibility to keep track of the overall statistics of the game 
@@ -111,14 +111,14 @@ public class GameStats {
 	public void insertCurrentGameStatisticsIntoDatabase() {
 		Statement insertionData = null;
 		DBConnect DBCon = new DBConnect();
-		Connection connectionToDatabase = DBCon.connectToTopTrumpsGameDataBase();
+		Connection connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
 
 		String query = "INSERT INTO game(nos_rounds, nos_draws, winner, nos_player_wins, nos_cpu_wins) VALUES( "+
 		getNumberOfRoundsInGame() + "," +
 		getNumberOfDrawsInGame() + "," +
 		getGameWinner() + "," +
-		getNumberOfPlayerRoundWins() + "," + // rounds won by human player
-		getNumberOfCPURoundWins() + ");"; //rounds won by CPU players
+		getNumberOfPlayerRoundWins() + "," +
+		getNumberOfCPURoundWins() + ");";
 		
 	try {
 		insertionData = connectionToDatabase.createStatement();
