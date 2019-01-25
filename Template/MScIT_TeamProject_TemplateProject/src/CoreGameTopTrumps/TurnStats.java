@@ -5,7 +5,7 @@ import java.util.ArrayList;
 //Specification
 //The program should then print to standard out the selected category, who won (or
 //	whether it was a draw), the winning card and whether the player has been eliminated (they have no cards left).
-
+//whether it was a draw), the winning card and whether the player has been eliminated (they have no cards left). 
 
 
 /*
@@ -17,11 +17,11 @@ public class TurnStats {
 	String result;
 	String winningCard;
 	boolean playerEliminated;
+
 	User winningPlayer;
 
 	//Constructor parameters are the individual game turn statistics
 	//Set methods for each attribute
-
 	public TurnStats(String selectedCategory, String result, String winningCard, boolean playerEliminated) {
 	setSelectedCategory(selectedCategory);
 	setResult(result);
@@ -30,42 +30,42 @@ public class TurnStats {
 	winningPlayer = null;
 	this.players = new ArrayList<User>();
 	}
-
+	
 	//This method sets the card category selected during the turn
 	public void setSelectedCategory(String selectedCategory) {
 		this.selectedCategory = selectedCategory;
 	}
-
+	
 	//This method sets the winner (player or CPU) or draw result for the turn
 	public void setResult(String result) {
 		this.result = result;
 	}
-
-	//This method sets the winningCard attribute
+	
+	//This method sets the winningCard attribute 
 	public void setWinningCard(String winningCard) {
 		this.winningCard = winningCard;
 	}
-
+	
 	//This method sets playerEliminated attribute which states whether the player was eliminated at the end of the turn
 	public void setPlayerEliminated(boolean playerEliminated) {
 		this.playerEliminated = playerEliminated;
 	}
-
+	
 	//This method gets the selectedCategory attribute
 	public String getSelectedCategory() {
 		return selectedCategory;
 	}
-
+	
 	//This method gets the result attribute
 	public String getResult() {
 		return result;
 	}
-
+	
 	//This method gets the winningCard attribute
 	public String getWinningCard() {
 		return winningCard;
 	}
-
+	
 	//This method gets the playerEliminated attribute
 	public boolean getPlayerEliminated() {
 		return playerEliminated;
@@ -90,11 +90,11 @@ public class TurnStats {
 		else {
 			wasThePlayerEliminatedAtTheEndOfTheRound = "The player has not been eliminated";
 		}
-
-		System.out.println("Round Statistics:\n"
-				+ "Selected category: " + getSelectedCategory()
-				+ "Result:  " + getResult()
-				+ "Winning Card:  " + getWinningCard()
-				+ "Player status:  " + wasThePlayerEliminatedAtTheEndOfTheRound);
-	}
+		
+		System.out.println("Round Statistics:"
+				+ "\nSelected category: " + getSelectedCategory()
+				+ "\nResult: " + getResult()
+				+ "\nWinning Card: " + getWinningCard()
+				+ "\nPlayer status: " + wasThePlayerEliminatedAtTheEndOfTheRound);
+	}	
 }
