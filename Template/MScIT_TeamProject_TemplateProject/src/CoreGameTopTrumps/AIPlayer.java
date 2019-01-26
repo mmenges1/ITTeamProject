@@ -29,6 +29,11 @@ public class AIPlayer extends User {
 		return topCard.getCriteriaName(positioninCriteria);
 	}
 	
+	public int getIndexofCriteriaWithHighestValue(Card topCard) {
+		int maxValue = getHighestValueAttribute(topCard);
+		return topCard.getIndexOfValue(maxValue) + 1;
+	}
+	
 	/**
 	 * 
 	 * @param topCard - drawn card, top of the hand
@@ -44,7 +49,27 @@ public class AIPlayer extends User {
 		}
 			return maxValue;
 		}
+
+	// Displays a message stating which attribute was chosen by the AI
+//	@Override
+//	public String playerChoosesMessage(Card topCard) {
+//		return this.name + " chooses attribute " + this.getIndexofCriteriaWithHighestValue(topCard) + ": " + this.getCriteriaName(topCard);
+//	}
+
+	//Overloaded method - leave empty to choose the top card on the deck
+	public int getHighestValueAttribute() {
+		Card topCard = hand.get(0);
 		
+		int maxValue = topCard.getAttribute(1);
+		int noOfCriteria = topCard.getCriterias().size();
+		for (int i = 2; i <= noOfCriteria; i++) {
+			if (maxValue <= topCard.getAttribute(i)) {
+				maxValue = topCard.getAttribute(i);
+			}
+		}
+			return maxValue;
+		}
+	
 	// if ai win, this method will print their card name
 	@Override
 	String getTopCardName() {
@@ -66,8 +91,8 @@ public class AIPlayer extends User {
 		ai.setHand(hand);
 		while (ai.getHandSize() != 0) {
 			Card topCard = ai.getTopCard();
-			topCard.viewCard();
-			System.out.println("AI chooses " + ai.getCriteriaName(hand.get(0)));
+			System.out.println(topCard.viewCard());
+			System.out.println("AI chooses attribute " + ai.getIndexofCriteriaWithHighestValue(topCard) + ": " + ai.getCriteriaName(topCard) );
 			ai.discardTopCard();
 			System.out.println("AI has " + ai.getHandSize() + " cards remaining");
 			System.out.println();

@@ -21,7 +21,8 @@ abstract public class User {
 	public String getName() {
 		return this.name;
 	}
-
+	abstract String getCriteriaName(Card topCard);
+	abstract  int getIndexofCriteriaWithHighestValue(Card topCard);
 	// set user's name (might not be necessary)
 	public void setName(String name) {
 		this.name = name;
@@ -39,7 +40,10 @@ abstract public class User {
 	}
 	
 	abstract String getTopCardName();
-
+//abstract public String playerChoosesMessage(Card topCard);
+	public String playerChoosesMessage(Card topCard) {
+		return this.name + " chooses attribute " + this.getIndexofCriteriaWithHighestValue(topCard) + ": " + this.getCriteriaName(topCard);
+	}
 	// This method will print the topCard
 	public String showTopCard() {
 		Card topCard = this.hand.get(0);
@@ -66,6 +70,7 @@ abstract public class User {
 		String attributeName = topCard.getCriteriaName(index);
 		return attributeName;
 	}
+	
 	// This method will return the number associated with a criteria 
 	public int getValue(int criteriaNumber) {
 		Card topCard = this.hand.get(0);
@@ -93,13 +98,10 @@ abstract public class User {
 		}
 	}
 
-	// checks to see if a user's hand is == 0
+	// checks to see if a user's hand is empty
 	// return true (i.e. a player is out).
 	public boolean userLoses() {
-		if (this.hand.size() == 0) {
-			return true;
-		}
-		return false;
+		return this.hand.size() ==0;
 	}
 	
 	public String toString() {

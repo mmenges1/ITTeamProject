@@ -78,6 +78,17 @@ public class InputReader {
 		return input;
 	}
 	
+	//Receives any key input from user as a means of acknowledgement
+	public void pressEnter() {
+		
+		System.out.println("Press enter to continue");
+
+		String input = sc.nextLine();
+			
+//		System.out.println(input);
+				
+	}
+	
 	//methods for reading an integer
 	public int parseInt() {
 		int inInt = 0;

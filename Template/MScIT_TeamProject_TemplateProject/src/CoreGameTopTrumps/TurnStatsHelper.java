@@ -5,27 +5,51 @@ import java.util.ArrayList;
 public class TurnStatsHelper {
 	ArrayList<Card> cardsPlayed;
 	ArrayList<User> players;
-	
+	String attributeName;
 	int turnNumber;
 	int winner;
 	int attributeNumberPlayed;
 	int communitySize;
 	boolean isDraw;
+	int currentChoice;
+	ArrayList<Integer> playerHandSizes;
 	
 	//This is what the user will see which summarises the round
 	String roundString;
-	
+	public int getcurrentChoice() {
+		return this.currentChoice;
+	}
 	public void addCardToCardsPlayed(Card card) {
 		cardsPlayed.add(card);
 	}
-	
-	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players) {
+	//What is turnNumber for?
+	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players, int currentChoice) {
 		this.turnNumber = turnNumber;
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
 		this.players = new ArrayList<User>(players);
+		this.currentChoice = currentChoice;
+		playerHandSizes = new ArrayList<Integer>(); // used to work out difference between old and new hand size 
 	}
 	
+	public void addPlayerHandSize(int handSize) {
+		this.playerHandSizes.add(handSize);
+	}
+	public String returnDifferenceHandSize(User x, int index) {
+		if (x.getHandSize() - this.getPlayerHandSize(index) < 0 ) {
+			return "" + (x.getHandSize() - this.getPlayerHandSize(index) + " card") ;
+		} else {
+		return  "+" + (x.getHandSize() - this.getPlayerHandSize(index) + " cards") ; 
+	}
+	}
+	
+	public int getPlayerHandSize(int index) {
+		return this.playerHandSizes.get(index);
+	}
+	
+	public int getPlayerSize() {
+		return this.players.size();
+	}
 	public void addPlayers(ArrayList<User> players) {
 		this.players = new ArrayList<User>(players);
 	}
@@ -46,6 +70,11 @@ public class TurnStatsHelper {
 		return cardsPlayed;
 	}
 	
+	public String getWinningCardName() {
+		return this.attributeName;
+	}
+
+	
 	// Returns -1 if its a draw, other wise the index of the winner
 	// Loops through the chosen attribute of each top card and finds the highest/draw-y-est
 	public int determineWinner() {
@@ -61,14 +90,15 @@ public class TurnStatsHelper {
 				this.winner = i;
 				isDraw = false;
 			} else if (currentStat == highestStat) {
-				this.winner = -1;
+//				this.winner = -1;
+				this.winner =currentChoice;
 				isDraw = true;
 			}
 			
 //			System.out.println("TurnStatsHelper.determineWinner currentStat : " + currentStat);
 		}
-		
-		return winner;		
+		this.attributeName = getUserCardName(this.winner);
+		return this.winner;		
 	}
 
 	@Override
@@ -91,11 +121,11 @@ public class TurnStatsHelper {
 	}
 	
 	public String getTopCardByAttribute() {
-		return cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed) + " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
+		return cardsPlayed.get(this.winner).getCriteriaName(this.attributeNumberPlayed-1 )+ " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
 	
 	public String getAnyCardTopAttribute(int playerIndex) {
-		return cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
+		return cardsPlayed.get(playerIndex).getCriteriaName(attributeNumberPlayed-1) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
 	}
 	
 	public String getUserCardName(int index) {
@@ -108,6 +138,10 @@ public class TurnStatsHelper {
 	
 	public User getPlayer(int index) {
 		return players.get(index);
+	}
+	
+	public int getAttributeNumberPlayed() {
+		return this.attributeNumberPlayed;
 	}
 
 }
