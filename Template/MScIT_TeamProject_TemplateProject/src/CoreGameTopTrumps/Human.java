@@ -60,5 +60,23 @@ public class Human extends User {
 //				}
 				
 			}
+			}
+
+			@Override
+			String getCriteriaName(Card topCard) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			int getIndexofCriteriaWithHighestValue(Card topCard) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public String playerChoosesMessage(Card topCard) {
+				// TODO Auto-generated method stub
+				return null;
 			}	
 }
