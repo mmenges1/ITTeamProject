@@ -4,20 +4,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnect {
-	
 	private static Connection connection;
-	
-	public DBConnect() {
+
+	public static void DBConnect() {
 		connectToTopTrumpsGameDataBase();
 	}
 	
 	public static Connection connectToTopTrumpsGameDataBase(){
-		String url = "jdbc:mysql://localhost:3306/sys";
-		String userName = "root";
-		String password = "931112";
+		String url = "jdbc:postgresql://yacata.dcs.gla.ac.uk:5432/";
+		String userName = "m_18_2391985s";
+		String password = "hu8jmn3";
 
 	  	try {
-	  		Class.forName("com.mysql.jdbc.Driver");// include this line in your code.
+	  		Class.forName("org.postgresql.Driver");
 	  		connection = DriverManager.getConnection(url, userName, password);
 	  	}
 	    catch (SQLException | ClassNotFoundException e)

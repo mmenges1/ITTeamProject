@@ -33,23 +33,23 @@ private Connection connectionToDatabase;
 		report.append("Statistics Of Previous Games Report\n\n");
 		// shows the number of overall games
 		report.append("Number of Previous Games:\t\t");
-		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(gameid) FROM game", "COUNT(gameid)"));
+		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game", "count"));
 		report.append("\n");
 		// shows the number of times the computer won
 		report.append("Number of CPU Wins:\t\t\t");
-		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(gameid) FROM game WHERE winner = 'CPU'", "COUNT(gameid)"));
+		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'CPU'", "count"));
 		report.append("\n");
 		// shows the number of times the human player won
 		report.append("Number of Human Wins:\t\t\t");
-		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(gameid) FROM game WHERE winner = 'PLAYER'", "COUNT(gameid)"));
+		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'PLAYER'", "count"));
 		report.append("\n");
-		// shows the average number of draws per game
+//		 shows the average number of draws per game
 		report.append("Average Number of Games Drawn:\t\t");
-		report.append((int)Float.parseFloat(executeTopTrumpsGameDataBaseQuery("SELECT AVG(nos_draws) FROM game", "AVG(nos_draws)")));
+		report.append((int)Float.parseFloat(executeTopTrumpsGameDataBaseQuery("SELECT AVG(nos_draws) FROM \"DBTrump\".game", "avg")));
 		report.append("\n");
 		// shows the maximum number of rounds played
 		report.append("Highest Number of Rounds Played:\t");
-		report.append(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM game", "MAX(nos_rounds)"));	
+		report.append(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
 		System.out.println(report.toString());
 		DBCon.closeConnectionToTopTrumpsGameDataBase();
 	}
@@ -72,3 +72,4 @@ private Connection connectionToDatabase;
 		return stringBuilder.toString();
 	}
 }
+
