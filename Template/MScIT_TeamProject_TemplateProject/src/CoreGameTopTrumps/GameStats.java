@@ -113,7 +113,7 @@ public class GameStats {
 		DBConnect DBCon = new DBConnect();
 		Connection connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
 
-		String query = "INSERT INTO game(nos_rounds, nos_draws, winner, nos_player_wins, nos_cpu_wins) VALUES( "+
+		String query = "INSERT INTO \"DBTrump\".game(nos_rounds, nos_draws, winner, nos_player_wins, nos_cpu_wins) VALUES( "+
 		getNumberOfRoundsInGame() + "," +
 		getNumberOfDrawsInGame() + "," +
 		getGameWinner() + "," +
