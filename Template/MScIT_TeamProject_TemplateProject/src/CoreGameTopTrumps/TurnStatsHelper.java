@@ -83,7 +83,7 @@ public class TurnStatsHelper {
 		
 		for(int i = 0; i < cardsPlayed.size(); i++) {
 			
-			currentStat = cardsPlayed.get(i).returnSelectedAttr(attributeNumberPlayed);
+			currentStat = cardsPlayed.get(i).getAttribute(attributeNumberPlayed);
 			
 			if(currentStat > highestStat) {
 				highestStat = currentStat;

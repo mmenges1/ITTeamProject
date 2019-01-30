@@ -3,23 +3,26 @@ package CoreGameTopTrumps;
 import java.util.ArrayList;
 import java.util.Collections;
 
-// this will be the ai player
-
+/**
+ * This class is responsible for bringing specific functionality to an ai player (i.e. to deliberately  play strongly).
+ */
 public class AIPlayer extends User {
-	private String name;
-	private ArrayList<Card> hand;
+//	private String name;
+//	private ArrayList<Card> hand;
 	
 
 	public AIPlayer(String name, ArrayList<Card> hand) {
 		super(name, hand);
 	}
 	
-	public AIPlayer() {
-		super();
+//	public AIPlayer() {
+//		super();
+//	}
+	public void setName(String name) {
+		this.name = name;
 	}
-	
 	/**
-	 *  
+	 *  This method will return the name of the criterion that is associated with the highest value in an ai player's top card
 	 * @param topCard - drawn card, top of the hand
 	 * @returns the name of the criteria associated with the highest skill number
 	 */
@@ -29,15 +32,20 @@ public class AIPlayer extends User {
 		return topCard.getCriteriaName(positioninCriteria);
 	}
 	
+	/**
+	 * This method will return the index of a criterion in the list of criteria
+	 * @param topCard the card at the top of a player's deck
+	 * @return the index of that position
+	 */
 	public int getIndexofCriteriaWithHighestValue(Card topCard) {
 		int maxValue = getHighestValueAttribute(topCard);
 		return topCard.getIndexOfValue(maxValue) + 1;
 	}
 	
 	/**
-	 * 
+	 * Returns the value of the criteria that is highest in the top card of an ai player's deck
 	 * @param topCard - drawn card, top of the hand
-	 * @return the position of the criteria that is associated with the highest skill number
+	 * @return the highest value for a top card 
 	 */
 	public int getHighestValueAttribute(Card topCard) {
 		int maxValue = topCard.getAttribute(1);
@@ -50,11 +58,14 @@ public class AIPlayer extends User {
 			return maxValue;
 		}
 
-	// Displays a message stating which attribute was chosen by the AI
-//	@Override
-//	public String playerChoosesMessage(Card topCard) {
-//		return this.name + " chooses attribute " + this.getIndexofCriteriaWithHighestValue(topCard) + ": " + this.getCriteriaName(topCard);
-//	}
+	/**
+	 * Returns a message stating the name of the card on top of a ai player's deck and the attribute they have chosen that is associated with the highest score in their top card and  
+	 * @param topCard the card that is at the top of an ai player's deck
+	 * @return the string message stating what ai has played
+	 */
+	public String playerChoosesMessage(Card topCard) {
+		return this.name + " chooses attribute " + this.getIndexofCriteriaWithHighestValue(topCard) + ": " + this.getCriteriaName(topCard);
+	}
 
 	//Overloaded method - leave empty to choose the top card on the deck
 	public int getHighestValueAttribute() {
@@ -70,9 +81,11 @@ public class AIPlayer extends User {
 			return maxValue;
 		}
 	
-	// if ai win, this method will print their card name
-	@Override
-	String getTopCardName() {
+	/*
+	 * (non-Javadoc)
+	 * @see CoreGameTopTrumps.User#getTopCardName()
+	 */
+	public String getTopCardName() {
 		return "The winning card is " + this.hand.get(0).getName();
 	}
 	
