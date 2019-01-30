@@ -19,8 +19,7 @@ public class GameManager {
 	ArrayList<Card> community = new ArrayList<Card>();
 	ArrayList<User> players = new ArrayList<User>() ;
 
-//	GameStats gameStatsData = new GameStats(0,0,0,0,0);
-//	GameStats gameStatsData = new GameStats(0,0,0,0,0);
+	GameStats gameStatsData = new GameStats(0,0,0,0,0);
 
 	static TestLog testLog = new TestLog();
 
@@ -278,12 +277,10 @@ public class GameManager {
 	 */
 	private boolean playRound(int cardChoice) {
 
-//		gameStatsData.setNumberOfRoundsInGamePlusOne();
+		gameStatsData.setNumberOfRoundsInGamePlusOne();
 
 		// 1)
 		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, this.players, this.currentChoice));
-
-//		gameStatsData.setNumberOfRoundsInGamePlusOne();
 
 		// 1)
 //		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
@@ -311,7 +308,7 @@ public class GameManager {
 		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
 		} else {
 			// 5)
-//			gameStatsData.setNumberOfDrawsInGamePlusOne();
+			gameStatsData.setNumberOfDrawsInGamePlusOne();
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 			testLog.addCommunalDeck(community);
 		}
@@ -329,14 +326,14 @@ public class GameManager {
 			}
 
 
-//		if (turnStats.get(currentTurnStats).getWinner() == 0) {
-//			System.out.println(false);
-//			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
-//		}
-//		else if (turnStats.get(currentTurnStats).getWinner() > 0) {
-//			System.out.println(true);
-//			gameStatsData.setNumberOfCPURoundWinsPlusOne();
-//		}
+		if (turnStats.get(currentTurnStats).getWinner() == 0) {
+			System.out.println(false);
+			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
+		}
+		else if (turnStats.get(currentTurnStats).getWinner() > 0) {
+			System.out.println(true);
+			gameStatsData.setNumberOfCPURoundWinsPlusOne();
+		}
 
 		// 7)
 		if (players.get(0) instanceof Human && command.equals("QUIT")) {
@@ -456,10 +453,9 @@ public class GameManager {
 
 		if(players.size() == 1) {
 			System.out.println(players.get(0).getName() + " is the overall winner!!!");
-//			gameStatsData.setGameWinner(lastWinner);
+			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
-//			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
-	//		gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 		return false;
