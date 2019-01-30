@@ -47,37 +47,37 @@ public class Card {
 	public void setAttribute(int index, Integer value) {
 		this.attributes.set(index, value);
 	}
-	public int getAttribute1() {
-		return attribute1;
-	}
-	public void setAttribute1(int attribute1) {
-		this.attribute1 = attribute1;
-	}
-	public int getAttribute2() {
-		return attribute2;
-	}
-	public void setAttribute2(int attribute2) {
-		this.attribute2 = attribute2;
-	}
-	public int getAttribute3() {
-		return attribute3;
-	}
-	public void setAttribute3(int attribute3) {
-		this.attribute3 = attribute3;
-	}
-	public int getAttribute4() {
-		return attribute4;
-	}
-	public void setAttribute4(int attribute4) {
-		this.attribute4 = attribute4;
-	}
-	public int getAttribute5() {
-		return attribute5;
-	}
-	public void setAttribute5(int attribute5) {
-		this.attribute5 = attribute5;
-	}
-	
+//	public int getAttribute1() {
+//		return attribute1;
+//	}
+//	public void setAttribute1(int attribute1) {
+//		this.attribute1 = attribute1;
+//	}
+//	public int getAttribute2() {
+//		return attribute2;
+//	}
+//	public void setAttribute2(int attribute2) {
+//		this.attribute2 = attribute2;
+//	}
+//	public int getAttribute3() {
+//		return attribute3;
+//	}
+//	public void setAttribute3(int attribute3) {
+//		this.attribute3 = attribute3;
+//	}
+//	public int getAttribute4() {
+//		return attribute4;
+//	}
+//	public void setAttribute4(int attribute4) {
+//		this.attribute4 = attribute4;
+//	}
+//	public int getAttribute5() {
+//		return attribute5;
+//	}
+//	public void setAttribute5(int attribute5) {
+//		this.attribute5 = attribute5;
+//	}
+//	
 	public String getCriteriaName(int index) {
 		return this.criterias.get(index);
 	}
@@ -130,37 +130,24 @@ public class Card {
 		}
 		return value;
 	}
-	
-//	public String viewCard()
-//	{
-//		String cardString = "Name: " + getName() +
-//										" Att 1: " + attribute1+
-//										" Att 2: " + attribute2+
-//										" Att 3: " + attribute3+
-//										" Att 4: " + attribute4+
-//										" Att 5: " + attribute5;
-//		System.out.println(cardString);
-//		
-//		return cardString;
-//	}
-	
+
 	//TODO: remove this method and replace all references to it with getAttribute
-	public int returnSelectedAttr(int att) {
-		
-		if(att == 1) {
-			return getAttribute1();
-		}else if(att == 2) {
-			return getAttribute2();
-		}else if(att == 3) {
-			return getAttribute3();
-		}else if(att == 4) {
-			return getAttribute4();
-		}else if(att == 5) {
-			return getAttribute5();
-		}
-		
-		return -1;
-	}
+//	public int returnSelectedAttr(int att) {
+//		
+//		if(att == 1) {
+//			return getAttribute1();
+//		}else if(att == 2) {
+//			return getAttribute2();
+//		}else if(att == 3) {
+//			return getAttribute3();
+//		}else if(att == 4) {
+//			return getAttribute4();
+//		}else if(att == 5) {
+//			return getAttribute5();
+//		}
+//		
+//		return -1;
+//	}
 	@Override
 	public String toString() {
 		return "Card [name=" + name + "]";
@@ -175,7 +162,6 @@ public class Card {
 					this.criterias.get(2) + ": "+ this.getAttribute(3)+"\n" + 
 					this.criterias.get(3) + ": "+ this.getAttribute(4)+"\n" + 
 					this.criterias.get(4)+ ": " + this.getAttribute(5);
-//					System.out.println(cardString);
 			return cardString;
 		}
 	}
@@ -196,6 +182,6 @@ public class Card {
 		attributes.add(5);
 		card.setAttributes(attributes);
 //		card.viewCard();
-		System.out.println(card.getAttribute(3));
+		System.out.println(card.getAttribute(0));
 	}
 }

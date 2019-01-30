@@ -61,11 +61,11 @@ public class Deck {
 		ArrayList<Integer> attributes = new ArrayList<Integer>();
 
 		newCard.setName(data[0]);
-		newCard.setAttribute1(Integer.parseInt(data[1]));
-		newCard.setAttribute2(Integer.parseInt(data[2]));
-		newCard.setAttribute3(Integer.parseInt(data[3]));
-		newCard.setAttribute4(Integer.parseInt(data[4]));
-		newCard.setAttribute5(Integer.parseInt(data[5]));
+//		newCard.setAttribute1(Integer.parseInt(data[1]));
+//		newCard.setAttribute2(Integer.parseInt(data[2]));
+//		newCard.setAttribute3(Integer.parseInt(data[3]));
+//		newCard.setAttribute4(Integer.parseInt(data[4]));
+//		newCard.setAttribute5(Integer.parseInt(data[5]));
 		for (int i = 1; i < data.length; i++) {
 			attributes.add(Integer.parseInt(data[i]));
 //			System.out.println(Integer.parseInt(data[i]));

@@ -1,6 +1,7 @@
 package CoreGameTopTrumps;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Iterator;
@@ -18,6 +19,7 @@ public class GameManager {
 	ArrayList<TurnStatsHelper> turnStats = new ArrayList<TurnStatsHelper>();
 	ArrayList<Card> community = new ArrayList<Card>();
 	ArrayList<User> players = new ArrayList<User>() ;
+	ArrayList<User> scores = new ArrayList<User>();
 
 	GameStats gameStatsData = new GameStats(0,0,0,0,0);
 
@@ -29,11 +31,11 @@ public class GameManager {
 
 		int playerChoice = 0;
 		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
-		while(true) {
+		while(true) { 
 			playerChoice = gm.initialPlayerChoice();
 
 			if(playerChoice == 1) {
-				gm.displayPriviousGameStats();
+				gm.displayPreviousGameStats();
 			} else if (playerChoice == 2){
 				//Inputting the number of desired AI players.
 				gm.deal(4);
@@ -71,7 +73,7 @@ public class GameManager {
 
 
 	//This is called by initialPLayerChoice, to be populated with database info
-	private void displayPriviousGameStats() {
+	private void displayPreviousGameStats() {
 		PreviousStats  previousGamesStatistics = new PreviousStats();
 	}
 
@@ -109,8 +111,10 @@ public class GameManager {
 		for(int i = 0; i < totalPlayers; i++) {
 			if(i==0) {
 				players.add(new Human("You", new ArrayList<Card>(newdeck.subList(divideCount,divideCount + mainCardEach))));
+				players.get(i).setName("You");
 			}else {
 				players.add(new AIPlayer("AI "+i,new ArrayList<Card>(newdeck.subList(divideCount, divideCount + mainCardEach))));
+				players.get(i).setName("AI " + i);
 			}
 
 			divideCount += mainCardEach;
@@ -180,6 +184,7 @@ public class GameManager {
 			if(this.startingPlayer == 0 && players.get(0) instanceof Human ) {	
 				System.out.println(players.get(this.startingPlayer).getName() + " will make the first choice ! \n");
 				playerChoice = getUserInput();
+				System.out.println("You have chosen " +this.players.get(0).selectCriteriaOfTopCard(playerChoice-1));
 				this.currentChoice = this.startingPlayer;
 				roundOne = false;
 			} 
@@ -200,13 +205,14 @@ public class GameManager {
 			}
 		} // if the lastwinner is 0th index in players' list and the 0th index in that list is a human 
 		else if (lastWinner == 0 && players.get(0) instanceof Human) {	
-				System.out.println("\n" + this.players.get(this.lastWinner).getName() + " will choose the category for this round.  \n");
+				System.out.println(this.players.get(this.lastWinner).getName() + " will choose the category for this round.  \n");
 				playerChoice = getUserInput();
+				System.out.println("You have chosen " + this.players.get(0).selectCriteriaOfTopCard(playerChoice-1));
 				this.currentChoice = lastWinner;
 			}
 			else {
 				currentAIOpponent = this.players.get(lastWinner);
-				System.out.println("\n" + currentAIOpponent.getName() + " will choose the category for this round  \n.");
+				System.out.println(currentAIOpponent.getName() + " will choose the category for this round.  \n");
 				Card topCard = currentAIOpponent.getTopCard();
 				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
 				if (this.players.get(0) instanceof Human) {
@@ -302,9 +308,9 @@ public class GameManager {
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			players.get(lastWinner).addCards(community);
+			players.get(lastWinner).incrementScore();
 			testLog.addCommunalDeck(community);
 			community.clear();
-			
 		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
 		} else {
 			// 5)
@@ -316,7 +322,7 @@ public class GameManager {
 		// 6)
 		displayRoundSummery();
 
-		System.out.println("\n" + players.get(lastWinner).getName() + " will choose the category for the next round.");
+//		System.out.println("\n" + players.get(lastWinner).getName() + " will choose the category for the next round.");
 		String command = null;
 		if (players.get(0) instanceof Human) {
 			System.out.println();
@@ -352,7 +358,6 @@ public class GameManager {
 	*  3) I offer this place as a suggestion to put the game stats object, to relay the number of points
 		each player has
 	*  4) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
-
 	*/
 	private void displayRoundSummery() {
 
@@ -410,6 +415,7 @@ public class GameManager {
 				if (i < this.lastWinner) {
 					this.lastWinner--;
 				}
+				this.scores.add(this.players.get(i));
 				this.players.remove(i);
 				i--;
 			} else {
@@ -453,9 +459,14 @@ public class GameManager {
 		}
 
 		if(players.size() == 1) {
-			System.out.println(players.get(0).getName() + " is the overall winner!!!");
+			this.scores.add(players.get(0));
+			System.out.println(players.get(0).getName() + " is the overall winner!!!\n");
+			String s = getRoundScores();
+			System.out.println(s);
 			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
+			testLog.addScores(s);
+			printLogFile();
 			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
@@ -463,6 +474,23 @@ public class GameManager {
 	}
 
 	public static void printLogFile() {
-		testLog.printToFile();
+testLog.printToFile();
+}
+	/**
+	 * Get the scores for a game, every time a player is eliminated, their details are added to a new arraylist of user for the purposes of keeping a record of their scores
+	 * This arraylist is reverse sorted to get highest wins at the start
+	 * @return a string representation of the scores
+	 */
+	public String getRoundScores() {
+		this.totalRounds -= 1;
+		int temp = 0;
+		Collections.reverse(this.scores);
+		String s = "Scores: \n";
+		for (int i = 0; i < this.scores.size(); i++) {
+			s = s + "\t" + this.scores.get(i).getName() + ": " +  this.scores.get(i).getScore() + " rounds\n";
+			temp += this.scores.get(i).getScore();
+		}
+		s = s + "\t Drawn Games: " + (totalRounds - temp);
+		return s;
 	}
 }
