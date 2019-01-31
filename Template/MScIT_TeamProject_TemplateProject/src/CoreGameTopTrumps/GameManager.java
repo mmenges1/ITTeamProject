@@ -187,9 +187,11 @@ public class GameManager {
 		if(totalRounds == 1) {
 			startingPlayer = r.nextInt(totalPlayers);
 			lastWinner = startingPlayer;
-		} 
+		}
 		
-		System.out.println("determinNextPlayer = " + startingPlayer);
+		totalRounds++;
+		
+		System.out.println("determinNextPlayer = " + startingPlayer + " total rounds " + totalRounds);
 		
 		// If true that starting player = 0 OR true that (lastWinner == 0 AND player[0] is human)
 		if(startingPlayer ==0 || (lastWinner == 0 && players.get(0) instanceof Human)) {
@@ -204,12 +206,14 @@ public class GameManager {
 	 */
 	
 	public void applyAICardChoice() {
-		
 		// condition to check that this is not effective if the last winner (therefore current chooser) is a human
 		// Allows AI to play
 		if(!(players.get(lastWinner) instanceof Human)) {			
-			currentChoice = players.get(lastWinner).getIndexofCriteriaWithHighestValue(players.get(lastWinner).getTopCard()); 
+			currentChoice = players.get(lastWinner).getIndexofCriteriaWithHighestValue(players.get(lastWinner).getTopCard());// - 1; 
+			System.out.println("applyAICardChoice TRUE = " + currentChoice);
 		}
+		
+		
 
 	}
 
