@@ -89,15 +89,16 @@ public class TurnStatsHelper {
 				highestStat = currentStat;
 				this.winner = i;
 				isDraw = false;
+				this.attributeName = getUserCardName(this.winner);
 			} else if (currentStat == highestStat) {
 //				this.winner = -1;
-				this.winner =currentChoice;
+				this.winner = currentChoice;
 				isDraw = true;
 			}
 			
 //			System.out.println("TurnStatsHelper.determineWinner currentStat : " + currentStat);
 		}
-		this.attributeName = getUserCardName(this.winner);
+		
 		return this.winner;		
 	}
 

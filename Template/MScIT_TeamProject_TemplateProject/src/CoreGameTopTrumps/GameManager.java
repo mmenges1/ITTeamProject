@@ -187,14 +187,16 @@ public class GameManager {
 		if(totalRounds == 1) {
 			startingPlayer = r.nextInt(totalPlayers);
 			lastWinner = startingPlayer;
+			
+			if(startingPlayer == 0) return true;
 		}
 		
 		totalRounds++;
 		
-		System.out.println("determinNextPlayer = " + startingPlayer + " total rounds " + totalRounds);
+		System.out.println("determinNextPlayer = " + lastWinner + " total rounds " + totalRounds);
 		
-		// If true that starting player = 0 OR true that (lastWinner == 0 AND player[0] is human)
-		if(startingPlayer ==0 || (lastWinner == 0 && players.get(0) instanceof Human)) {
+		// If true that lastWinner == 0 AND player[0] is human
+		if((lastWinner == 0 && players.get(0) instanceof Human)) {
 			return true;
 		}
 		
@@ -456,6 +458,8 @@ public class GameManager {
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 			testLog.addCommunalDeck(community);
 		}
+		
+		System.out.println("playRoundNew at end - lastWinner = " + lastWinner);
 	}
 	
 	public void handleEndOfRound() {
@@ -477,7 +481,7 @@ public class GameManager {
 //		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 		
 
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
+//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 
 
 		if (turnStats.get(currentTurnStats).getWinner() == 0) {
@@ -578,6 +582,10 @@ public class GameManager {
 	/*
 	 * This implements an iterator because by simply looping through the players ArrayList
 	 * was causing it to randomly skip a player on rare occasions. The iterater is much safer.
+	 * 
+	 * 
+	 * AdjustLastWinner increments whenever a player is removed AND that players index is lower than
+	 * the winner index. Since the winner's index will shift down after this process, the last winner = lastWinner-adjustLastWinner
 	 */
 	public boolean gameOver() {
 		//		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
@@ -587,23 +595,36 @@ public class GameManager {
 		//		System.out.println(gameStatsData.getGameWinner());
 
 		Iterator<User> playersIterator = players.iterator();
+		
+		System.out.println("gameOver - lastWinner = " + lastWinner);
+		
+		int adjustLastWinner = 0;
 
 		while(playersIterator.hasNext()){
 
 			User p = playersIterator.next();
 
 			if(p.userLoses()) {
-//				System.out.println("gameOver() removing user" + p);
+				System.out.println("gameOver() removing user" + p);
 				if (p instanceof Human) {
 					System.out.println("\nYou are out of cards! AI taking over ");
 					InputReader in = new InputReader();
 					in.pressEnter();
 				}
 				playersIterator.remove();
+				
+				if(adjustLastWinner<=lastWinner) {
+					adjustLastWinner++;
+				}
+				
 			}else {
-//			System.out.println("gameOver() NOT removing user" + p);
+			System.out.println("gameOver() NOT removing user" + p);
 			}
 		}
+		
+		System.out.printf("gameOver() - adjust last winner. lastWinner %d adjust %d ", lastWinner, adjustLastWinner);
+		
+		lastWinner = lastWinner - adjustLastWinner;
 
 		if(players.size() == 1) {
 			System.out.println(players.get(0).getName() + " is the overall winner!!!");

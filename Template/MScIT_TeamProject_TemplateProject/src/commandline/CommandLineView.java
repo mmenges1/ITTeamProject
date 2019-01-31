@@ -113,7 +113,7 @@ public class CommandLineView {
 			
 			gm.handleEndOfRound();
 			
-		}while(!gm.gameOver() || !askUserQuit());
+		}while(!gm.gameOver());
 		
 	
 	}
