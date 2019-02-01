@@ -157,7 +157,7 @@ public class TopTrumpsRESTAPI {
 	@GET
 	@Path("/AIplayers")
 	
-	// test with: http://localhost:7777/AIplayers/AIplayers?AIPlayers=3
+	// test with: http://localhost:7777/toptrumps/AIplayers?AIPlayers=3
 	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
 		this.numberOfAIPlayers = AIPlayers;
 		System.out.println(numberOfAIPlayers);
