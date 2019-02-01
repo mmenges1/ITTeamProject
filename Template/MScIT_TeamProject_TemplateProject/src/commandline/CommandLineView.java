@@ -3,6 +3,7 @@ package commandline;
 import java.util.ArrayList;
 
 import CoreGameTopTrumps.GameManager;
+import CoreGameTopTrumps.Human;
 import CoreGameTopTrumps.InputReader;
 import CoreGameTopTrumps.TurnStatsHelper;
 import CoreGameTopTrumps.User;
@@ -96,13 +97,16 @@ public class CommandLineView {
 	private void playGame() {
 		
 		do {
+			players = gm.getPlayers();
+			
 			if(gm.determinNextPlayer()) {
-				players = gm.getPlayers();
 				gm.setCurrentChoice(userChooseAttribute());
 			}else {
 				System.out.println("Not user turn");
 				gm.applyAICardChoice();
 			}
+			
+			displayStateOfPlay();
 			
 			gm.playRoundNew();
 			
@@ -116,6 +120,25 @@ public class CommandLineView {
 		}while(!gm.gameOver());
 		
 	
+	}
+
+	private void displayStateOfPlay() {
+		
+		int currentChoice = gm.getCurrentChoice();
+		int lastWinner = gm.getLastWinner();
+		int totalRounds = gm.getTotalRounds();
+		
+		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
+		
+		if(totalRounds == 1) {
+//			players.get(lastWinner).
+			
+			// display players hand if they are in play, and notify which players turn it is
+		}
+		
+		
+		
+		
 	}
 
 	private boolean askUserQuit() {

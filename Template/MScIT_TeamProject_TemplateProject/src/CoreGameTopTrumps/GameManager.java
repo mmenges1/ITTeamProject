@@ -9,7 +9,7 @@ import java.util.Random;
 public class GameManager {
 	int totalPlayers = 0;
 	int totalTurns = 0;
-	int totalRounds = 1;
+	int totalRounds = 0;
 	int lastWinner = 0;
 	int startingPlayer;
 	int playerTurn;
@@ -184,7 +184,7 @@ public class GameManager {
 		Random r = new Random();
 		
 		
-		if(totalRounds == 1) {
+		if(totalRounds == 0) {
 			startingPlayer = r.nextInt(totalPlayers);
 			lastWinner = startingPlayer;
 			
@@ -424,6 +424,8 @@ public class GameManager {
 	public void playRoundNew() {
 
 		gameStatsData.setNumberOfRoundsInGamePlusOne();
+		
+		System.out.println("playRoundNew at start - lastWinner = " + lastWinner);
 
 		// 1)
 		turnStats.add(new TurnStatsHelper(totalTurns, currentChoice, this.players, this.currentChoice));
@@ -443,9 +445,11 @@ public class GameManager {
 		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
 		// 3)
 		turnStats.get(currentTurnStats).determineWinner();
-		lastWinner = turnStats.get(currentTurnStats).getWinner();
+		
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
+			lastWinner = turnStats.get(currentTurnStats).getWinner();
+			
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			players.get(lastWinner).addCards(community);
 			testLog.addCommunalDeck(community);
@@ -584,8 +588,8 @@ public class GameManager {
 	 * was causing it to randomly skip a player on rare occasions. The iterater is much safer.
 	 * 
 	 * 
-	 * AdjustLastWinner increments whenever a player is removed AND that players index is lower than
-	 * the winner index. Since the winner's index will shift down after this process, the last winner = lastWinner-adjustLastWinner
+	 * adjustLastWinner counts the number of players being removed BEFORE the iterator gets to the winner
+	 * Since the winner's index will shift down players are removed, the last winner = lastWinner-adjustLastWinner
 	 */
 	public boolean gameOver() {
 		//		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
@@ -599,8 +603,10 @@ public class GameManager {
 		System.out.println("gameOver - lastWinner = " + lastWinner);
 		
 		int adjustLastWinner = 0;
+		int counter = 0;
 
 		while(playersIterator.hasNext()){
+			counter++;
 
 			User p = playersIterator.next();
 
@@ -613,7 +619,11 @@ public class GameManager {
 				}
 				playersIterator.remove();
 				
-				if(adjustLastWinner<=lastWinner) {
+				// adjustLastWinner counts the number of players being removed BEFORE the iterator gets to the winner
+				// if a player is being removed and the counter has not passed the index of the last winner
+				// then incrment adjustLastWinner.
+				
+				if(counter<=lastWinner) {
 					adjustLastWinner++;
 				}
 				
@@ -622,7 +632,7 @@ public class GameManager {
 			}
 		}
 		
-		System.out.printf("gameOver() - adjust last winner. lastWinner %d adjust %d ", lastWinner, adjustLastWinner);
+		System.out.printf("gameOver() - adjust last winner. lastWinner %d adjust %d\n\n", lastWinner, adjustLastWinner);
 		
 		lastWinner = lastWinner - adjustLastWinner;
 
@@ -630,7 +640,7 @@ public class GameManager {
 			System.out.println(players.get(0).getName() + " is the overall winner!!!");
 			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
-			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+//			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 		return false;
@@ -658,5 +668,13 @@ public class GameManager {
 	
 	public int getLastWinner() {
 		return lastWinner;
+	}
+	
+	public int getTotalRounds() {
+		return totalRounds;
+	}
+	
+	public int getCurrentChoice() {
+		return currentChoice;
 	}
 }
