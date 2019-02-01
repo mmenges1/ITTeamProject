@@ -19,48 +19,14 @@ public class CommandLineView {
 		CommandLineView CLIview = new CommandLineView();
 		System.out.println("FROM COMMAND LINE VIEW");
 		CLIview.manageTurnNew();
-		
-//		GameManager gm = new GameManager();
-//		
-//		System.out.println("FROM COMMAND LINE VIEW");
-//		gm.playGame();
-		
 
 	}
 	
-//	public void manageTurn() {
-//		GameManager gm = new GameManager();
-//
-//		int playerChoice = 0;
-//		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
-//		while(true) {
-//			
-//			playerChoice = gm.initialPlayerChoice();
-//			
-//			//get player choice within a set player choice
-//
-//			if(playerChoice == 1) {
-//				
-//				
-//				gm.displayPriviousGameStats();
-//				
-//				
-//			} else if (playerChoice == 2){
-//				
-//				//Inputting the number of desired AI players.
-//				gm.deal(4);
-//				gm.manageTurn();
-//			} else {
-//				System.out.println("Goodbye!");
-//				break;
-//			}
-//		}
-//		
-//	}
-	
+	public CommandLineView(){
+		gm = new GameManager();
+	}
 	
 	public void manageTurnNew() {
-		gm = new GameManager();
 
 		int playerChoice = 0;
 		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
@@ -73,18 +39,12 @@ public class CommandLineView {
 
 			if(playerChoice == 1) {
 				
-				
-				gm.displayPriviousGameStats();
-				
+				displayPreviousGameStats();
 				
 			} else if (playerChoice == 2){
 				
-				//Inputting the number of desired AI players.
-				gm.deal(4);
+				dealAndPlay(4);
 				
-				playGame();
-				
-//				gm.manageTurn();
 			} else {
 				System.out.println("Goodbye!");
 				break;
@@ -93,7 +53,20 @@ public class CommandLineView {
 		
 	}
 	
-	@SuppressWarnings("unused")
+	
+	public String displayPreviousGameStats() {
+		gm.displayPriviousGameStats();
+		
+		return "Game stats here";
+		
+	}
+	
+	public void dealAndPlay(int players) {
+		gm.deal(players);
+		
+		playGame();
+	}
+	
 	private void playGame() {
 		
 		do {
