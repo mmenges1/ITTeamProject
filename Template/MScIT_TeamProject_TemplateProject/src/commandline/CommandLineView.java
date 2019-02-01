@@ -18,7 +18,7 @@ public class CommandLineView {
 		
 		CommandLineView CLIview = new CommandLineView();
 		System.out.println("FROM COMMAND LINE VIEW");
-		CLIview.manageTurnNew();
+		CLIview.manageTurn();
 
 	}
 	
@@ -26,7 +26,7 @@ public class CommandLineView {
 		gm = new GameManager();
 	}
 	
-	public void manageTurnNew() {
+	public void manageTurn() {
 
 		int playerChoice = 0;
 		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
@@ -124,6 +124,17 @@ public class CommandLineView {
 		return false;
 	}
 
+	/* displayRoundSummery() displays the text that the user sees on the screen.
+	*  it uses turnStats to get the necissary data
+	*
+	*  1) Intantiates the integer which represents the current turn within the turnStats arraylist
+	*  2) Loops through players to print format their name, card, attribute and remaining deck size.
+		The if condition can probibly be removed as now gameOver() removes players with no cards
+	*  3) I offer this place as a suggestion to put the game stats object, to relay the number of points
+		each player has
+	*  4) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
+
+	*/
 	private void displayRoundSummery() {
 		InputReader in = new InputReader();
 		
