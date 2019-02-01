@@ -42,8 +42,10 @@ public class TopTrumpsRESTAPI {
 	ArrayList<User> players;
 	ArrayList<TurnStatsHelper> turnStats;
 	
+	private int numberOfAIPlayers;
 	private int userChoice;
 	private boolean waitingForUser = true;
+	
 	
 	
 	
@@ -145,12 +147,11 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	@GET
-	@Path("/startGame")
+	@Path("/AIplayers")
 	
 	// test with: http://localhost:7777/toptrumps/startGame?AIPlayers=3
 	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
-//		System.out.println(AIPlayers);
-		playGame(AIPlayers);
+		this.numberOfAIPlayers = AIPlayers;
 	}
 	
 }
