@@ -13,8 +13,12 @@ import javax.ws.rs.core.MediaType;
 
 import online.configuration.TopTrumpsJSONConfiguration;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 import CoreGameTopTrumps.GameManager;
 import CoreGameTopTrumps.TurnStatsHelper;
@@ -46,32 +50,27 @@ public class TopTrumpsRESTAPI {
 	private int userChoice;
 	private boolean waitingForUser = true;
 	
-	
-	
-	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
 	 * a TopTrumpsJSONConfiguration from which you can get the location of
 	 * the deck file and the number of AI players.
 	 * @param conf
 	 */
-	public TopTrumpsRESTAPI(TopTrumpsJSONConfiguration conf) {
+	public TopTrumpsRESTAPI(TopTrumpsJSONConfiguration conf) throws IOException{
 		
 		gm = new GameManager();		
-		
-		
 	}
 	
 	private void playGame(int numberOfAIPlayers) {
 		gm.deal(numberOfAIPlayers);
 		
-		
+		System.out.println("GAME STARTED");
 		
 		do {
 			players = gm.getPlayers();
 			
 			if(gm.determinNextPlayer()) {
-				gm.setCurrentChoice(waitForUser());
+				gm.setCurrentChoice(2);
 			}else {
 				System.out.println("Not user turn");
 				gm.applyAICardChoice();
@@ -88,6 +87,7 @@ public class TopTrumpsRESTAPI {
 			
 		}while(!gm.gameOver());
 		
+		System.out.println("GAME ENDED");
 	
 	}
 	
@@ -147,20 +147,24 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	@GET
-	@Path("/userChoice")
-	public void userChoice2(@QueryParam("test") int choice) throws IOException{
-		this.waitingForUser = false;
-		this.userChoice = choice;
-		System.out.println(userChoice);
-	}
-	
-	@GET
 	@Path("/AIplayers")
 	
 	// test with: http://localhost:7777/AIplayers/AIplayers?AIPlayers=3
 	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
-		this.numberOfAIPlayers = AIPlayers;
-		System.out.println(numberOfAIPlayers);
+//		this.numberOfAIPlayers = AIPlayers;
+		System.out.println("start game");
+		this.playGame(4);
+	}
+	
+	@GET
+	@Path("getTurnStats")
+	public String getTurnStats() throws IOException{
+		String turnStatsJSON = oWriter.writeValueAsString(turnStats);
+		
+		// This does not work, need to test how to get turnstats into a good json object
+		System.out.println(turnStatsJSON);
+		
+		return turnStatsJSON;
 	}
 	
 }
