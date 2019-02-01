@@ -3,6 +3,13 @@
 Hello world
 
 <br>
+<head>
+		<!-- Import JQuery, as it provides functions you will probably find useful (see https://jquery.com/) -->
+    	<script src="https://code.jquery.com/jquery-2.1.1.js"></script>
+    	<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/flick/jquery-ui.css">
+
+</head>
 
 <script type="text/javascript">
 
@@ -71,7 +78,20 @@ Hello world
 			
 			// We have done everything we need to prepare the CORS request, so send it
 			xhr.send();		
-
+	}
+	
+	function populateDisplay(){
+		var turnStats = getTurnStats();		
+		document.getElementById("textdisplay").innerHTML = JSON.stringify(turnStats);
+		//alert("hello " + JSON.stringify(turnStats));
+	}
+	
+	function getTurnStats(){
+		
+		
+		return{
+			turnStats: "hello turnstats!"
+		}
 	
 	}
 
@@ -102,6 +122,14 @@ Hello world
 	  
 	  <input type="button" onclick="sendToUserChoice()" value="Go!" />
 	  </form>
+	  
+<section id="display">
+<input type="button" onclick="populateDisplay()" value="Get Turn Stats!" />
+<div id="textdisplay">
+
+</div>
+
+</section>
 
 </html>
 	 
