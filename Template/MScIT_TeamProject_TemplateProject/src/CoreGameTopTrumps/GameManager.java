@@ -10,7 +10,7 @@ import java.util.Random;
 public class GameManager {
 	int totalPlayers = 0;
 	int totalTurns = 0;
-	int totalRounds = 1;
+	int totalRounds = 0;
 	int lastWinner = 0;
 	int startingPlayer;
 	int playerTurn;
@@ -25,57 +25,6 @@ public class GameManager {
 
 	static TestLog testLog = new TestLog();
 
-	//TEMP MAIN for testing
-	public static void mainGame() {
-		GameManager gm = new GameManager();
-
-		int playerChoice = 0;
-		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
-		while(true) { 
-			playerChoice = gm.initialPlayerChoice();
-
-			if(playerChoice == 1) {
-				gm.displayPreviousGameStats();
-			} else if (playerChoice == 2){
-				//Inputting the number of desired AI players.
-				gm.deal(4);
-				gm.manageTurn();
-			} else {
-				System.out.println("Goodbye!");
-				break;
-			}
-		}
-
-	}
-
-	/*
-	 * The methods focus on managing the initial part of the game
-	 */
-
-	private int initialPlayerChoice() {
-
-		InputReader in = new InputReader();
-
-
-		System.out.println("\nPress 1 for previous game stats, or 2 to start a new game, or 3 to quit");
-
-		int choice = 0;
-
-		while (true) {
-			choice = in.parseInt();
-			if(choice <= 3 && choice > 0) {
-				return choice; 
-			} else {
-				System.out.println("Please enter within the range");
-			}
-		}
-	}
-
-
-	//This is called by initialPLayerChoice, to be populated with database info
-	private void displayPreviousGameStats() {
-		PreviousStats  previousGamesStatistics = new PreviousStats();
-	}
 
 	/*
 	 * Method for dealing the new deck of cards evenly. It is already shuffled;
@@ -92,7 +41,7 @@ public class GameManager {
 	 * 3) this loop distributes the spare cards one by one. players[0] is the user, so the user
 	 * always gets a spare card in this setting
 	 */
-	private void deal(int numberOfAIPlayers) {
+	public void deal(int numberOfAIPlayers) {
 		Deck d = new Deck();
 		ArrayList<Card> newdeck = d.createDeck("StarCitizenDeck.txt");
 		testLog.addInitialDeck(d.startingDeck());
@@ -132,124 +81,120 @@ public class GameManager {
 
 	}
 
-	/*
-	 * Methods focused on getting the user / AI players choice of card
-	 */
 
-
-	/*
-	 * This method loops the playRound and getChardChoice
-	 * Within these are the game logic
-	 */
-	private void manageTurn() {
-		do {		
-//		//Reset the number of rounds!
-//		totalRounds = 1;
-//		community = new ArrayList<Card>();
-
-		}while(playRound(getCardChoice()));
-	}
-
-	/*
-	 * This method gets the players choice.
-	 * It uses lastWinner to determine if it is the users turn
-	 *
-	 * Currently the AI is a case of choosing a random number
-	 */
-
-	private int getCardChoice() {
-		Random r = new Random();
-		// generate a random number between 0 and 4 to assign a starting player
-		this.startingPlayer = r.nextInt(4);   
-		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
 	
-		int playerChoice;
-		User currentAIOpponent;
-		//Last winner stay at zero for now for testing, so that user is always
-// the one controlling.
-//
-//		if(totalRounds == 1) {
-//			lastWinner = 0;
-//		}
-//		int playerChoice = 0;
-//		if(lastWinner ==0 && !players.get(0).userLoses()) {
-//			playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
-//		}else {
-//			//Seperate method for AI choosing card goes here
-//			playerChoice = r.nextInt(5) + 1;
-//		}
-
-		if (roundOne) {
-			// if it's round one and the 0th index is chosen and the 0th index is a human
-			if(this.startingPlayer == 0 && players.get(0) instanceof Human ) {	
-				System.out.println(players.get(this.startingPlayer).getName() + " will make the first choice ! \n");
-				playerChoice = getUserInput();
-				System.out.println("You have chosen " +this.players.get(0).selectCriteriaOfTopCard(playerChoice-1));
-				this.currentChoice = this.startingPlayer;
-				roundOne = false;
-			} 
-			// if it's round one and a number between 1-4 is chosen
-			else {
-				currentAIOpponent = this.players.get(this.startingPlayer); // current ai player from 1-4
-				System.out.println(currentAIOpponent.getName() + " will make the first choice!  \n");
-				Card topCard = currentAIOpponent.getTopCard(); // that ai player's top card
-				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard); 
-				if (this.players.get(0) instanceof Human) {
-					System.out.println("Here is the top card of your deck: ");
-					System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
-				}
-				System.out.println(currentAIOpponent.playerChoosesMessage(topCard)); // prints the category that ai has chosen (i.e. highest in their card)
-				System.out.println();
-				this.currentChoice = this.startingPlayer; // person to make next choice will be current player unless another player wins
-				roundOne = false;
-			}
-		} // if the lastwinner is 0th index in players' list and the 0th index in that list is a human 
-		else if (lastWinner == 0 && players.get(0) instanceof Human) {	
-				System.out.println(this.players.get(this.lastWinner).getName() + " will choose the category for this round.  \n");
-				playerChoice = getUserInput();
-				System.out.println("You have chosen " + this.players.get(0).selectCriteriaOfTopCard(playerChoice-1));
-				this.currentChoice = lastWinner;
-			}
-			else {
-				currentAIOpponent = this.players.get(lastWinner);
-				System.out.println(currentAIOpponent.getName() + " will choose the category for this round.  \n");
-				Card topCard = currentAIOpponent.getTopCard();
-				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
-				if (this.players.get(0) instanceof Human) {
-					System.out.println("Here is the top card of your deck: ");
-					System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
-				}
-				System.out.println(currentAIOpponent.getName() + " has chosen " + currentAIOpponent.getCriteriaName(topCard));
-				System.out.println();
-				this.currentChoice = lastWinner;
-			}
-		totalRounds++;
-		return playerChoice;
-	}
-
 	/*
-	 * This Class helps getCardChoice by getting the user input
-	 *
-	 * It displays the current card on the top of their deck and asks the user to choose
-	 * which attribute to play with
+	 * Refactor - this method determins who the next player is - returning a true if the next player is human
 	 */
-	private int getUserInput() {
-		InputReader reader = new InputReader();
+	
 
-		System.out.printf("Here is the card at the top of your deck...\n"
-				+ players.get(0).showTopCard()
-				+ "\nWhich attribute would you like to trump your enemies with?\n\nPlease type a number between 1 and 5 and press enter!\n");
-		int choice = 0;
-
-		while (true) {
-			choice = reader.parseInt();
-			if(choice <= 5 && choice > 0) {
-				return choice;
-			} else {
-				System.out.println("Please enter within the range");
-			}
+	public boolean determinNextPlayer() {
+		Random r = new Random();
+		
+		
+		if(totalRounds == 0) {
+			startingPlayer = r.nextInt(totalPlayers);
+			lastWinner = startingPlayer;
+			
+			if(startingPlayer == 0) return true;
 		}
+		
+		totalRounds++;
+		
+		System.out.println("determinNextPlayer = " + lastWinner + " total rounds " + totalRounds);
+		
+		// If true that lastWinner == 0 AND player[0] is human
+		if((lastWinner == 0 && players.get(0) instanceof Human)) {
+			return true;
+		}
+		
+		return false;
 	}
+	
+	/*
+	 * Refactoring! get the AI to choose their card
+	 */
+	
+	public void applyAICardChoice() {
+		// condition to check that this is not effective if the last winner (therefore current chooser) is a human
+		// Allows AI to play
+		if(!(players.get(lastWinner) instanceof Human)) {			
+			currentChoice = players.get(lastWinner).getIndexofCriteriaWithHighestValue(players.get(lastWinner).getTopCard());// - 1; 
+			System.out.println("applyAICardChoice TRUE = " + currentChoice);
+		}
+		
+		
+
+	}
+
+//	private int getCardChoice() {
+//		Random r = new Random();
+//		// generate a random number between 0 and 4 to assign a starting player
+//		this.startingPlayer = r.nextInt(4);   
+//		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
+//	
+//		int playerChoice;
+//		User currentAIOpponent;
+//		//Last winner stay at zero for now for testing, so that user is always
+//// the one controlling.
+////
+////		if(totalRounds == 1) {
+////			lastWinner = 0;
+////		}
+////		int playerChoice = 0;
+////		if(lastWinner ==0 && !players.get(0).userLoses()) {
+////			playerChoice = getUserInput(); // I RECOMMEND just choosing an integer for testing! (There can be 200-400 rounds)
+////		}else {
+////			//Seperate method for AI choosing card goes here
+////			playerChoice = r.nextInt(5) + 1;
+////		}
+//
+//		if (roundOne) {
+//			// if it's round one and the 0th index is chosen and the 0th index is a human
+//			if(this.startingPlayer == 0 && players.get(0) instanceof Human ) {	
+//				System.out.println(players.get(this.startingPlayer).getName() + " will make the first choice ! \n");
+//				playerChoice = getUserInput();
+//				this.currentChoice = this.startingPlayer;
+//				roundOne = false;
+//			} 
+//			// if it's round one and a number between 1-4 is chosen
+//			else {
+//				currentAIOpponent = this.players.get(this.startingPlayer); // current ai player from 1-4
+//				System.out.println(currentAIOpponent.getName() + " will make the first choice!  \n");
+//				Card topCard = currentAIOpponent.getTopCard(); // that ai player's top card
+//				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard); 
+//				if (this.players.get(0) instanceof Human) {
+//					System.out.println("Here is the top card of your deck: ");
+//					System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
+//				}
+//				System.out.println(currentAIOpponent.playerChoosesMessage(topCard)); // prints the category that ai has chosen (i.e. highest in their card)
+//				System.out.println();
+//				this.currentChoice = this.startingPlayer; // person to make next choice will be current player unless another player wins
+//				roundOne = false;
+//			}
+//		} // if the lastwinner is 0th index in players' list and the 0th index in that list is a human 
+//		else if (lastWinner == 0 && players.get(0) instanceof Human) {	
+//				System.out.println("\n" + this.players.get(this.lastWinner).getName() + " will choose the category for this round.  \n");
+//				playerChoice = getUserInput();
+//				this.currentChoice = lastWinner;
+//			}
+//			else {
+//				currentAIOpponent = this.players.get(lastWinner);
+//				System.out.println("\n" + currentAIOpponent.getName() + " will choose the category for this round  \n.");
+//				Card topCard = currentAIOpponent.getTopCard();
+//				playerChoice = currentAIOpponent.getIndexofCriteriaWithHighestValue(topCard);
+//				if (this.players.get(0) instanceof Human) {
+//					System.out.println("Here is the top card of your deck: ");
+//					System.out.println(this.players.get(0).showTopCard()+ "\n"); //show human player's top card even when ai is choosing
+//				}
+//				System.out.println(currentAIOpponent.getName() + " has chosen " + currentAIOpponent.getCriteriaName(topCard));
+//				System.out.println();
+//				this.currentChoice = lastWinner;
+//			}
+//		totalRounds++;
+//		return playerChoice;
+//	}
+
 
 	/*
 	 * Methods focused on conducting the round
@@ -281,12 +226,28 @@ public class GameManager {
 	 * (its dependent on a true). if the gameOver() returns a true (aka --> the game is indeed over),
 	 *  then this becomes a false which ends the loop!
 	 */
-	private boolean playRound(int cardChoice) {
+	
+	
+	/* Refactor
+	 * The playRoundNew will be split into 3 parts
+	 * 
+	 * handle game logic
+	 * 
+	 * _pass turnstats etc to view
+	 * 
+	 * handle quitting
+	 * 
+	 * 
+	 */
+	
+	public void playRoundNew() {
 
 		gameStatsData.setNumberOfRoundsInGamePlusOne();
+		
+		System.out.println("playRoundNew at start - lastWinner = " + lastWinner);
 
 		// 1)
-		turnStats.add(new TurnStatsHelper(totalTurns, cardChoice, this.players, this.currentChoice));
+		turnStats.add(new TurnStatsHelper(totalTurns, currentChoice, this.players, this.currentChoice));
 
 		// 1)
 //		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
@@ -303,9 +264,11 @@ public class GameManager {
 		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
 		// 3)
 		turnStats.get(currentTurnStats).determineWinner();
-		lastWinner = turnStats.get(currentTurnStats).getWinner();
+		
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
+			lastWinner = turnStats.get(currentTurnStats).getWinner();
+			
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			players.get(lastWinner).addCards(community);
 			players.get(lastWinner).incrementScore();
@@ -318,19 +281,31 @@ public class GameManager {
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 			testLog.addCommunalDeck(community);
 		}
-
-		// 6)
-		displayRoundSummery();
+		
+		System.out.println("playRoundNew at end - lastWinner = " + lastWinner);
+	}
+	
+	public void handleEndOfRound() {
+		
+		int currentTurnStats = turnStats.size()-1;
 
 //		System.out.println("\n" + players.get(lastWinner).getName() + " will choose the category for the next round.");
-		String command = null;
-		if (players.get(0) instanceof Human) {
-			System.out.println();
-			System.out.println("Press enter to continue or QUIT to exit the game early");
-			Scanner s = new Scanner(System.in);
-			 command = s.nextLine();
-			}
+//		String command = null;
+//		if (players.get(0) instanceof Human) {
+//			System.out.println();
+//			System.out.println("Press enter to continue or QUIT to exit the game early");
+//			Scanner s = new Scanner(System.in);
+//			 command = s.nextLine();
+//			}
+		
+//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
 
+
+		
+//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
+		
+
+//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 
 		if (turnStats.get(currentTurnStats).getWinner() == 0) {
 			System.out.println(false);
@@ -342,97 +317,26 @@ public class GameManager {
 		}
 
 		// 7)
-		if (players.get(0) instanceof Human && command.equals("QUIT")) {
-			return false;
-		} else {
-		return !gameOver();
-		}
+
+//		if (players.get(0) instanceof Human && command.equals("QUIT")) {
+//			return false;
+//		} else {
+
+
 	}
-
-	/* displayRoundSummery() displays the text that the user sees on the screen.
-	*  it uses turnStats to get the necissary data
-	*
-	*  1) Intantiates the integer which represents the current turn within the turnStats arraylist
-	*  2) Loops through players to print format their name, card, attribute and remaining deck size.
-		The if condition can probibly be removed as now gameOver() removes players with no cards
-	*  3) I offer this place as a suggestion to put the game stats object, to relay the number of points
-		each player has
-	*  4) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
-	*/
-	private void displayRoundSummery() {
-
-		// 1)
-		int currentTurnStats = turnStats.size()-1;
-		int cardPlayedIndex = 0;
-
-		// 2)
-		for(int i = 0; i < players.size(); i++) {
-			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
-					turnStats.get(currentTurnStats).getPlayer(i).getName(),
-					turnStats.get(currentTurnStats).getUserCardName(i),
-					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
-					players.get(i).getHandSize(),
-					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i));
-			cardPlayedIndex++;
-		}
-
-		// 3)
-		//TODO Implement a GameStats here to convey a points system for each player
-
-		String roundString = "";
-
-		// 4)
-		if(turnStats.get(currentTurnStats).isDraw) {
-			roundString = String.format("\nIts a draw!! Cards added to Community... "
-					+ "\n\nCommunity deck size is currently: %d",
-					community.size());
-		} else {
-			roundString = String.format("\n%s won using %s with %s. "
-					+ "\n\nCommunity deck size is currently: %d",
-					players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getWinningCardName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), community.size());
-		}
-
-
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(--cardPlayedIndex));
-
-		
-//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
-
-
-		System.out.println(roundString);
-		
-		/**
-		 * Iterate through list of players
-		 * If a player has no more cards left, a message displays that they've been knocked out
-		 * If this is true and that player comes before the winning player, the index of that winning player
-		 * is adjusted accordingly for the next round
-		 * The losing player is then removed from the list
-		 * i needs to be decremented as the size is shortened when a player is removed on each iteration
-		 */
-		for (int i = 0; i < players.size();i++) {
-			if (this.players.get(i).userLoses()) {
-				System.out.println("\n" + this.players.get(i).getName() + " has been knocked out!");
-				if (i < this.lastWinner) {
-					this.lastWinner--;
-				}
-				this.scores.add(this.players.get(i));
-				this.players.remove(i);
-				i--;
-			} else {
-//				System.out.println("\n" + this.players.get(i).getName() + " to play next round!");
-			}
-		}
-
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
-	}
+	
 
 	//This helps playRound
 	// It checks if the game is over AND deletes players with no cards
 	/*
 	 * This implements an iterator because by simply looping through the players ArrayList
 	 * was causing it to randomly skip a player on rare occasions. The iterater is much safer.
+	 * 
+	 * 
+	 * adjustLastWinner counts the number of players being removed BEFORE the iterator gets to the winner
+	 * Since the winner's index will shift down players are removed, the last winner = lastWinner-adjustLastWinner
 	 */
-	private boolean gameOver() {
+	public boolean gameOver() {
 		//		System.out.println(gameStatsData.getNumberOfPlayerRoundWins());
 		//		System.out.println(gameStatsData.getNumberOfCPURoundWins());
 		//		System.out.println(gameStatsData.getNumberOfDrawsInGame());
@@ -440,23 +344,42 @@ public class GameManager {
 		//		System.out.println(gameStatsData.getGameWinner());
 
 		Iterator<User> playersIterator = players.iterator();
+		
+		System.out.println("gameOver - lastWinner = " + lastWinner);
+		
+		int adjustLastWinner = 0;
+		int counter = 0;
 
 		while(playersIterator.hasNext()){
+			counter++;
 
 			User p = playersIterator.next();
 
 			if(p.userLoses()) {
-//				System.out.println("gameOver() removing user" + p);
+				System.out.println("gameOver() removing user" + p);
 				if (p instanceof Human) {
 					System.out.println("\nYou are out of cards! AI taking over ");
 					InputReader in = new InputReader();
 					in.pressEnter();
 				}
 				playersIterator.remove();
+				
+				// adjustLastWinner counts the number of players being removed BEFORE the iterator gets to the winner
+				// if a player is being removed and the counter has not passed the index of the last winner
+				// then incrment adjustLastWinner.
+				
+				if(counter<=lastWinner) {
+					adjustLastWinner++;
+				}
+				
 			}else {
-//			System.out.println("gameOver() NOT removing user" + p);
+			System.out.println("gameOver() NOT removing user" + p);
 			}
 		}
+		
+		System.out.printf("gameOver() - adjust last winner. lastWinner %d adjust %d\n\n", lastWinner, adjustLastWinner);
+		
+		lastWinner = lastWinner - adjustLastWinner;
 
 		if(players.size() == 1) {
 			this.scores.add(players.get(0));
@@ -465,17 +388,21 @@ public class GameManager {
 			System.out.println(s);
 			gameStatsData.setGameWinner(lastWinner);
 			testLog.addWinner(players.get(0));
-			testLog.addScores(s);
-			printLogFile();
-			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+//			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+
 			return true;
 		}
 		return false;
 	}
+	
+	//This is called by initialPLayerChoice, to be populated with database info
+	public void displayPriviousGameStats() {
+		PreviousStats  previousGamesStatistics = new PreviousStats();
+	}
 
 	public static void printLogFile() {
-testLog.printToFile();
-}
+		testLog.printToFile();
+	}
 	/**
 	 * Get the scores for a game, every time a player is eliminated, their details are added to a new arraylist of user for the purposes of keeping a record of their scores
 	 * This arraylist is reverse sorted to get highest wins at the start
@@ -493,4 +420,33 @@ testLog.printToFile();
 		s = s + "\t Drawn Games: " + (totalRounds - temp);
 		return s;
 	}
+
+	public void setCurrentChoice(int userChooseAttribute) {
+		this.currentChoice = userChooseAttribute;
+	}
+	
+	public  ArrayList<User> getPlayers() {
+		return players;
+	}
+	
+	public ArrayList<TurnStatsHelper> getTurnStats(){
+		return turnStats;
+	}
+	
+	public ArrayList<Card> getCommunity(){
+		return community;
+	}
+	
+	public int getLastWinner() {
+		return lastWinner;
+	}
+	
+	public int getTotalRounds() {
+		return totalRounds;
+	}
+	
+	public int getCurrentChoice() {
+		return currentChoice;
+	}
 }
+
