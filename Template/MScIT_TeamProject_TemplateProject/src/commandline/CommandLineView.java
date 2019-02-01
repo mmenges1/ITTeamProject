@@ -128,13 +128,18 @@ public class CommandLineView {
 		int lastWinner = gm.getLastWinner();
 		int totalRounds = gm.getTotalRounds();
 		
+		InputReader in = new InputReader();
+		
 		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
 		
-		if(totalRounds == 1) {
-//			players.get(lastWinner).
-			
-			// display players hand if they are in play, and notify which players turn it is
+		if(players.get(0) instanceof Human) {
+				String preRoundString = String.format("%s is the next player!\n\nYour current card is:\n%s\n", players.get(lastWinner).getName(), players.get(0).getTopCard().viewCard());
+				
+				System.out.println(preRoundString);
+				
+				in.pressEnter();
 		}
+		
 		
 		
 		
@@ -147,6 +152,8 @@ public class CommandLineView {
 	}
 
 	private void displayRoundSummery() {
+		InputReader in = new InputReader();
+		
 		// 1)
 		int currentTurnStats = turnStats.size()-1;
 
@@ -177,6 +184,11 @@ public class CommandLineView {
 		}
 
 		System.out.println(roundString);
+		
+		if(players.get(0) instanceof Human) {
+			in.pressEnter();
+		}
+		
 		
 		/**
 		 * Iterate through list of players
@@ -224,7 +236,7 @@ public class CommandLineView {
 	private int userChooseAttribute() {
 		InputReader reader = new InputReader();
 
-		System.out.printf("Here is the card at the top of your deck...\n"
+		System.out.printf("You are the next player! \n\nHere is the card at the top of your deck...\n"
 				+ players.get(0).showTopCard()
 				+ "\nWhich attribute would you like to trump your enemies with?\n\nPlease type a number between 1 and 5 and press enter!\n");
 		int choice = 0;
