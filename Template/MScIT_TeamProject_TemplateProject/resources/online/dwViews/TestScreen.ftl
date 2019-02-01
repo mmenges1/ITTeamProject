@@ -62,7 +62,7 @@ Hello world
 	function sendToAIPlayers(){
 			AIPlayers = document.getElementById("AIPlayers").value;
 			
-			var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AIplayers?AIPlayers="+AIPlayers); // Request type and URL+parameters
+			var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AIplayers?AIplayers="+AIPlayers); // Request type and URL+parameters
 						
 			// Message is not sent yet, but we can check that the browser supports CORS
 			if (!xhr) {

@@ -143,15 +143,24 @@ public class TopTrumpsRESTAPI {
 	public void userChoice(@QueryParam("Choice") int choice) throws IOException{
 		this.waitingForUser = false;
 		this.userChoice = choice;
-		
+		System.out.println(userChoice);
+	}
+	
+	@GET
+	@Path("/userChoice")
+	public void userChoice2(@QueryParam("test") int choice) throws IOException{
+		this.waitingForUser = false;
+		this.userChoice = choice;
+		System.out.println(userChoice);
 	}
 	
 	@GET
 	@Path("/AIplayers")
 	
-	// test with: http://localhost:7777/AIplayers/startGame?AIPlayers=3
+	// test with: http://localhost:7777/AIplayers/AIplayers?AIPlayers=3
 	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
 		this.numberOfAIPlayers = AIPlayers;
+		System.out.println(numberOfAIPlayers);
 	}
 	
 }

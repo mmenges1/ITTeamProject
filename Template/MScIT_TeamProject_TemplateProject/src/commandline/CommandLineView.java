@@ -114,9 +114,6 @@ public class CommandLineView {
 		}
 		
 		
-		
-		
-		
 	}
 
 	private boolean askUserQuit() {

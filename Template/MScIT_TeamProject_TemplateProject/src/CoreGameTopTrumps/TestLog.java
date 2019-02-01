@@ -84,5 +84,10 @@ public class TestLog
 	  fileString += "Winner: " + user.getName();
 	  fileString += "\n---------------------------------------------------------------\n";
   }
+  
+  public void addScores(String scores) {
+	  fileString += scores;
+	  fileString += "\n---------------------------------------------------------------\n";
+  }
 
 }
