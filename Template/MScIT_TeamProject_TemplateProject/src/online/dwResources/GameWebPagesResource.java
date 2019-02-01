@@ -8,7 +8,6 @@ import javax.ws.rs.core.MediaType;
 import online.dwViews.GameScreenView;
 import online.dwViews.SelectionScreenView;
 import online.dwViews.StatisticsView;
-import online.dwViews.TestView;
 
 @Path("/toptrumps") // Resources specified here should be hosted at http://localhost:7777/toptrumps
 @Produces(MediaType.TEXT_HTML) // This resource returns HTML content
@@ -54,12 +53,5 @@ public class GameWebPagesResource {
     public StatisticsView getStatisticsView() {
         return new StatisticsView();
     }
-	
-	@GET
-	@Path("/test")
-	//TO BE DELETED!!
-	public TestView getTestView() {
-		return new TestView();
-	}
 	
 }

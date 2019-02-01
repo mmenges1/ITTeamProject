@@ -16,43 +16,20 @@ public class TopTrumpsCLIApplication {
 
 		boolean writeGameLogsToFile = false; // Should we write game logs to file?
 		if (args[0].equalsIgnoreCase("true")) writeGameLogsToFile=true; // Command line selection
+	//	System.out.print("hello");
+		// State
 		boolean userWantsToQuit = false; // flag to check whether the user wants to quit the application
 		
-		
-		System.out.println("From top Trumps CLI APP .java");
-		CommandLineView CLIview = new CommandLineView();
-		
+		// Loop until the user wants to exit the game
+		while (!userWantsToQuit) {
 
-		int playerChoice = 0;
-		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
-		
-		while(!userWantsToQuit) {			
-			playerChoice = CLIview.initialPlayerChoice();
-			
-			if(playerChoice == 1) {
-				
-				CLIview.displayPreviousGameStats();
-				
-			} else if (playerChoice == 2){
-				
-				CLIview.dealAndPlay(4);
-				
-				if (writeGameLogsToFile){
-					GameManager.printLogFile();
-				}
-				
-			} else {
-				userWantsToQuit=true;
-				System.out.println("Goodbye!");
-				break;
+			GameManager.mainGame();
+			userWantsToQuit=true; // use this when the user wants to exit the game
+			if (writeGameLogsToFile)
+			{
+				GameManager.printLogFile();
 			}
 		}
-			
-		
-	
-	
-	
-	
 
 
 	}

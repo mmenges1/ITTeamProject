@@ -3,7 +3,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//import org.postgresql.util.PSQLException;
+import org.postgresql.util.PSQLException;
 
 public class DBConnect {
 	private static Connection connection;
@@ -28,7 +28,7 @@ public class DBConnect {
 	    catch (SQLException | ClassNotFoundException e)
 	    {
 	    	System.err.println("You are not connected to the database!");
-//	    	GameManager.mainGame();
+	    	GameManager.mainGame();
 //	    	e.printStackTrace();
 	    }
 	  	return connection;
