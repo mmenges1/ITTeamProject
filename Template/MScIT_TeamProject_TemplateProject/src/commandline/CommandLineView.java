@@ -35,7 +35,7 @@ public class CommandLineView {
 			
 			//get player choice within a set player choice
 			
-			System.out.println("CLUview - init Player Choice " + playerChoice);
+//			System.out.println("CLUview - init Player Choice " + playerChoice);
 
 			if(playerChoice == 1) {
 				
@@ -75,7 +75,7 @@ public class CommandLineView {
 			if(gm.determinNextPlayer()) {
 				gm.setCurrentChoice(userChooseAttribute());
 			}else {
-				System.out.println("Not user turn");
+//				System.out.println("Not user turn");
 				gm.applyAICardChoice();
 			}
 			
@@ -103,14 +103,22 @@ public class CommandLineView {
 		
 		InputReader in = new InputReader();
 		
-		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
+		String preRoundString = "";
 		
-		if(players.get(0) instanceof Human) {
-				String preRoundString = String.format("%s is the next player!\n\nYour current card is:\n%s\n", players.get(lastWinner).getName(), players.get(0).getTopCard().viewCard());
-				
+		if(players.get(0) instanceof Human && lastWinner !=0) {
+			    /*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
+			
+				preRoundString = String.format("%s is the next player!\n\nYour current card is:\n%s\n", players.get(lastWinner).getName(), players.get(0).getTopCard().viewCard());
 				System.out.println(preRoundString);
 				
 				in.pressEnter();
+		} else if(!(players.get(0) instanceof Human)) {
+				/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
+				
+				preRoundString = String.format("%s is the next player!", players.get(lastWinner).getName());
+				
+				System.out.println(preRoundString);
+			
 		}
 		
 		
@@ -216,6 +224,8 @@ public class CommandLineView {
 	
 	private int userChooseAttribute() {
 		InputReader reader = new InputReader();
+		
+		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (gm.getTotalRounds()) + " ~~~~~~~\n");
 
 		System.out.printf("You are the next player! \n\nHere is the card at the top of your deck...\n"
 				+ players.get(0).showTopCard()

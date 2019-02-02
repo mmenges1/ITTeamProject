@@ -1,4 +1,5 @@
 <html>
+<font face='monospace'>
 
 Hello world
 
@@ -80,18 +81,49 @@ Hello world
 			xhr.send();		
 	}
 	
-	function populateDisplay(){
-		var turnStats = getTurnStats();		
-		document.getElementById("textdisplay").innerHTML = JSON.stringify(turnStats);
-		//alert("hello " + JSON.stringify(turnStats));
+	function populateDisplay(str){
+	
+	console.log(str);
+	console.log(JSON.parse(str));
+	
+		var jsonObject = JSON.parse(str);
+		
+		const statsString = JSON.stringify(jsonObject, null, '\t');
+			
+		document.getElementById("textdisplay").innerHTML = "<pre> " + statsString + " </pre>";
+		
+		//$('#textdisplay').text(JSON.stringify(jsonObject, null, '\t'));
+		
 	}
 	
+
+	
 	function getTurnStats(){
-		
-		
-		return{
-			turnStats: "hello turnstats!"
+	
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getTurnStats"); // Request type and URL+parameters
+		var turnStats;
+				
+		// Message is not sent yet, but we can check that the browser supports CORS
+		if (!xhr) {
+			alert("CORS not supported");
 		}
+
+		// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+		// to do when the response arrives 
+		xhr.onload = function(e) {
+				turnStats = xhr.response; // the text of the response
+				//alert(turnStats); // lets produce an alert
+				console.log(turnStats)
+				populateDisplay(turnStats);
+			};
+		
+		// We have done everything we need to prepare the CORS request, so send it
+		xhr.send();		
+		
+		//console.log(JSON.stringify(this.turnStats));
+		
+		return this.turnStats;
+		
 	
 	}
 
@@ -124,12 +156,13 @@ Hello world
 	  </form>
 	  
 <section id="display">
-<input type="button" onclick="populateDisplay()" value="Get Turn Stats!" />
+<input type="button" onclick="getTurnStats()" value="Get Turn Stats!" />
 <div id="textdisplay">
 
 </div>
 
 </section>
 
+</font>
 </html>
 	 
