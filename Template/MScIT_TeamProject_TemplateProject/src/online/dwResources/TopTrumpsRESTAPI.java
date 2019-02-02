@@ -72,7 +72,7 @@ public class TopTrumpsRESTAPI {
 			if(gm.determinNextPlayer()) {
 				gm.setCurrentChoice(2);
 			}else {
-				System.out.println("Not user turn");
+//				System.out.println("Not user turn");
 				gm.applyAICardChoice();
 			}
 			
@@ -149,19 +149,26 @@ public class TopTrumpsRESTAPI {
 	@GET
 	@Path("/AIplayers")
 	
-	// test with: http://localhost:7777/AIplayers/AIplayers?AIPlayers=3
+	// test with: http://localhost:7777/toptrumps/AIplayers?AIPlayers=3
 	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
-//		this.numberOfAIPlayers = AIPlayers;
+//		this.numberOfAIPlayers = AIPlayers;		
 		System.out.println("start game");
 		this.playGame(4);
 	}
 	
 	@GET
 	@Path("/getTurnStats")
+	// test with: http://localhost:7777/toptrumps/getTurnStats
+	// This is for getting the JSON object of the turn stats!
 	public String getTurnStats() throws IOException{
-		String turnStatsJSON = oWriter.writeValueAsString(turnStats);
 		
-		// This does not work, need to test how to get turnstats into a good json object
+		System.out.println(gm.getTurnStats());
+		
+		String turnStatsJSON = oWriter.writeValueAsString(gm.getTurnStats());
+		
+		
+		
+		// Sometimes this works, sometimes it doesn't - have no idea why!
 		System.out.println(turnStatsJSON);
 		
 		return turnStatsJSON;
