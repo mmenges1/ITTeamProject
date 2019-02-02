@@ -157,7 +157,7 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	@GET
-	@Path("getTurnStats")
+	@Path("/getTurnStats")
 	public String getTurnStats() throws IOException{
 		String turnStatsJSON = oWriter.writeValueAsString(turnStats);
 		
