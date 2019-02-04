@@ -7,10 +7,6 @@ import java.sql.SQLException;
 
 public class DBConnect {
 	private static Connection connection;
-
-//	public static void main(String args[]) {
-//		DBConnect();
-//	}
 	
 	public static void DBConnect() {
 		connectToTopTrumpsGameDataBase();
@@ -28,7 +24,6 @@ public class DBConnect {
 	    catch (SQLException | ClassNotFoundException e)	
 	    {
 	    	System.err.println("You are not connected to the database!");
-//	    	GameManager.mainGame();
 //	    	e.printStackTrace();
 	    	connection = null;
 	    }
