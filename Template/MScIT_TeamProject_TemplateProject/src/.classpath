@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="postgresql-42.2.5.jre6.jar" sourcepath="postgresql-42.2.5.jre6.jar"/>
 	<classpathentry kind="lib" path="CoreGameTopTrumps/postgresql-42.2.5.jre6.jar" sourcepath="postgresql-42.2.5.jar"/>
 	<classpathentry kind="lib" path="postgresql-42.2.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

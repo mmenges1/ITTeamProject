@@ -15,7 +15,7 @@ import java.sql.Statement;
 public class PreviousStats {
 private DBConnect DBCon;
 private Connection connectionToDatabase;
-	
+private StringBuilder report;
 	//On creation of class, methods will create report on previous game statistics which will be printed to a text file
 	public PreviousStats() {
 		buildPreviousGameStatisticsReport();
@@ -25,10 +25,14 @@ private Connection connectionToDatabase;
 	//It creates a StringBuilder report with a a title, a first column naming the statistics rows,
 	//and a second columns showing the statistic values. 
 	//The connection to the database is then closed
-	private void buildPreviousGameStatisticsReport() {
+	public void buildPreviousGameStatisticsReport() {
 		DBCon = new DBConnect();
 		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
-		StringBuilder report = new StringBuilder();
+//		System.out.println(connectionToDatabase);
+		if (connectionToDatabase == null) {
+			return; 		
+		}
+		report = new StringBuilder();
 		// Header of report	
 		report.append("Statistics Of Previous Games Report\n\n");
 		// shows the number of overall games
@@ -61,6 +65,9 @@ private Connection connectionToDatabase;
 		Statement stmt = null;
 		try {
 			stmt = connectionToDatabase.createStatement();
+			if (stmt == null) {
+				return null;
+			}
     		ResultSet rs = stmt.executeQuery(query);
     		while (rs.next()) {
     			stringBuilder.append(rs.getString(columnName));
@@ -71,5 +78,7 @@ private Connection connectionToDatabase;
 		}
 		return stringBuilder.toString();
 	}
+	
+	
 }
 

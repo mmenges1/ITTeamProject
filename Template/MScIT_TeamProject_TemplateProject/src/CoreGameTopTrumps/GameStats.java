@@ -11,6 +11,7 @@ public class GameStats {
 	private int numberOfRoundsInGame;
 	private int numberOfDrawsInGame;
 	private String gameWinner;
+	private String query;
 	
 	/*
 	 *Responsibility to keep track of the overall statistics of the game 
@@ -105,6 +106,7 @@ public class GameStats {
 		return gameWinner;
 	}
 	
+	
 	//This method connects to the 'Top Trumps Game' database
 	//then inserts the five overall game statistic attributes into the database
 	//Closes database connection
@@ -113,12 +115,11 @@ public class GameStats {
 		DBConnect DBCon = new DBConnect();
 		Connection connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
 
-		String query = "INSERT INTO \"DBTrump\".game(nos_rounds, nos_draws, winner, nos_player_wins, nos_cpu_wins) VALUES( "+
-		getNumberOfRoundsInGame() + "," +
-		getNumberOfDrawsInGame() + "," +
-		getGameWinner() + "," +
-		getNumberOfPlayerRoundWins() + "," +
-		getNumberOfCPURoundWins() + ");";
+		if (connectionToDatabase == null) {
+			return; 		
+		}
+		
+		createQuery();
 		
 	try {
 		insertionData = connectionToDatabase.createStatement();
@@ -128,4 +129,15 @@ public class GameStats {
 	catch (SQLException e) {
 		e.printStackTrace();  }
 	}	   
+
+	
+	public String createQuery() {
+		query = "INSERT INTO \"DBTrump\".game(nos_rounds, nos_draws, winner, nos_player_wins, nos_cpu_wins) VALUES( "+
+				getNumberOfRoundsInGame() + "," +
+				getNumberOfDrawsInGame() + "," +
+				getGameWinner() + "," +
+				getNumberOfPlayerRoundWins() + "," +
+				getNumberOfCPURoundWins() + ");";
+		return query;
+	}
 }
