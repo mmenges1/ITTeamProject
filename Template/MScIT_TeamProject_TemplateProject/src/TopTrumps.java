@@ -1,6 +1,7 @@
 
 
 import commandline.TopTrumpsCLIApplication;
+import online.TopTrumpsOnlineApplication;
 
 //import online.TopTrumpsOnlineApplication;
 
@@ -39,7 +40,7 @@ public class TopTrumps {
 		if (onlineMode) {
 			// Start the online application
 			String[] commandArgs = {"server", "TopTrumps.json"};
-	//		TopTrumpsOnlineApplication.main(commandArgs);
+			TopTrumpsOnlineApplication.main(commandArgs);
 		} else if (commandLineMode) {
 			// Start the command line application
 			String[] commandArgs = {String.valueOf(printTestLog)};

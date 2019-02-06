@@ -13,8 +13,16 @@ import javax.ws.rs.core.MediaType;
 
 import online.configuration.TopTrumpsJSONConfiguration;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+
+import CoreGameTopTrumps.GameManager;
+import CoreGameTopTrumps.TurnStatsHelper;
+import CoreGameTopTrumps.User;
 
 @Path("/toptrumps") // Resources specified here should be hosted at http://localhost:7777/toptrumps
 @Produces(MediaType.APPLICATION_JSON) // This resource returns JSON content
@@ -34,6 +42,13 @@ public class TopTrumpsRESTAPI {
 	/** A Jackson Object writer. It allows us to turn Java objects
 	 * into JSON strings easily. */
 	ObjectWriter oWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
+	GameManager gm;
+	ArrayList<User> players;
+	ArrayList<TurnStatsHelper> turnStats;
+	
+	private int numberOfAIPlayers;
+	private int userChoice;
+	private boolean waitingForUser = true;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -41,15 +56,52 @@ public class TopTrumpsRESTAPI {
 	 * the deck file and the number of AI players.
 	 * @param conf
 	 */
-	public TopTrumpsRESTAPI(TopTrumpsJSONConfiguration conf) {
-		// ----------------------------------------------------
-		// Add relevant initalization here
-		// ----------------------------------------------------
+	public TopTrumpsRESTAPI(TopTrumpsJSONConfiguration conf) throws IOException{
+		
+		gm = new GameManager();		
 	}
 	
-	// ----------------------------------------------------
-	// Add relevant API methods here
-	// ----------------------------------------------------
+	private void playGame(int numberOfAIPlayers) {
+		gm.deal(numberOfAIPlayers);
+		
+		System.out.println("GAME STARTED");
+		
+		do {
+			players = gm.getPlayers();
+			
+			if(gm.determinNextPlayer()) {
+				gm.setCurrentChoice(2);
+			}else {
+//				System.out.println("Not user turn");
+				gm.applyAICardChoice();
+			}
+			
+			
+			gm.playRoundNew();
+			
+			players = gm.getPlayers();
+			turnStats = gm.getTurnStats();
+			
+			
+			gm.handleEndOfRound();
+			
+		}while(!gm.gameOver());
+		
+		System.out.println("GAME ENDED");
+	
+	}
+	
+	public int waitForUser() {
+		while(waitingForUser) {
+			// set to true by userChoice();			
+		}
+		
+		System.out.println("Waiting - userChoice = " + userChoice);
+		
+		waitingForUser = true;
+		
+		return userChoice;
+	}
 	
 	@GET
 	@Path("/helloJSONList")
@@ -82,6 +134,44 @@ public class TopTrumpsRESTAPI {
 	 */
 	public String helloWord(@QueryParam("Word") String Word) throws IOException {
 		return "Hello "+Word;
+	}
+	
+	@GET
+	@Path("/userChoice")
+	
+	// test with: http://localhost:7777/toptrumps/userChoice?Choice=2
+	public void userChoice(@QueryParam("Choice") int choice) throws IOException{
+		this.waitingForUser = false;
+		this.userChoice = choice;
+		System.out.println(userChoice);
+	}
+	
+	@GET
+	@Path("/AIplayers")
+	
+	// test with: http://localhost:7777/toptrumps/AIplayers?AIPlayers=3
+	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
+//		this.numberOfAIPlayers = AIPlayers;		
+		System.out.println("start game");
+		this.playGame(4);
+	}
+	
+	@GET
+	@Path("/getTurnStats")
+	// test with: http://localhost:7777/toptrumps/getTurnStats
+	// This is for getting the JSON object of the turn stats!
+	public String getTurnStats() throws IOException{
+		
+		System.out.println(gm.getTurnStats());
+		
+		String turnStatsJSON = oWriter.writeValueAsString(gm.getTurnStats());
+		
+		
+		
+		// Sometimes this works, sometimes it doesn't - have no idea why!
+		System.out.println(turnStatsJSON);
+		
+		return turnStatsJSON;
 	}
 	
 }

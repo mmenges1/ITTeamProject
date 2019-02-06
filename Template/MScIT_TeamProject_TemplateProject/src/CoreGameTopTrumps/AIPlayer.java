@@ -7,17 +7,11 @@ import java.util.Collections;
  * This class is responsible for bringing specific functionality to an ai player (i.e. to deliberately  play strongly).
  */
 public class AIPlayer extends User {
-//	private String name;
-//	private ArrayList<Card> hand;
-	
 
 	public AIPlayer(String name, ArrayList<Card> hand) {
 		super(name, hand);
 	}
 	
-//	public AIPlayer() {
-//		super();
-//	}
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -89,26 +83,26 @@ public class AIPlayer extends User {
 		return "The winning card is " + this.hand.get(0).getName();
 	}
 	
-	public static void main(String[] args) {
-		Deck d = new Deck();
-		ArrayList<Card> list = new ArrayList<Card>();
-		ArrayList<Card> hand = new ArrayList<Card>();
-		AIPlayer ai = new AIPlayer();
-		list = d.createDeck("StarCitizenDeck.txt");
-		//This method shuffles the list
-		Collections.shuffle(list);
-		Card c = list.get(0);
-		Card c2 = list.get(1);
-		hand.add(c);
-		hand.add(c2);
-		ai.setHand(hand);
-		while (ai.getHandSize() != 0) {
-			Card topCard = ai.getTopCard();
-			System.out.println(topCard.viewCard());
-			System.out.println("AI chooses attribute " + ai.getIndexofCriteriaWithHighestValue(topCard) + ": " + ai.getCriteriaName(topCard) );
-			ai.discardTopCard();
-			System.out.println("AI has " + ai.getHandSize() + " cards remaining");
-			System.out.println();
-		}
-	}
+//	public static void main(String[] args) {
+//		Deck d = new Deck();
+//		ArrayList<Card> list = new ArrayList<Card>();
+//		ArrayList<Card> hand = new ArrayList<Card>();
+//		AIPlayer ai = new AIPlayer();
+//		list = d.createDeck("StarCitizenDeck.txt");
+//		//This method shuffles the list
+//		Collections.shuffle(list);
+//		Card c = list.get(0);
+//		Card c2 = list.get(1);
+//		hand.add(c);
+//		hand.add(c2);
+//		ai.setHand(hand);
+//		while (ai.getHandSize() != 0) {
+//			Card topCard = ai.getTopCard();
+//			System.out.println(topCard.viewCard());
+//			System.out.println("AI chooses attribute " + ai.getIndexofCriteriaWithHighestValue(topCard) + ": " + ai.getCriteriaName(topCard) );
+//			ai.discardTopCard();
+//			System.out.println("AI has " + ai.getHandSize() + " cards remaining");
+//			System.out.println();
+//		}
+//	}
 }
