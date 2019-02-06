@@ -32,7 +32,8 @@
 								<div id="active"><strong>Who's turn is it?</strong></div>
 								<div id="playerInformation"><p>Information we need to provide the player</p></div>
 							</div>
-							<button type="button" onclick="seeCategoryPage()" class="btn btn-primary">See Category Chosen</button>
+							<button type="button" id="catButton" onclick="seeCategoryPage()" class="btn btn-primary">See Category Chosen</button>
+							<button type="button" id="roundButton" onclick="seeActivePlayer()" class="btn btn-primary">Next Round</button>
 						</section>
 						<div class="gridcontainer", "col-sm-4">
 							<div class="card" id="Human">
@@ -284,7 +285,7 @@
 				if(activePlayer == 0)
 				{
 					document.getElementById("active").innerHTML = "It is your turn";
-					document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on the category buttons on your card";
+					document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on <br /> the category buttons on your card";
 				}
 				else {
 					document.getElementById("active").innerHTML = "It is AI 1's turn";
@@ -315,12 +316,16 @@
 
 			function seeCategoryPage()
 			{
+				document.getElementById('catButton').style.display = 'none';
+				document.getElementById('roundButton').style.display = 'block';
 				setOpponentsDisplayOn();
 				setInformationForPlayer();
 				disableHumanButtons();
 			}
 			function seeActivePlayer()
 			{
+				document.getElementById('catButton').style.display = 'block';
+				document.getElementById('roundButton').style.display = 'none';
 				setOpponentsDisplayOff();
 				setActivePlayer();
 				if (activePlayer >= 1)
