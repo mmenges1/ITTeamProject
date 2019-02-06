@@ -61,47 +61,7 @@ public class TopTrumpsRESTAPI {
 		gm = new GameManager();		
 	}
 	
-	private void playGame(int numberOfAIPlayers) {
-		gm.deal(numberOfAIPlayers);
-		
-		System.out.println("GAME STARTED");
-		
-		do {
-			players = gm.getPlayers();
-			
-			if(gm.determinNextPlayer()) {
-				gm.setCurrentChoice(2);
-			}else {
-//				System.out.println("Not user turn");
-				gm.applyAICardChoice();
-			}
-			
-			
-			gm.playRoundNew();
-			
-			players = gm.getPlayers();
-			turnStats = gm.getTurnStats();
-			
-			
-			gm.handleEndOfRound();
-			
-		}while(!gm.gameOver());
-		
-		System.out.println("GAME ENDED");
-	
-	}
-	
-	public int waitForUser() {
-		while(waitingForUser) {
-			// set to true by userChoice();			
-		}
-		
-		System.out.println("Waiting - userChoice = " + userChoice);
-		
-		waitingForUser = true;
-		
-		return userChoice;
-	}
+
 	
 	@GET
 	@Path("/helloJSONList")
@@ -136,15 +96,15 @@ public class TopTrumpsRESTAPI {
 		return "Hello "+Word;
 	}
 	
-	@GET
-	@Path("/userChoice")
-	
-	// test with: http://localhost:7777/toptrumps/userChoice?Choice=2
-	public void userChoice(@QueryParam("Choice") int choice) throws IOException{
-		this.waitingForUser = false;
-		this.userChoice = choice;
-		System.out.println(userChoice);
-	}
+//	@GET
+//	@Path("/userChoice")
+//	
+//	// test with: http://localhost:7777/toptrumps/userChoice?Choice=2
+//	public void userChoice(@QueryParam("Choice") int choice) throws IOException{
+//		this.waitingForUser = false;
+//		this.userChoice = choice;
+//		System.out.println(userChoice);
+//	}
 	
 	@GET
 	@Path("/AIplayers")
@@ -162,16 +122,141 @@ public class TopTrumpsRESTAPI {
 	// This is for getting the JSON object of the turn stats!
 	public String getTurnStats() throws IOException{
 		
-		System.out.println(gm.getTurnStats());
+		System.out.println(gm.getTurnStats().get(turnStats.size()-1));
 		
-		String turnStatsJSON = oWriter.writeValueAsString(gm.getTurnStats());
-		
-		
+		String turnStatsJSON = oWriter.writeValueAsString(gm.getTurnStats().get(turnStats.size()-1));
 		
 		// Sometimes this works, sometimes it doesn't - have no idea why!
 		System.out.println(turnStatsJSON);
 		
 		return turnStatsJSON;
 	}
+	/*
+	 * NEW APIs BELOW
+	 */
+	
+	@GET
+	@Path("/setUpGame")
+	/**
+	 *  for setting up the game
+	 */
+	public void setUpGameREST(@QueryParam("numberOfPlayers") int numberOfPlayers) throws IOException{
+		System.out.println("Players: " + numberOfPlayers);
+		setUpGame(numberOfPlayers);		
+	}
+	
+	@GET
+	@Path("/isNextPlayerHuman")
+	public String determinNextPlayerREST() throws IOException{
+		
+		/* better if returns a string of 'false' if false, and a string of the players cards if true
+		 * 
+		 */
+		
+		return Boolean.toString(determinPlayerChoice());
+	}
+	
+	@GET
+	@Path("/userChoice")
+	
+	// test with: http://localhost:7777/toptrumps/userChoice?choice=2
+	public void userChoice(@QueryParam("choice") int choice) throws IOException{
+		setUserChoice(choice);
+		System.out.println(choice);
+	}
+	
+	@GET
+	@Path("/playRound")
+	public String playRoundREST() throws IOException{
+		TurnStatsHelper currentTurnStats = playRound();
+		
+		System.out.println(currentTurnStats);
+		
+		String turnStatsJSON = oWriter.writeValueAsString(currentTurnStats);
+		
+		// Sometimes this works, sometimes it doesn't - have no idea why!
+		System.out.println(turnStatsJSON);
+		
+		
+		return turnStatsJSON;
+	}
+	
+	
+	
+	private void playGame(int numberOfAIPlayers) {
+		gm.deal(numberOfAIPlayers);
+		
+		System.out.println("GAME STARTED");
+		
+		do {
+			players = gm.getPlayers();
+			
+			if(gm.determinNextPlayer()) {
+				gm.setCurrentChoice(2);
+			}else {
+//				System.out.println("Not user turn");
+				gm.applyAICardChoice();
+			}			
+			
+			gm.playRoundNew();
+			
+			players = gm.getPlayers();
+			turnStats = gm.getTurnStats();
+			
+			
+			gm.handleEndOfRound();
+			
+		}while(!gm.gameOver());
+		
+		System.out.println("GAME ENDED");
+	
+	}
+	
+	private void setUpGame(int numberOfAIPlayers) {
+		gm.deal(numberOfAIPlayers);		
+		System.out.println("GAME STARTED");
+	}
+	
+	private boolean determinPlayerChoice() {
+		
+		players = gm.getPlayers();
+		
+		if(gm.determinNextPlayer()) {
+			return true;
+			//gm.setCurrentChoice(2);
+		}else {
+			gm.applyAICardChoice();
+		}			
+		return false;
+	}
+	
+	private void setUserChoice(int choice) {
+		gm.setCurrentChoice(choice);
+	}
+	
+	//will return a turnstats!
+	private TurnStatsHelper playRound() {
+		
+		gm.playRoundNew();
+		
+		gm.handleEndOfRound();
+		
+		turnStats = gm.getTurnStats();
+		
+		return turnStats.get(turnStats.size()-1);
+	}
+	
+	public int waitForUser() {
+		while(waitingForUser) {
+			// set to true by userChoice();			
+		}
+		
+		System.out.println("Waiting - userChoice = " + userChoice);
+		
+		waitingForUser = true;
+		
+		return userChoice;
+	}
+	
 	
 }
