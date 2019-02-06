@@ -5,9 +5,10 @@ import java.util.ArrayList;
 public class TurnStatsHelper {
 	ArrayList<Card> cardsPlayed;
 	ArrayList<User> players;
-	String attributeName;
+	String winningCardName;
 	int turnNumber;
 	int winner;
+	String winnerName;
 	int attributeNumberPlayed;
 	int communitySize;
 	boolean isDraw;
@@ -71,7 +72,11 @@ public class TurnStatsHelper {
 	}
 	
 	public String getWinningCardName() {
-		return this.attributeName;
+		return this.winningCardName;
+	}
+	
+	public void setWinningCardName(String name) {
+		this.winningCardName = name;
 	}
 
 	
@@ -88,8 +93,9 @@ public class TurnStatsHelper {
 			if(currentStat > highestStat) {
 				highestStat = currentStat;
 				this.winner = i;
+				setWinnerName(this.winner);
 				isDraw = false;
-				this.attributeName = getUserCardName(this.winner);
+				setWinningCardName(getUserCardName(this.winner));
 			} else if (currentStat == highestStat) {
 //				this.winner = -1;
 				this.winner = currentChoice;
@@ -143,6 +149,14 @@ public class TurnStatsHelper {
 	
 	public int getAttributeNumberPlayed() {
 		return this.attributeNumberPlayed;
+	}
+	
+	public String getWinnerName() {
+		return winnerName;
+	}
+	
+	public void setWinnerName(int winner) {
+		this.winnerName = players.get(winner).getName();
 	}
 
 }

@@ -278,8 +278,10 @@ Hello world
 	  
 <br><br><br><br>
 <form>
-	  /playRound plays the round assuming the user choice has been made <br>
-	  returns a json file of that round
+	  /playRound plays the round assuming the user choice has been made..<br>
+	  if it is the users turn but the API is not used to make the choice it will default to the attribute choice<br>
+	  that was made last round
+	  returns a json file of the current round
 	  
 	  <input type= "button" onclick="playRound()" value="Go!" />
 	  
