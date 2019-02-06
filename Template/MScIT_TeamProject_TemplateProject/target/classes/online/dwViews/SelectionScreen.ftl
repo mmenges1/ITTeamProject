@@ -22,9 +22,8 @@
 
     <body onload="initalize()"> <!-- Call the initalize method when the page loads -->
 
+		<nav class="navbar navbar-dark"><a class="navbar-brand" href="../toptrumps">Top Trumps</a></nav>
 			<div class="container">
-
-				<nav class="navbar navbar-dark"><a class="navbar-brand" href="../toptrumps">Top Trumps</a></nav>
 				<section>
 					 <div class="jumbotron text-center mt-2">
 				<div class="container">

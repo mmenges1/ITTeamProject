@@ -35,8 +35,10 @@
 						</section>
 						<div class="gridcontainer", "col-sm-4">
 							<div class="card" id="Human">
-								<img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image">
+							<h4>Your Card</h4>
+								<img class="card-img-top" id="humanImage" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image">
 								<div class="card-img-overlay">
+									</br></br></br>
 									<h4 class="card-title">350r</h4>
 									<button type="button" class="btn btn-primary"> Size: 1</button>
 									<section> &nbsp;</section>
@@ -53,8 +55,10 @@
 
 						<div class="gridcontainer", "col-sm-4">
 							<div class="card" id="AI1">
-								<img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Avenger.jpg" alt="Card image">
+							<h4>AI 1 Card</h4>
+							<img class="card-img-top" id="AI1Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Avenger.jpg" alt="Card image">
 								<div class="card-img-overlay">
+									</br></br></br>
 									<h4 class="card-title">Avenger</h4>
 									<button type="button" class="btn btn-primary" disabled> Size: 1</button>
 									<section> &nbsp;</section>
@@ -73,8 +77,10 @@
 					<div class="row">
 						<div class="gridcontainer-2", "col-sm-4">
 							<div class="card" id="AI2">
-								<img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Carrack.jpg" alt="Card image">
+							<h4>AI 2 Card</h4>
+								<img class="card-img-top" id="AI2Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Carrack.jpg" alt="Card image">
 								<div class="card-img-overlay">
+									</br></br></br>
 									<h4 class="card-title">Carrack</h4>
 									<button type="button" class="btn btn-primary"disabled> Size: 1</button>
 									<section> &nbsp;</section>
@@ -90,8 +96,10 @@
 						</div>
 						<div class="gridcontainer-2", "col-2">
 							<div class="card" id="AI3">
-								<img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Hurricane.jpg" alt="Card image">
+							<h4>AI 3 Card</h4>
+								<img class="card-img-top" id="AI3Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Hurricane.jpg" alt="Card image">
 								<div class="card-img-overlay">
+								</br></br></br>
 									<h4 class="card-title">Hurricane</h4>
 									<button type="button" class="btn btn-primary"disabled> Size: 1</button>
 									<section> &nbsp;</section>
@@ -107,10 +115,13 @@
 						</div>
 						<div></div>
 						<div class="gridcontainer-2", "col-2">
+
 							<div class="card" id="AI4">
-								<img class="card-img-top" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Orion.jpg" alt="Card image">
+								<h4>AI 4 Card</h4>
+								<img class="card-img-top" id="AI4Image" src="" alt="Card image">
 								<div class="card-img-overlay">
-									<h4 class="card-title">Orion</h4>
+									</br></br></br>
+									<h4 class="card-title" id="shipName">Orion</h4>
 									<button type="button" class="btn btn-primary"disabled> Size: 1</button>
 									<section> &nbsp;</section>
 									<button type="button" class="btn btn-primary"disabled> Speed: 9</button>
@@ -134,7 +145,8 @@
 
 			.card{
 				width:250px;
-				height:400px;
+				height:450px;
+				border: 1px solid transparent;
 			}
 			.card-img-top{
 				width:100%;
@@ -216,12 +228,14 @@
 
 		<script type="text/javascript">
 			var numOpponents;
+			var shipImages = ["350r.jpg", "Avenger.jpg", "Carrack.jpg", "Constellation.jpg", "Hawk.jpg", "Hornet.jpg", "Hurricane.jpg", "Merchantman.jpg", "Idris.jpg", "Orion.jpg", "Sabre.jpg", "m50.jpg"];
 			// Method that is called on page load
 			function initalize() {
 				var query = decodeURIComponent(window.location.search);
 				var queries = query.split("=");
 				numOpponents = queries[1];
 
+				setCardImages();
 				// --------------------------------------------------------------------------
 				// You can call other methods you want to run when the page first loads here
 				// --------------------------------------------------------------------------
@@ -245,6 +259,15 @@
 				helloJSONList();
 				helloWord("Student");
 
+			}
+
+			function setCardImages()
+			{
+				document.getElementById('humanImage').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+				document.getElementById('AI1Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+				document.getElementById('AI2Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+				document.getElementById('AI3Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+				document.getElementById('AI4Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
 			}
 
 			// -----------------------------------------
