@@ -151,7 +151,7 @@ public class TopTrumpsRESTAPI {
 	
 	// test with: http://localhost:7777/toptrumps/AIplayers?AIPlayers=3
 	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
-//		this.numberOfAIPlayers = AIPlayers;		
+		this.numberOfAIPlayers = AIPlayers;		
 		System.out.println("start game");
 		this.playGame(4);
 	}
