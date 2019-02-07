@@ -16,8 +16,6 @@ public class TurnStatsHelper {
 	boolean isDraw;
 	int currentChoice;
 	ArrayList<Integer> playerHandSizes;
-
-	//This is what the user will see which summarises the round
 	String roundString;
 	
 	/**
