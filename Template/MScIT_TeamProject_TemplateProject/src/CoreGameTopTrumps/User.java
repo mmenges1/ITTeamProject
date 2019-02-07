@@ -157,7 +157,7 @@ abstract public class User {
 		return this.hand.size() == 0;
 	}
 	
-	public void incrementScore() {
+	public void incrementScore() { //checking something
 		this.score++;
 	}
 	

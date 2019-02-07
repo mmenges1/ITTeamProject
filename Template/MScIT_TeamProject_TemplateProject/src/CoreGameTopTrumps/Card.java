@@ -1,96 +1,99 @@
 package CoreGameTopTrumps;
 
 import java.util.ArrayList;
-
+/**
+ * This class is responsible for creating an instance of each card object.
+ */
 public class Card {
 	protected String name;
 	protected ArrayList<String> criterias; // list of criterias (e.g. Size Speed Range Firepower Cargo)
 	private ArrayList<Integer> attributes; // list of values for each criteria (Values for Size Speed Range Firepower Cargo respectively)
-	protected int attribute1;
-	protected int attribute2;
-	protected int attribute3;
-	protected int attribute4;
-	protected int attribute5;
 	
+	/**
+	 * Each card object is to contain a name, a list of attribute names and their values
+	 */
 	public Card() {
 		this.name = "";
 		this.attributes = new ArrayList<Integer>();
 		this.criterias = new ArrayList<String>();
 	}
 	
+	/**
+	 * This method is to return the name of the card
+	 * @return name of a card
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * This method is for setting the name of a card, which is obtained by reading the text file
+	 * @param name of the card 
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
+	/**
+	 * This method will return a list of the attribute names
+	 * @return a list of attribute names
+	 */
 	public ArrayList<String> getCriterias() {
 		return this.criterias;
 	}
 	
-	public void setAttributes(ArrayList<Integer> attributes) {
-		this.attributes = attributes;
-	}
+	/**
+	 * This method is to set the names for the list of criteria after reading the deck text file
+	 * @param criteria is a list of strings
+	 */
 	public void setCriteria(ArrayList<String> criteria) {
 		this.criterias = criteria;
 	}
+	/*
+	 * This method is to set the attributes for each card. Values are read from the .txt file
+	 */
+	public void setAttributes(ArrayList<Integer> attributes) {
+		this.attributes = attributes;
+	}
 	
-	
+	/*
+	 * This method is to return the attributes, a list of integers, for a card
+	 */
 	public ArrayList<Integer> getAttributes() {
 		return this.attributes;
 	}
+	
+	/*
+	 * This method is to return a value associated with a particular criterion which is determined by it's position within the list
+	 * @param index is the position in the list 
+	 */
 	public int getAttributeFromArrayList(int index) {
 		return this.attributes.get(index);
 	}
 	
+	
 	public void setAttribute(int index, Integer value) {
 		this.attributes.set(index, value);
 	}
-//	public int getAttribute1() {
-//		return attribute1;
-//	}
-//	public void setAttribute1(int attribute1) {
-//		this.attribute1 = attribute1;
-//	}
-//	public int getAttribute2() {
-//		return attribute2;
-//	}
-//	public void setAttribute2(int attribute2) {
-//		this.attribute2 = attribute2;
-//	}
-//	public int getAttribute3() {
-//		return attribute3;
-//	}
-//	public void setAttribute3(int attribute3) {
-//		this.attribute3 = attribute3;
-//	}
-//	public int getAttribute4() {
-//		return attribute4;
-//	}
-//	public void setAttribute4(int attribute4) {
-//		this.attribute4 = attribute4;
-//	}
-//	public int getAttribute5() {
-//		return attribute5;
-//	}
-//	public void setAttribute5(int attribute5) {
-//		this.attribute5 = attribute5;
-//	}
-//	
+
+	/**
+	 * This method is to get the name of a criteria determined by a position in the list
+	 * @param index - index to retrieve criteria from list
+	 * @return string of the name
+	 */
 	public String getCriteriaName(int index) {
 		return this.criterias.get(index);
 	}
 	
 	/**
-	 * 
+	 * This method returns the position in the list of integers for skills based on the value passed to it.
 	 * @param Value
 	 * @return - if a card has the same value for two criterias, this method will return the one that comes last - for smart ai choosing purposes
 	 */
 	public int getIndexOfValue(int Value) {
 		return this.attributes.lastIndexOf(Value);
 	}
-	/**kw
+	/**
 	 * Get an attribute based on the selected criteria number
 	 * @param selectionCriteriaNumber
 	 * @return 
@@ -100,27 +103,22 @@ public class Card {
 		int n = 1;
 		switch (selectionCriteriaNumber) {
 		case 1: {
-//			value = this.getAttribute1();
 			value = this.getAttributeFromArrayList(1-n);
 			 break;
 		}
 		case 2: {
-//			value = this.getAttribute2();
 			value = this.getAttributeFromArrayList(2-n);
 			break;
 		}
 		case 3: {
-//			 value =this.getAttribute3();
 			value = this.getAttributeFromArrayList(3-n);
 			 break;
 		}
 		case 4: {
-//			 value  = this.getAttribute4();
 			value = this.getAttributeFromArrayList(4-n);
 			 break;
 		}
 		case 5: {
-//			value = this.getAttribute5();
 			value = this.getAttributeFromArrayList(5-n);
 			break;
 		}
@@ -131,28 +129,15 @@ public class Card {
 		return value;
 	}
 
-	//TODO: remove this method and replace all references to it with getAttribute
-//	public int returnSelectedAttr(int att) {
-//		
-//		if(att == 1) {
-//			return getAttribute1();
-//		}else if(att == 2) {
-//			return getAttribute2();
-//		}else if(att == 3) {
-//			return getAttribute3();
-//		}else if(att == 4) {
-//			return getAttribute4();
-//		}else if(att == 5) {
-//			return getAttribute5();
-//		}
-//		
-//		return -1;
-//	}
 	@Override
 	public String toString() {
 		return "Card [name=" + name + "]";
 	}	
 	
+	/**
+	 * This method is to get a string representation of a card
+	 * @return a string representation of a card
+	 */ 
 	public String viewCard() {
 		String cardString = "";
 		{

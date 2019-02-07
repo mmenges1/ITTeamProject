@@ -7,17 +7,11 @@ import java.util.Collections;
  * This class is responsible for bringing specific functionality to an ai player (i.e. to deliberately  play strongly).
  */
 public class AIPlayer extends User {
-//	private String name;
-//	private ArrayList<Card> hand;
-	
 
 	public AIPlayer(String name, ArrayList<Card> hand) {
 		super(name, hand);
 	}
 	
-//	public AIPlayer() {
-//		super();
-//	}
 	public void setName(String name) {
 		this.name = name;
 	}
