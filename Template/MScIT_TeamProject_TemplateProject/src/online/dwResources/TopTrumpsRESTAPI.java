@@ -51,7 +51,8 @@ public class TopTrumpsRESTAPI {
 	
 	private int numberOfAIPlayers;
 	private int userChoice;
-	private boolean waitingForUser = true;
+	private boolean isPlayerChoice;
+	private int stupidcounter;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -145,7 +146,8 @@ public class TopTrumpsRESTAPI {
 	 */
 	public void setUpGameREST(@QueryParam("numberOfPlayers") int numberOfPlayers) throws IOException{
 		System.out.println("AI Players: " + numberOfPlayers);
-		setUpGame(numberOfPlayers);		
+		setUpGame(numberOfPlayers);
+		determinPlayerChoice();
 	}
 	
 	@GET
@@ -156,7 +158,7 @@ public class TopTrumpsRESTAPI {
 		 * 
 		 */
 		
-		return Boolean.toString(determinPlayerChoice());
+		return Boolean.toString(isPlayerChoice);
 	}
 	
 	@GET
@@ -179,11 +181,11 @@ public class TopTrumpsRESTAPI {
 	@GET
 	@Path("/playRound")
 	public String playRoundREST() throws IOException{
-		TurnStatsHelper currentTurnStats = playRound();
+		String currentTurnStats = playRound();
 		
 		System.out.println(currentTurnStats);
 		
-		String turnStatsJSON = "{ \"turnStats\": [ " + oWriter.writeValueAsString(currentTurnStats)+ "], \"points\": [" + oWriter.writeValueAsString(gm.getPoints()) + "]}";
+		String turnStatsJSON = "{ \"turnStats\": [ " + currentTurnStats/* oWriter.writeValueAsString(currentTurnStats)*/+ "], \"points\": [" + oWriter.writeValueAsString(gm.getPoints()) + "]}";
 		
 		// Sometimes this works, sometimes it doesn't - have no idea why!
 		System.out.println(turnStatsJSON);
@@ -229,17 +231,16 @@ public class TopTrumpsRESTAPI {
 		System.out.println("GAME STARTED");
 	}
 	
-	private boolean determinPlayerChoice() {
+	private void determinPlayerChoice() {
 		
 		players = gm.getPlayers();
 		
 		if(gm.determinNextPlayer()) {
-			return true;
-			//gm.setCurrentChoice(2);
+			this.isPlayerChoice = true;
 		}else {
-			//gm.applyAICardChoice();
+			this.isPlayerChoice =  false;
 		}			
-		return false;
+		
 	}
 	
 	private void setUserChoice(int choice) {
@@ -252,7 +253,7 @@ public class TopTrumpsRESTAPI {
 		players = gm.getPlayers();
 		
 		buffer.append("{\n\"Stats\" : [{ \"roundNumber\" :\""+(gm.getTotalRounds())+"\", "
-					+ "\n  \"isHumanChoice\" : \""+ determinPlayerChoice()+"\","
+					+ "\n  \"isHumanChoice\" : \""+ isPlayerChoice +"\","
 					+ "\n  \"nameOfNextPlayer\" : \""+ players.get(gm.getLastWinner()).getName() +"\"  }]," + System.lineSeparator() );
 		
 		for(int i = 0; i < players.size(); i++) {
@@ -278,7 +279,7 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	//will return a turnstats!
-	private TurnStatsHelper playRound() {
+	private String playRound() {
 		
 		gm.applyAICardChoice();
 		
@@ -294,20 +295,34 @@ public class TopTrumpsRESTAPI {
 		
 		System.out.println("fromREST API current turnstats : " + current);
 		
-		return current;
-	}
-	
-	public int waitForUser() {
-		while(waitingForUser) {
-			// set to true by userChoice();			
+		determinPlayerChoice();
+		
+		if(gm.gameOver()) {
+			return "{ \"GAME\" : \"OVER\",\n \"MY\" : \"DUDE\"}";
 		}
 		
-		System.out.println("Waiting - userChoice = " + userChoice);
-		
-		waitingForUser = true;
-		
-		return userChoice;
+		String turnStatsJSON = "";
+		try {
+			turnStatsJSON = oWriter.writeValueAsString(current);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		return turnStatsJSON;
 	}
+	
+//	public int waitForUser() {
+//		while(waitingForUser) {
+//			// set to true by userChoice();			
+//		}
+//		
+//		System.out.println("Waiting - userChoice = " + userChoice);
+//		
+//		waitingForUser = true;
+//		
+//		return userChoice;
+//	}
 
 	/// for helping to debug - to be deleted!
 	

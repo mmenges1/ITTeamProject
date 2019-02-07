@@ -107,7 +107,7 @@ public class GameManager {
 		
 		totalRounds++;
 		
-//		System.out.println("determinNextPlayer = " + lastWinner + " total rounds " + totalRounds);
+		System.out.println("determinNextPlayer = " + lastWinner + " total rounds " + totalRounds);
 		
 		
 		

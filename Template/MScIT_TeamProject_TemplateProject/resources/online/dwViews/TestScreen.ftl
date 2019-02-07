@@ -239,6 +239,8 @@ Hello world
 
 </script>
 
+
+
 <form id="myForm">	  
 
       Number of AI players:
@@ -273,7 +275,8 @@ Hello world
 <div>
 <form id="myForm">	  
 
-      /setUpGame - set up game and select the number of AI players
+      STEP 1 - /setUpGame - set up game and select the number of AI players
+		This is NOT safe to call in the middle of a game, it will restart
 	  <select id="setPlayers">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -286,16 +289,30 @@ Hello world
 	  
 <form>
 <br><br><br><br>
-	  /isNextPlayerHuman returns true if is human and false if AI. <br>
-	  Calling any time will not upset or confuse the game manager
+	  STEP 2 - /isNextPlayerHuman returns true if is human and false if AI. <br>
+	  Calling many times is safe
 	  
 	  <input type= "button" onclick="nextPlayerHuman()" value="Go!" />
 	  
 	  <p id="nextPlayerDisplay"> next player boolean should populate here </p><br>
 	  </form>
-	  <br><br><br><br>
+	  
+
+	  
+<br><br><br><br>
+<form>
+	  STEP 3 - /displayCards return a JSON of the key data when beginning the round<br>
+	  Round Number, isHumanChoice and nameOfNextPlayer, and card data per player!
+	  Safe to call as many times
+	  <input type= "button" onclick="displayCards()" value="Go!" />
+	  
+	  <p id="displayCardsDisplay"> display cards here </p><br>
+	  </form>
+</div>
+<br><br><br><br>
 <form id="myForm">
-      /userChoice - if /isNextPlayerHuman is true, then choose which card you want to play.<br> this is exaclty the same as above
+      STEP 4 - /userChoice - if /isNextPlayerHuman is true, then choose which card you want to play.<br> 
+	  This should be safe to call several times in a row
 	  <select id="userChoice"  >
         <option value="1">1</option>
         <option value="2">2</option>
@@ -309,21 +326,13 @@ Hello world
 	  
 <br><br><br><br>
 <form>
-	  /displayCards return a JSON of the key data when beginning the round<br>
-	  Round Number, isHumanChoice and nameOfNextPlayer, and card data per player!
-	  
-	  <input type= "button" onclick="displayCards()" value="Go!" />
-	  
-	  <p id="displayCardsDisplay"> display cards here </p><br>
-	  </form>
-</div>
-	  
-<br><br><br><br>
-<form>
-	  /playRound plays the round assuming the user choice has been made..<br>
+	  STEP 5 - /playRound plays the round assuming the user choice has been made..<br>
 	  if it is the users turn but the API is not used to make the choice it will default to the attribute choice<br>
 	  that was made last round
-	  returns a json file of the current round
+	  returns a json file of the current round <br>
+	  This is NOT safe to call several times, 1 call = 1 turn :)
+	  If the game is over, it will return GAME : OVER, and thereafter it will return an error 
+	  
 	  
 	  <input type= "button" onclick="playRound()" value="Go!" />
 	  

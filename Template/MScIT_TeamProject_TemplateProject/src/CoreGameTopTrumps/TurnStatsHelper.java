@@ -2,13 +2,10 @@ package CoreGameTopTrumps;
 
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 public class TurnStatsHelper {
-	ObjectMapper oWriter = new ObjectMapper();
 	ArrayList<Card> cardsPlayed;
 	ArrayList<User> players;
 	String winningCardName;
@@ -19,6 +16,8 @@ public class TurnStatsHelper {
 	int communitySize;
 	boolean isDraw;
 	boolean gameOver;
+	
+	@JsonIgnore
 	int currentChoice;
 	ArrayList<Integer> playerHandSizes;
 	
@@ -56,6 +55,7 @@ public class TurnStatsHelper {
 		return this.playerHandSizes.get(index);
 	}
 	
+	@JsonIgnore
 	public int getPlayerSize() {
 		return this.players.size();
 	}
@@ -142,6 +142,7 @@ public class TurnStatsHelper {
 		return this.communitySize;		
 	}
 	
+	@JsonIgnore
 	public String getTopCardByAttribute() {
 		return cardsPlayed.get(this.winner).getCriteriaName(this.attributeNumberPlayed-1 )+ " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
@@ -154,6 +155,7 @@ public class TurnStatsHelper {
 		return cardsPlayed.get(index).getName();
 	}
 	
+	@JsonIgnore
 	public int getCardPlayedSize() {
 		return cardsPlayed.size();
 	}
