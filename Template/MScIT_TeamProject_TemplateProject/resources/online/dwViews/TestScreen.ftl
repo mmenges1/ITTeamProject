@@ -205,6 +205,37 @@ Hello world
 		
 	}
 	
+		function displayCards(){
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/displayCards"); // Request type and URL+parameters
+					
+		// Message is not sent yet, but we can check that the browser supports CORS
+		if (!xhr) {
+			alert("CORS not supported");
+		}
+
+		// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+		// to do when the response arrives 
+		xhr.onload = function(e) {
+			var responseText = xhr.response; // the text of the response
+			console.log(responseText); // lets produce an alert
+			populateDisplayCardsDisplay(responseText)
+		};
+		
+		// We have done everything we need to prepare the CORS request, so send it
+		xhr.send();		
+		
+	}
+	
+		function populateDisplayCardsDisplay(str){
+	
+		var jsonObject = JSON.parse(str);
+		
+		const statsString = JSON.stringify(jsonObject, null, '\t');
+			
+		document.getElementById("displayCardsDisplay").innerHTML = "<pre> " + statsString + " </pre>";
+		
+	}
+	
 
 </script>
 
@@ -275,6 +306,17 @@ Hello world
 	  
 	  <input type="button" onclick="sendToUserChoice()" value="Go!" />
 	  </form>
+	  
+<br><br><br><br>
+<form>
+	  /displayCards return a JSON of the key data when beginning the round<br>
+	  Round Number, isHumanChoice and nameOfNextPlayer, and card data per player!
+	  
+	  <input type= "button" onclick="displayCards()" value="Go!" />
+	  
+	  <p id="displayCardsDisplay"> display cards here </p><br>
+	  </form>
+</div>
 	  
 <br><br><br><br>
 <form>

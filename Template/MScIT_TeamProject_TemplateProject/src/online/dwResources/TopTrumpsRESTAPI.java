@@ -15,12 +15,15 @@ import online.configuration.TopTrumpsJSONConfiguration;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 import CoreGameTopTrumps.GameManager;
+import CoreGameTopTrumps.Human;
+import CoreGameTopTrumps.InputReader;
 import CoreGameTopTrumps.TurnStatsHelper;
 import CoreGameTopTrumps.User;
 
@@ -141,7 +144,7 @@ public class TopTrumpsRESTAPI {
 	 *  for setting up the game
 	 */
 	public void setUpGameREST(@QueryParam("numberOfPlayers") int numberOfPlayers) throws IOException{
-		System.out.println("Players: " + numberOfPlayers);
+		System.out.println("AI Players: " + numberOfPlayers);
 		setUpGame(numberOfPlayers);		
 	}
 	
@@ -154,6 +157,14 @@ public class TopTrumpsRESTAPI {
 		 */
 		
 		return Boolean.toString(determinPlayerChoice());
+	}
+	
+	@GET
+	@Path("/displayCards")
+	// http://localhost:7777/toptrumps/displayCards
+	public String displayCards() throws IOException {
+		
+		return generateCardsJSON();
 	}
 	
 	@GET
@@ -172,7 +183,7 @@ public class TopTrumpsRESTAPI {
 		
 		System.out.println(currentTurnStats);
 		
-		String turnStatsJSON = oWriter.writeValueAsString(currentTurnStats);
+		String turnStatsJSON = "{ \"turnStats\": [ " + oWriter.writeValueAsString(currentTurnStats)+ "], \"points\": [" + oWriter.writeValueAsString(gm.getPoints()) + "]}";
 		
 		// Sometimes this works, sometimes it doesn't - have no idea why!
 		System.out.println(turnStatsJSON);
@@ -213,6 +224,7 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	private void setUpGame(int numberOfAIPlayers) {
+		gm = new GameManager();	
 		gm.deal(numberOfAIPlayers);		
 		System.out.println("GAME STARTED");
 	}
@@ -225,7 +237,7 @@ public class TopTrumpsRESTAPI {
 			return true;
 			//gm.setCurrentChoice(2);
 		}else {
-			gm.applyAICardChoice();
+			//gm.applyAICardChoice();
 		}			
 		return false;
 	}
@@ -234,16 +246,55 @@ public class TopTrumpsRESTAPI {
 		gm.setCurrentChoice(choice);
 	}
 	
+
+	private String generateCardsJSON() {
+		StringBuffer buffer = new StringBuffer();
+		players = gm.getPlayers();
+		
+		buffer.append("{\n\"Stats\" : [{ \"roundNumber\" :\""+(gm.getTotalRounds())+"\", "
+					+ "\n  \"isHumanChoice\" : \""+ determinPlayerChoice()+"\","
+					+ "\n  \"nameOfNextPlayer\" : \""+ players.get(gm.getLastWinner()).getName() +"\"  }]," + System.lineSeparator() );
+		
+		for(int i = 0; i < players.size(); i++) {
+			try {
+				buffer.append(System.lineSeparator() + " \"" + players.get(i).getName()
+						+"\" : [" + oWriter.writeValueAsString(players.get(i).getTopCard()) +  " ]");
+				//puts commas in the appropriate place
+				if(i<players.size()-1) {
+					buffer.append(",");
+				}
+				
+				
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		buffer.append(System.lineSeparator() + "}");
+		
+		System.out.println(buffer);
+		
+		return buffer.toString();
+	}
+	
 	//will return a turnstats!
 	private TurnStatsHelper playRound() {
 		
+		gm.applyAICardChoice();
+		
 		gm.playRoundNew();
+		
+		displayRoundSummery();
 		
 		gm.handleEndOfRound();
 		
 		turnStats = gm.getTurnStats();
 		
-		return turnStats.get(turnStats.size()-1);
+		TurnStatsHelper current = turnStats.get(turnStats.size()-1);
+		
+		System.out.println("fromREST API current turnstats : " + current);
+		
+		return current;
 	}
 	
 	public int waitForUser() {
@@ -257,6 +308,45 @@ public class TopTrumpsRESTAPI {
 		
 		return userChoice;
 	}
+
+	/// for helping to debug - to be deleted!
 	
+	private void displayRoundSummery() {
+		
+		players = gm.getPlayers();
+		turnStats = gm.getTurnStats();
+		
+		// 1)
+		int currentTurnStats = turnStats.size()-1;
+
+		// 2)
+		for(int i = 0; i < players.size(); i++) {
+			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
+					turnStats.get(currentTurnStats).getPlayer(i).getName(),
+					turnStats.get(currentTurnStats).getUserCardName(i),
+					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					players.get(i).getHandSize(),
+					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i));
+		}
+
+		// 3)
+		//TODO Implement a GameStats here to convey a points system for each player
+
+		String roundString = "";
+
+		// 4)
+		if(turnStats.get(currentTurnStats).getIsDraw()) {
+			roundString = String.format("\nIts a draw!! Cards added to Community... "
+					+ "\n\nCommunity deck size is currently: %d",
+					gm.getCommunity().size());
+		} else {
+			roundString = String.format("\n%s won using %s with %s. "
+					+ "\n\nCommunity deck size is currently: %d",
+					players.get(gm.getLastWinner()).getName(), turnStats.get(currentTurnStats).getWinningCardName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), gm.getCommunity().size());
+		}
+
+		System.out.println(roundString);
+		
+	}
 	
 }
