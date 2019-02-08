@@ -49,10 +49,7 @@ public class TopTrumpsRESTAPI {
 	ArrayList<User> players;
 	ArrayList<TurnStatsHelper> turnStats;
 	
-	private int numberOfAIPlayers;
-	private int userChoice;
 	private boolean isPlayerChoice;
-	private int stupidcounter;
 	
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -109,32 +106,32 @@ public class TopTrumpsRESTAPI {
 //		this.userChoice = choice;
 //		System.out.println(userChoice);
 //	}
-	
-	@GET
-	@Path("/AIplayers")
-	
-	// test with: http://localhost:7777/toptrumps/AIplayers?AIPlayers=3
-	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
-		this.numberOfAIPlayers = AIPlayers;		
-		System.out.println("start game");
-		this.playGame(4);
-	}
-	
-	@GET
-	@Path("/getTurnStats")
-	// test with: http://localhost:7777/toptrumps/getTurnStats
-	// This is for getting the JSON object of the turn stats!
-	public String getTurnStats() throws IOException{
-		
-		System.out.println(gm.getTurnStats().get(turnStats.size()-1));
-		
-		String turnStatsJSON = oWriter.writeValueAsString(gm.getTurnStats().get(turnStats.size()-1));
-		
-		// Sometimes this works, sometimes it doesn't - have no idea why!
-		System.out.println(turnStatsJSON);
-		
-		return turnStatsJSON;
-	}
+//	
+//	@GET
+//	@Path("/AIplayers")
+//	
+//	// test with: http://localhost:7777/toptrumps/AIplayers?AIPlayers=3
+//	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
+//		this.numberOfAIPlayers = AIPlayers;		
+//		System.out.println("start game");
+//		this.playGame(4);
+//	}
+//	
+//	@GET
+//	@Path("/getTurnStats")
+//	// test with: http://localhost:7777/toptrumps/getTurnStats
+//	// This is for getting the JSON object of the turn stats!
+//	public String getTurnStats() throws IOException{
+//		
+//		System.out.println(gm.getTurnStats().get(turnStats.size()-1));
+//		
+//		String turnStatsJSON = oWriter.writeValueAsString(gm.getTurnStats().get(turnStats.size()-1));
+//		
+//		// Sometimes this works, sometimes it doesn't - have no idea why!
+//		System.out.println(turnStatsJSON);
+//		
+//		return turnStatsJSON;
+//	}
 	/*
 	 * NEW APIs BELOW
 	 */
@@ -311,7 +308,6 @@ public class TopTrumpsRESTAPI {
 		try {
 			turnStatsJSON = oWriter.writeValueAsString(current);
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 				

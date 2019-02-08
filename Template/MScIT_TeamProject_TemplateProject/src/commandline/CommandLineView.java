@@ -159,7 +159,7 @@ public class CommandLineView {
 
 		String roundString = "";
 
-		// 4)
+		// 3)
 		if(turnStats.get(currentTurnStats).getIsDraw()) {
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
 					+ "\n\nCommunity deck size is currently: %d",

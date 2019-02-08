@@ -42,8 +42,8 @@ public class TurnStatsHelper {
 		playerHandSizes = new ArrayList<Integer>(); // used to work out difference between old and new hand size 
 	}
 
-	/*
-	 * This method returns the numerical represenation of the attribute that was played based on the index of the arraylist
+	/**
+	 * This method returns the numerical representation of the attribute that was played based on the index of the arraylist
 	 * of criteria in card object
 	 * @return index of criteria that was played for round
 	 */
@@ -51,7 +51,7 @@ public class TurnStatsHelper {
 		return this.currentChoice;
 	}
 
-	/*
+	/**
 	 * This method adds a card from all available players to a deck for this round
 	 * @param card object from each player
 	 */
@@ -182,14 +182,19 @@ public class TurnStatsHelper {
 
 
 	/**
-	 * This method issed for Jackson Serialisation
-   * sets the community deck size depending on 
+	 * This method is used for Jackson Serialisation
+     * sets the community deck size depending on 
 	 * @param size
 	 */
 	public void setCommunitySize(int size) {
 		this.communitySize = size;		
 	}
-  
+	
+	/**
+	 * This method is used for Jackson Serialisation
+     * sets the community deck size depending on 
+	 * @return size
+	 */  
 	public int getCommunitySize() {
 		return this.communitySize;		
 	}
@@ -199,7 +204,7 @@ public class TurnStatsHelper {
 	 * @return the winning card attribute  and score
 	 */
 
-  @JsonIgnore
+	@JsonIgnore
 	public String getTopCardByAttribute() {
 		return cardsPlayed.get(this.winner).getCriteriaName(this.attributeNumberPlayed-1 )+ " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
@@ -228,7 +233,7 @@ public class TurnStatsHelper {
 	 * @return a number of cards played
 	 */
 
-  @JsonIgnore
+	@JsonIgnore
 	public int getCardPlayedSize() {
 		return cardsPlayed.size();
 	}
