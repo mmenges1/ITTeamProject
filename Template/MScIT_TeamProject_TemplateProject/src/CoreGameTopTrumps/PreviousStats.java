@@ -21,12 +21,7 @@ private Connection connectionToDatabase;
 	private String numOfHumanWins;
 	private String aveOfGamesDrawn;
 	private String highNumOfRounds;
-	
-	//On creation of class, methods will create report on previous game statistics which will be printed to a text file
-	public PreviousStats() {
-		//buildPreviousGameStatisticsReport();
-	}
-	
+		
 	//This method establishes a connection to the 'Top Trumps Game' database,
 	//It creates a StringBuilder report with a a title, a first column naming the statistics rows,
 	//and a second columns showing the statistic values. 
@@ -59,6 +54,19 @@ private Connection connectionToDatabase;
 		report.append("Highest Number of Rounds Played:\t");
 		report.append(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
 		System.out.println(report.toString());
+		DBCon.closeConnectionToTopTrumpsGameDataBase();
+	} 
+	
+	public void buildPreviousGameReport() {
+		DBCon = new DBConnect();
+		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
+
+		setNumOfGames(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game", "count"));
+		setNumOfCPUWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'CPU'", "count"));
+		setNumOfHumanWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'PLAYER'", "count"));
+		setAveOfGamesDrawn(executeTopTrumpsGameDataBaseQuery("SELECT AVG(nos_draws) FROM \"DBTrump\".game", "avg").substring(0, 3));
+		setHighNumOfRounds(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
+
 		DBCon.closeConnectionToTopTrumpsGameDataBase();
 	} 
 	
@@ -98,7 +106,7 @@ private Connection connectionToDatabase;
 	public String toString() {
 		return "\nStatistics Of Previous Games:\n\nNumber of Previous Games:\t\t"
 				+ numOfGames + "\nNumber of CPU Wins:\t\t\t" + numOfCPUWins + "\nNumber of Human Wins:\t\t\t" + numOfHumanWins
-				+ "\nAverage Number of Games Drawn:\t\t" + aveOfGamesDrawn + "\nHighest Round Played in Single Game:\t" + highNumOfRounds;
+				+ "\nAverage Number of Rounds Drawn:\t\t" + aveOfGamesDrawn + "\nHighest Round Played in Single Game:\t" + highNumOfRounds;
 	}
 	
 	// Getters and setters, for mock method and Jackson serialisation
