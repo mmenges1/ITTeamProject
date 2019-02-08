@@ -32,10 +32,6 @@ public class CommandLineView {
 		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
 		while(true) {			
 			playerChoice = initialPlayerChoice();
-			
-			//get player choice within a set player choice
-			
-//			System.out.println("CLUview - init Player Choice " + playerChoice);
 
 			if(playerChoice == 1) {
 				
@@ -56,9 +52,7 @@ public class CommandLineView {
 	
 	public void displayPreviousGameStats() {
 		
-		//Currently set to a mock method!!
 		String previousStats = gm.getPreviousGameStats().toString();
-		
 		
 		System.out.println(previousStats);
 		
@@ -76,8 +70,16 @@ public class CommandLineView {
 	
 	private void playGame() {
 		
+		@SuppressWarnings("unused")
+		boolean humanStillInGame = true;
+		
 		do {
 			players = gm.getPlayers();
+			
+			if(!(players.get(0) instanceof Human) && (humanStillInGame == true)){
+					notifyPlayerOut();	
+					humanStillInGame = false;
+			}
 			
 			if(gm.determinNextPlayer()) {
 				gm.setCurrentChoice(userChooseAttribute());
@@ -102,9 +104,14 @@ public class CommandLineView {
 	
 	}
 
+	private void notifyPlayerOut() {
+		System.out.println("\nYou are out of cards! AI taking over ");
+		InputReader in = new InputReader();
+		in.pressEnter();
+	}
+
 	private void displayStateOfPlay() {
 		
-		int currentChoice = gm.getCurrentChoice();
 		int lastWinner = gm.getLastWinner();
 		int totalRounds = gm.getTotalRounds();
 		

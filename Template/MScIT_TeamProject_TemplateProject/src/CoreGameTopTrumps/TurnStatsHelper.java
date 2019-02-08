@@ -18,7 +18,6 @@ public class TurnStatsHelper {
 	int attributeNumberPlayed;
 	int communitySize;
 	boolean isDraw;
-	boolean gameOver;
 	ArrayList<Integer> playerHandSizes;
 
 	String roundString;
@@ -255,17 +254,4 @@ public class TurnStatsHelper {
 	public void setWinnerName(int winner) {
 		this.winnerName = players.get(winner).getName();
 	}
-	
-	public boolean getGameOver() {
-		return gameOver;
-	}
-	
-	public void setGameOver(boolean gameOver) {
-		this.gameOver = gameOver;
-	}
-	
-	
-		
-	
-
 }
