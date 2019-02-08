@@ -236,6 +236,37 @@ Hello world
 		
 	}
 	
+	function previousGameStats(){
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/previousGameStats"); // Request type and URL+parameters
+					
+		// Message is not sent yet, but we can check that the browser supports CORS
+		if (!xhr) {
+			alert("CORS not supported");
+		}
+
+		// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+		// to do when the response arrives 
+		xhr.onload = function(e) {
+			var responseText = xhr.response; // the text of the response
+			console.log(responseText); // lets produce an alert
+			populatePreviousStatsDisplay(responseText)
+		};
+		
+		// We have done everything we need to prepare the CORS request, so send it
+		xhr.send();		
+		
+	}
+	
+	function populatePreviousStatsDisplay(str){
+	
+		var jsonObject = JSON.parse(str);
+		
+		const statsString = JSON.stringify(jsonObject, null, '\t');
+			
+		document.getElementById("previousStatsDisplay").innerHTML = "<pre> " + statsString + " </pre>";
+		
+	}
+	
 
 </script>
 
@@ -273,8 +304,17 @@ Hello world
 </div>
 
 <div>
-<form id="myForm">	  
+<form>
+	  PRIOR - /previousGameStats - can be called at any time to return the previous game stats
+	  
+	  <input type= "button" onclick="previousGameStats()" value="Go!" />
+	  
+	  <p id="previousStatsDisplay"> previous stats should populate here </p><br>
+	  </form>
+	  
 
+<form id="myForm">	  
+br><br><br><br>
       STEP 1 - /setUpGame - set up game and select the number of AI players
 		This is NOT safe to call in the middle of a game, it will restart
 	  <select id="setPlayers">
