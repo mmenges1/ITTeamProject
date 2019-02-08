@@ -88,7 +88,7 @@ public class CommandLineView {
 			
 			displayStateOfPlay();
 			
-			gm.playRoundNew();
+			gm.playRound();
 			
 			players = gm.getPlayers();
 			turnStatsHelper = gm.getTurnStatsHelper();
@@ -126,9 +126,7 @@ public class CommandLineView {
 				
 				System.out.println(preRoundString);
 			
-		}
-		
-		
+		}	
 	}
 
 	private boolean askUserQuit() {
@@ -136,21 +134,10 @@ public class CommandLineView {
 		return false;
 	}
 
-	/* displayRoundSummery() displays the text that the user sees on the screen.
-	*  it uses turnStatsHelper to get the necissary data
-	*
-	*  1) Intantiates the integer which represents the current turn within the turnStatsHelper arraylist
-	*  2) Loops through players to print format their name, card, attribute and remaining deck size.
-		The if condition can probibly be removed as now gameOver() removes players with no cards
-	*  3) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
-
-	*/
+	
 	private void displayRoundSummery() {
 		InputReader in = new InputReader();
-		
-		// 1)
 
-		// 2)
 		for(int i = 0; i < players.size(); i++) {
 			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
 					turnStatsHelper.getPlayer(i).getName(),
@@ -162,7 +149,7 @@ public class CommandLineView {
 
 		String roundString = "";
 
-		// 3)
+
 		if(turnStatsHelper.getIsDraw()) {
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
 					+ "\n\nCommunity deck size is currently: %d",
@@ -178,30 +165,7 @@ public class CommandLineView {
 		if(players.get(0) instanceof Human) {
 			in.pressEnter();
 		}
-		
-		
-		/**
-		 * Iterate through list of players
-		 * If a player has no more cards left, a message displays that they've been knocked out
-		 * If this is true and that player comes before the winning player, the index of that winning player
-		 * is adjusted accordingly for the next round
-		 * The losing player is then removed from the list
-		 * i needs to be decremented as the size is shortened when a player is removed on each iteration
-		 */
-//		for (int i = 0; i < players.size();i++) {
-//			if (this.players.get(i).userLoses()) {
-//				System.out.println("\n" + this.players.get(i).getName() + " has been knocked out!");
-//				if (i < this.lastWinner) {
-//					this.lastWinner--;
-//				}
-//				this.players.remove(i);
-//				i--;
-//			} else {
-//				System.out.println("\n" + this.players.get(i).getName() + " to play next round!");
-//			}
-//		}
 
-		
 	}
 
 	public int initialPlayerChoice() {

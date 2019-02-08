@@ -12,7 +12,6 @@ public class TurnStatsHelper {
 	ArrayList<Card> cardsPlayed;
 	ArrayList<User> players;
 	String winningCardName;
-	int turnNumber;
 	int winner;
 	private int lastWinner;
 	String winnerName;
@@ -20,9 +19,6 @@ public class TurnStatsHelper {
 	int communitySize;
 	boolean isDraw;
 	boolean gameOver;
-	
-	@JsonIgnore
-	int currentChoice;
 	ArrayList<Integer> playerHandSizes;
 
 	String roundString;
@@ -35,23 +31,13 @@ public class TurnStatsHelper {
 	 * @param players - the list of players that are currently in the game at the present round
 	 * @param currentChoice - is the index of the player in the list of players who made the choice of attribute to play this round
 	 */
-	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players, int currentChoice, int lastWinner) {
-		this.turnNumber = turnNumber;
+	public TurnStatsHelper(int attributeNumberPlayed, ArrayList<User> players,int lastWinner) {
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
 		this.players = new ArrayList<User>(players);
-		this.currentChoice = currentChoice;
 		playerHandSizes = new ArrayList<Integer>(); // used to work out difference between old and new hand size 
 	}
 
-	/**
-	 * This method returns the numerical representation of the attribute that was played based on the index of the arraylist
-	 * of criteria in card object
-	 * @return index of criteria that was played for round
-	 */
-	public int getcurrentChoice() {
-		return this.currentChoice;
-	}
 
 	/**
 	 * This method adds a card from all available players to a deck for this round

@@ -36,32 +36,27 @@ public class GameManager {
 		totalPlayers = 1 + numberOfAIPlayers; 
 
 
-		int mainCardEach = newdeck.size() / totalPlayers;
+		int cardsEach = newdeck.size() / totalPlayers;
 		int remainderCards = newdeck.size() % totalPlayers;
 		int divideCount = 0;
 
 
 		for(int i = 0; i < totalPlayers; i++) {
 			if(i==0) {
-				players.add(new Human("You", new ArrayList<Card>(newdeck.subList(divideCount,divideCount + mainCardEach))));
-				players.get(i).setName("You");
+				players.add(new Human("You", new ArrayList<Card>(newdeck.subList(divideCount,divideCount + cardsEach))));
 			}else {
-				players.add(new AIPlayer("AI "+i,new ArrayList<Card>(newdeck.subList(divideCount, divideCount + mainCardEach))));
-				players.get(i).setName("AI " + i);
+				players.add(new AIPlayer("AI "+i,new ArrayList<Card>(newdeck.subList(divideCount, divideCount + cardsEach))));
 			}
 
-			divideCount += mainCardEach;
+			divideCount += cardsEach;
 		}
-
-
 
 		for(int i = 0; i < remainderCards; i++) {
 			players.get(i).addSingleCard(newdeck.get(divideCount));
 			divideCount++;
 		}
 
-		//test log player's decks
-			testLog.addPlayerDeck(players);
+		testLog.addPlayerDeck(players);
 
 	}
 
@@ -82,8 +77,6 @@ public class GameManager {
 		}
 		
 		totalRounds++;
-		
-		System.out.println("determinNextPlayer = " + lastWinner + " total rounds " + totalRounds);
 
 		if((lastWinner == 0 && players.get(0) instanceof Human)) {
 			return true;
@@ -98,19 +91,15 @@ public class GameManager {
 		// Allows AI to play
 		if(!(players.get(lastWinner) instanceof Human)) {			
 			currentChoice = players.get(lastWinner).getIndexofCriteriaWithHighestValue(players.get(lastWinner).getTopCard());// - 1; 
-			System.out.println("applyAICardChoice TRUE = " + currentChoice);
 		}
 	}
 
 	
-	public void playRoundNew() {
+	public void playRound() {
 
 		gameStatsData.setNumberOfRoundsInGamePlusOne();
-		
-		System.out.println("playRoundNew at start - lastWinner = " + lastWinner);
 
-		// TODO: update this constructor. some are not used
-		turnStatsHelper = new TurnStatsHelper(totalTurns, currentChoice, this.players, this.currentChoice, lastWinner);
+		turnStatsHelper = new TurnStatsHelper(currentChoice, this.players, lastWinner);
 
 		for(int i = 0; i < players.size(); i++ ) {
 			turnStatsHelper.addPlayerHandSize(this.players.get(i).getHandSize());
@@ -141,8 +130,6 @@ public class GameManager {
 			testLog.addCommunalDeck(community);
 		}
 
-		
-		System.out.println("playRoundNew at end - lastWinner = " + lastWinner);
 	}
 	
 	public void handleEndOfRound() {

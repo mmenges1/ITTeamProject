@@ -199,34 +199,6 @@ public class TopTrumpsRESTAPI {
 	}
 	
 	
-	private void playGame(int numberOfAIPlayers) {
-		gm.deal(numberOfAIPlayers);
-		
-		System.out.println("GAME STARTED");
-		
-		do {
-			players = gm.getPlayers();
-			
-			if(gm.determinNextPlayer()) {
-				gm.setCurrentChoice(2);
-			}else {
-//				System.out.println("Not user turn");
-				gm.applyAICardChoice();
-			}			
-			
-			gm.playRoundNew();
-			
-			players = gm.getPlayers();
-			turnStatsHelper = gm.getTurnStatsHelper();
-			
-			
-			gm.handleEndOfRound();
-			
-		}while(!gm.gameOver());
-		
-		System.out.println("GAME ENDED");
-	
-	}
 	
 	private void setUpGame(int numberOfAIPlayers) {
 		gm = new GameManager();	
@@ -286,7 +258,7 @@ public class TopTrumpsRESTAPI {
 		
 		gm.applyAICardChoice();
 		
-		gm.playRoundNew();
+		gm.playRound();
 		
 		displayRoundSummery();
 		
