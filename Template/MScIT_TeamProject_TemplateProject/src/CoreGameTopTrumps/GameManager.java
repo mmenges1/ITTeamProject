@@ -352,7 +352,10 @@ public class GameManager {
 		PreviousStats  previousGamesStatistics = new PreviousStats();
 
 		// MOCK DB Connection for front end testing
-		previousGamesStatistics.mockDBConnection();
+		//previousGamesStatistics.mockDBConnection();
+		
+		previousGamesStatistics.buildPreviousGameStatisticsReport();
+		
 		return previousGamesStatistics;
 	}
 

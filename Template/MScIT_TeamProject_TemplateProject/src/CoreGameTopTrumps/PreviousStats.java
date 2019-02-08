@@ -33,7 +33,7 @@ private Connection connectionToDatabase;
 	//The connection to the database is then closed
 	
 	// TODO: refactor this method to set the getters and setters
-	private void buildPreviousGameStatisticsReport() {
+	public void buildPreviousGameStatisticsReport() {
 		DBCon = new DBConnect();
 		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
 		StringBuilder report = new StringBuilder();
