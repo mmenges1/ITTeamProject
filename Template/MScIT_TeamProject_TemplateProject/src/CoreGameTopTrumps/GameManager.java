@@ -205,7 +205,6 @@ public class GameManager {
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
-			
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			players.get(lastWinner).addCards(community);
 			players.get(lastWinner).incrementScore();
