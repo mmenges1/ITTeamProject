@@ -57,7 +57,7 @@ private Connection connectionToDatabase;
 		DBCon.closeConnectionToTopTrumpsGameDataBase();
 	} 
 	
-	public void buildPreviousGameReport() {
+	public void fetchPreviousGameData() {
 		DBCon = new DBConnect();
 		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
 
