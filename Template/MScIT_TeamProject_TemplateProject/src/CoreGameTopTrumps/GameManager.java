@@ -24,9 +24,9 @@ public class GameManager {
 	ArrayList<User> players = new ArrayList<User>() ;
 	ArrayList<User> scores = new ArrayList<User>();
 
-	GameStats gameStatsData = new GameStats(0,0,0,0,0);
+	GameStats gameStatsData = new GameStats(0,0,0,0);
 
-	static TestLog testLog = new TestLog();
+	private TestLog testLog = new TestLog();
 
 
 	/*
@@ -206,19 +206,21 @@ public class GameManager {
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
+			
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			players.get(lastWinner).addCards(community);
-			players.get(lastWinner).incrementScore();
-			testLog.addCommunalDeck(community);
-			community.clear();
+			
 			gameStatsData.incrementPoint(turnStats.get(currentTurnStats).getWinnerName());
+			
 			testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
+			testLog.addCommunalDeck(community);
+			
+			community.clear();
 		} else {
 			// 5)
 			gameStatsData.setNumberOfDrawsInGamePlusOne();
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
 			testLog.addCommunalDeck(community);
-			gameStatsData.incrementPoint("Draw");
 		}
 
 		
@@ -331,9 +333,7 @@ public class GameManager {
 		if(players.size() == 1) {
 			this.scores.add(players.get(0));
 			System.out.println(players.get(0).getName() + " is the overall winner!!!\n");
-			String s = getRoundScores();
-			System.out.println(s);
-			gameStatsData.setGameWinner(lastWinner);
+			gameStatsData.setGameWinner();
 			testLog.addWinner(players.get(0));
 //			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			
@@ -359,7 +359,7 @@ public class GameManager {
 		return previousGamesStatistics;
 	}
 
-	public static void printLogFile() {
+	public void printLogFile() {
 		testLog.printToFile();
 	}
 	/**
@@ -367,20 +367,6 @@ public class GameManager {
 	 * This arraylist is reverse sorted to get highest wins at the start
 	 * @return a string representation of the scores
 	 */
-	
-	// TODO: move this idea to the view? of use it to set variables that are accessable by the view
-	public String getRoundScores() {
-		this.totalRounds -= 1;
-		int temp = 0;
-		Collections.reverse(this.scores);
-		String s = "Scores: \n";
-		for (int i = 0; i < this.scores.size(); i++) {
-			s = s + "\t" + this.scores.get(i).getName() + ": " +  this.scores.get(i).getScore() + " rounds\n";
-			temp += this.scores.get(i).getScore();
-		}
-		s = s + "\t Drawn Games: " + (totalRounds - temp);
-		return s;
-	}
 
 	public void setCurrentChoice(int userChooseAttribute) {
 		if(players.get(lastWinner) instanceof Human) {

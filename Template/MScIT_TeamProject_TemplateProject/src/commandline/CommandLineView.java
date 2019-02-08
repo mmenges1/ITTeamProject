@@ -70,6 +70,10 @@ public class CommandLineView {
 		playGame();
 	}
 	
+	public void printLogFile() {
+		gm.printLogFile();
+	}
+	
 	private void playGame() {
 		
 		do {

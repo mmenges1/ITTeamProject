@@ -213,7 +213,6 @@ public class TurnStatsHelper {
 
 	@JsonIgnore
 	public String getTopCardByAttribute() {
-		System.out.printf("TurnStatsHelper - getAnyTopCardAttribute : this.winner = %d , this.attNumberplyd = %d -1.\n", this.winner, this.attributeNumberPlayed);
 		return cardsPlayed.get(this.winner).getCriteriaName(this.attributeNumberPlayed-1 )+ " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
 
