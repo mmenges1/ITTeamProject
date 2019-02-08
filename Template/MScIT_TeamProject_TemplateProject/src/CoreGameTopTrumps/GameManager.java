@@ -73,7 +73,6 @@ public class GameManager {
 				totalRounds++;
 				return true;
 			}
-			
 		}
 		
 		totalRounds++;
@@ -145,10 +144,7 @@ public class GameManager {
 
 	public boolean gameOver() {
 
-		Iterator<User> playersIterator = players.iterator();
-		boolean gameOver; 
-		
-		
+		Iterator<User> playersIterator = players.iterator();		
 		int adjustLastWinner = 0;
 		int counter = 0;
 
@@ -158,14 +154,7 @@ public class GameManager {
 			User p = playersIterator.next();
 
 			if(p.userLoses()) {
-				if (p instanceof Human) {
-					
-					/* TODO: Move this idea to the view
-					System.out.println("\nYou are out of cards! AI taking over ");
-					InputReader in = new InputReader();
-					in.pressEnter();
-					*/
-				}
+
 				playersIterator.remove();
 				
 				// adjustLastWinner counts the number of players being removed BEFORE the iterator gets to the winner
@@ -188,14 +177,10 @@ public class GameManager {
 			testLog.addWinner(players.get(0));
 			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			
-			gameOver = true;
-			turnStatsHelper.setGameOver(gameOver);
-			return gameOver;
+			return true;
 		}
-		// TODO: make more elegent
-		gameOver = false;
-		turnStatsHelper.setGameOver(gameOver);		
-		return gameOver;
+	
+		return false;
 	}
 
 	public PreviousStats getPreviousGameStats() {
