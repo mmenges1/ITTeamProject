@@ -348,8 +348,12 @@ public class GameManager {
 	}
 	
 	//This is called by initialPLayerChoice, to be populated with database info
-	public void displayPriviousGameStats() {
+	public PreviousStats getPreviousGameStats() {
 		PreviousStats  previousGamesStatistics = new PreviousStats();
+
+		// MOCK DB Connection for front end testing
+		previousGamesStatistics.mockDBConnection();
+		return previousGamesStatistics;
 	}
 
 	public static void printLogFile() {

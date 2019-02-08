@@ -194,6 +194,12 @@ public class TopTrumpsRESTAPI {
 		return turnStatsJSON;
 	}
 	
+	@GET
+	@Path("/previousGameStats")
+	public String getPreviousGameStats() throws IOException {
+		String previousGameStats = oWriter.writeValueAsString(gm.getPreviousGameStats());
+		return previousGameStats;
+	}
 	
 	
 	private void playGame(int numberOfAIPlayers) {

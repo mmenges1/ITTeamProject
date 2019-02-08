@@ -15,16 +15,24 @@ import java.sql.Statement;
 public class PreviousStats {
 private DBConnect DBCon;
 private Connection connectionToDatabase;
+
+	private String numOfGames;
+	private String numOfCPUWins;
+	private String numOfHumanWins;
+	private String aveOfGamesDrawn;
+	private String highNumOfRounds;
 	
 	//On creation of class, methods will create report on previous game statistics which will be printed to a text file
 	public PreviousStats() {
-		buildPreviousGameStatisticsReport();
+		//buildPreviousGameStatisticsReport();
 	}
 	
 	//This method establishes a connection to the 'Top Trumps Game' database,
 	//It creates a StringBuilder report with a a title, a first column naming the statistics rows,
 	//and a second columns showing the statistic values. 
 	//The connection to the database is then closed
+	
+	// TODO: refactor this method to set the getters and setters
 	private void buildPreviousGameStatisticsReport() {
 		DBCon = new DBConnect();
 		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
@@ -52,7 +60,19 @@ private Connection connectionToDatabase;
 		report.append(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
 		System.out.println(report.toString());
 		DBCon.closeConnectionToTopTrumpsGameDataBase();
+	} 
+	
+	/// Mock method for using the class while database connection not possible
+	
+	public void mockDBConnection() {
+		setNumOfGames("111");
+		setNumOfCPUWins("222");
+		setNumOfHumanWins("333");
+		setAveOfGamesDrawn("444");
+		setHighNumOfRounds("555");			
 	}
+	
+	
 	
 	//This method tells the database connection to create a new statement
 	//Query parameter is the database query to be executed; the columnName query is the name of the column on which the query will be executed
@@ -71,5 +91,59 @@ private Connection connectionToDatabase;
 		}
 		return stringBuilder.toString();
 	}
+	
+	// To String method for displaying to user
+	
+	@Override
+	public String toString() {
+		return "\nStatistics Of Previous Games:\n\nNumber of Previous Games:\t\t"
+				+ numOfGames + "\nNumber of CPU Wins:\t\t\t" + numOfCPUWins + "\nNumber of Human Wins:\t\t\t" + numOfHumanWins
+				+ "\nAverage Number of Games Drawn:\t\t" + aveOfGamesDrawn + "\nHighest Round Played in Single Game:\t" + highNumOfRounds;
+	}
+	
+	// Getters and setters, for mock method and Jackson serialisation
+	
+	public String getNumOfGames() {
+		return numOfGames;
+	}
+
+	public void setNumOfGames(String numOfGames) {
+		this.numOfGames = numOfGames;
+	}
+
+	public String getNumOfCPUWins() {
+		return numOfCPUWins;
+	}
+
+	public void setNumOfCPUWins(String numOfCPUWins) {
+		this.numOfCPUWins = numOfCPUWins;
+	}
+
+	public String getNumOfHumanWins() {
+		return numOfHumanWins;
+	}
+
+	public void setNumOfHumanWins(String numOfHumanWins) {
+		this.numOfHumanWins = numOfHumanWins;
+	}
+
+	public String getAveOfGamesDrawn() {
+		return aveOfGamesDrawn;
+	}
+
+	public void setAveOfGamesDrawn(String aveOfGamesDrawn) {
+		this.aveOfGamesDrawn = aveOfGamesDrawn;
+	}
+
+	public String getHighNumOfRounds() {
+		return highNumOfRounds;
+	}
+
+	public void setHighNumOfRounds(String highNumOfRounds) {
+		this.highNumOfRounds = highNumOfRounds;
+	}
+	
+	
+	
 }
 
