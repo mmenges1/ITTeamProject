@@ -195,7 +195,7 @@ public class GameStats {
 			int[] points = {human, ai1, ai2, ai3, ai4};
 			int max = 0;
 			int winnerIndex = 0;
-			String winnerName = "";
+			winner = "";
 			
 			for(int i = 0; i<points.length; i++){
 				if (points[i] > max){
@@ -204,9 +204,9 @@ public class GameStats {
 				}
 			}
 			if(winnerIndex == 0) {
-				winnerName = "You";
+				winner = "You";
 			}else {
-				winnerName = "AI "+ winnerIndex;
+				winner = "AI "+ winnerIndex;
 			}
 			
 		}
