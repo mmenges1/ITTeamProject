@@ -54,10 +54,13 @@ public class CommandLineView {
 	}
 	
 	
-	public String displayPreviousGameStats() {
-		gm.displayPriviousGameStats();
+	public void displayPreviousGameStats() {
 		
-		return "Game stats here";
+		//Currently set to a mock method!!
+		String previousStats = gm.getPreviousGameStats().toString();
+		
+		
+		System.out.println(previousStats);
 		
 	}
 	
@@ -135,9 +138,7 @@ public class CommandLineView {
 	*  1) Intantiates the integer which represents the current turn within the turnStats arraylist
 	*  2) Loops through players to print format their name, card, attribute and remaining deck size.
 		The if condition can probibly be removed as now gameOver() removes players with no cards
-	*  3) I offer this place as a suggestion to put the game stats object, to relay the number of points
-		each player has
-	*  4) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
+	*  3) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
 
 	*/
 	private void displayRoundSummery() {
@@ -155,9 +156,6 @@ public class CommandLineView {
 					players.get(i).getHandSize(),
 					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i));
 		}
-
-		// 3)
-		//TODO Implement a GameStats here to convey a points system for each player
 
 		String roundString = "";
 

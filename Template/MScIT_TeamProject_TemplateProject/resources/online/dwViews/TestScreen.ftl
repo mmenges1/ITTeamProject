@@ -13,7 +13,6 @@ Hello world
 </head>
 
 <script type="text/javascript">
-
 	function createCORSRequest(method, url) {
   				var xhr = new XMLHttpRequest();
   				if ("withCredentials" in xhr) {
@@ -42,7 +41,7 @@ Hello world
 	function sendToUserChoice(){
 		userChoice = document.getElementById("userChoice").value;
 		
-		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/userChoice?Choice="+userChoice); // Request type and URL+parameters
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/userChoice?choice="+userChoice); // Request type and URL+parameters
 					
 				// Message is not sent yet, but we can check that the browser supports CORS
 				if (!xhr) {
@@ -126,8 +125,152 @@ Hello world
 		
 	
 	}
+	
+	/* NEW FUNCTIONS BELOW */
+	
+	function setUpGame(){
+		numberOfPlayers = document.getElementById("setPlayers").value;
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/setUpGame?numberOfPlayers="+numberOfPlayers); // Request type and URL+parameters
+					
+		// Message is not sent yet, but we can check that the browser supports CORS
+		if (!xhr) {
+			alert("CORS not supported");
+		}
+
+		// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+		// to do when the response arrives 
+		xhr.onload = function(e) {
+			var responseText = xhr.response; // the text of the response
+			alert(numberOfPlayers); // lets produce an alert
+		};
+		
+		// We have done everything we need to prepare the CORS request, so send it
+		xhr.send();		
+	}
+	
+	function nextPlayerHuman(){
+	
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/isNextPlayerHuman"); // Request type and URL+parameters
+					
+		// Message is not sent yet, but we can check that the browser supports CORS
+		if (!xhr) {
+			alert("CORS not supported");
+		}
+
+		// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+		// to do when the response arrives 
+		xhr.onload = function(e) {
+			var responseText = xhr.response; // the text of the response
+			//alert(responseText); // lets produce an alert
+			populateNextPlayerText(responseText)
+		};
+		
+		// We have done everything we need to prepare the CORS request, so send it
+		xhr.send();		
+	
+	}
+	
+	function populateNextPlayerText(str){
+		document.getElementById("nextPlayerDisplay").innerHTML = str
+	}
+	
+	function playRound(){
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/playRound"); // Request type and URL+parameters
+					
+		// Message is not sent yet, but we can check that the browser supports CORS
+		if (!xhr) {
+			alert("CORS not supported");
+		}
+
+		// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+		// to do when the response arrives 
+		xhr.onload = function(e) {
+			var responseText = xhr.response; // the text of the response
+			console.log(responseText); // lets produce an alert
+			populatePlayRoundDisplay(responseText)
+		};
+		
+		// We have done everything we need to prepare the CORS request, so send it
+		xhr.send();		
+		
+	}
+	
+	function populatePlayRoundDisplay(str){
+	
+		var jsonObject = JSON.parse(str);
+		
+		const statsString = JSON.stringify(jsonObject, null, '\t');
+			
+		document.getElementById("playRoundDisplay").innerHTML = "<pre> " + statsString + " </pre>";
+		
+	}
+	
+		function displayCards(){
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/displayCards"); // Request type and URL+parameters
+					
+		// Message is not sent yet, but we can check that the browser supports CORS
+		if (!xhr) {
+			alert("CORS not supported");
+		}
+
+		// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+		// to do when the response arrives 
+		xhr.onload = function(e) {
+			var responseText = xhr.response; // the text of the response
+			console.log(responseText); // lets produce an alert
+			populateDisplayCardsDisplay(responseText)
+		};
+		
+		// We have done everything we need to prepare the CORS request, so send it
+		xhr.send();		
+		
+	}
+	
+		function populateDisplayCardsDisplay(str){
+	
+		var jsonObject = JSON.parse(str);
+		
+		const statsString = JSON.stringify(jsonObject, null, '\t');
+			
+		document.getElementById("displayCardsDisplay").innerHTML = "<pre> " + statsString + " </pre>";
+		
+	}
+	
+	function previousGameStats(){
+		var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/previousGameStats"); // Request type and URL+parameters
+					
+		// Message is not sent yet, but we can check that the browser supports CORS
+		if (!xhr) {
+			alert("CORS not supported");
+		}
+
+		// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+		// to do when the response arrives 
+		xhr.onload = function(e) {
+			var responseText = xhr.response; // the text of the response
+			console.log(responseText); // lets produce an alert
+			populatePreviousStatsDisplay(responseText)
+		};
+		
+		// We have done everything we need to prepare the CORS request, so send it
+		xhr.send();		
+		
+	}
+	
+	function populatePreviousStatsDisplay(str){
+	
+		var jsonObject = JSON.parse(str);
+		
+		const statsString = JSON.stringify(jsonObject, null, '\t');
+			
+		document.getElementById("previousStatsDisplay").innerHTML = "<pre> " + statsString + " </pre>";
+		
+	}
+	
 
 </script>
+
+
 
 <form id="myForm">	  
 
@@ -144,7 +287,7 @@ Hello world
       
 <form id="myForm">
       User choice is: 
-	  <select id="userChoice"  >
+	  <select id="userChoiceOld"  >
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -155,6 +298,89 @@ Hello world
 	  <input type="button" onclick="sendToUserChoice()" value="Go!" />
 	  </form>
 	  
+<hr>
+<div>
+	<h2> Below is the updated rest API</h2>
+</div>
+
+<div>
+<form>
+	  PRIOR - /previousGameStats - can be called at any time to return the previous game stats
+	  
+	  <input type= "button" onclick="previousGameStats()" value="Go!" />
+	  
+	  <p id="previousStatsDisplay"> previous stats should populate here </p><br>
+	  </form>
+	  
+
+<form id="myForm">	  
+br><br><br><br>
+      STEP 1 - /setUpGame - set up game and select the number of AI players
+		This is NOT safe to call in the middle of a game, it will restart
+	  <select id="setPlayers">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+		<option value="4">4</option>
+      </select>
+	  
+	  <input type="button" onclick="setUpGame()" value="Go!" />
+      </form>
+	  
+<form>
+<br><br><br><br>
+	  STEP 2 - /isNextPlayerHuman returns true if is human and false if AI. <br>
+	  Calling many times is safe
+	  
+	  <input type= "button" onclick="nextPlayerHuman()" value="Go!" />
+	  
+	  <p id="nextPlayerDisplay"> next player boolean should populate here </p><br>
+	  </form>
+	  
+
+	  
+<br><br><br><br>
+<form>
+	  STEP 3 - /displayCards return a JSON of the key data when beginning the round<br>
+	  Round Number, isHumanChoice and nameOfNextPlayer, and card data per player!
+	  Safe to call as many times
+	  <input type= "button" onclick="displayCards()" value="Go!" />
+	  
+	  <p id="displayCardsDisplay"> display cards here </p><br>
+	  </form>
+</div>
+<br><br><br><br>
+<form id="myForm">
+      STEP 4 - /userChoice - if /isNextPlayerHuman is true, then choose which card you want to play.<br> 
+	  This should be safe to call several times in a row
+	  <select id="userChoice"  >
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+		<option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+	  
+	  <input type="button" onclick="sendToUserChoice()" value="Go!" />
+	  </form>
+	  
+<br><br><br><br>
+<form>
+	  STEP 5 - /playRound plays the round assuming the user choice has been made..<br>
+	  if it is the users turn but the API is not used to make the choice it will default to the attribute choice<br>
+	  that was made last round
+	  returns a json file of the current round <br>
+	  This is NOT safe to call several times, 1 call = 1 turn :)
+	  If the game is over, it will return GAME : OVER, and thereafter it will return an error 
+	  
+	  
+	  <input type= "button" onclick="playRound()" value="Go!" />
+	  
+	  <p id="playRoundDisplay"> display the round json here </p><br>
+	  </form>
+</div>
+<br><br><br><br>
+	  
 <section id="display">
 <input type="button" onclick="getTurnStats()" value="Get Turn Stats!" />
 <div id="textdisplay">
@@ -162,6 +388,8 @@ Hello world
 </div>
 
 </section>
+
+
 
 </font>
 </html>

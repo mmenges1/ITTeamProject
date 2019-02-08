@@ -28,10 +28,12 @@
 				<div class="jumbotron text-center mt-2">
 					<div class="row">
 						<section>
-							<div class="alert alert-info" id="player-info">
-								<strong>Who's turn is it?</strong>
-								<p>Information we need to provide the player</p>
+							<div class="alert alert-info">
+								<div id="active"><strong>Who's turn is it?</strong></div>
+								<div id="playerInformation"><p>Information we need to provide the player</p></div>
 							</div>
+							<button type="button" id="catButton" onclick="seeCategoryPage()" class="btn btn-primary">See Category Chosen</button>
+							<button type="button" id="roundButton" onclick="seeActivePlayer()" class="btn btn-primary">Next Round</button>
 						</section>
 						<div class="gridcontainer", "col-sm-4">
 							<div class="card" id="Human">
@@ -40,15 +42,15 @@
 								<div class="card-img-overlay">
 									</br></br></br>
 									<h4 class="card-title">350r</h4>
-									<button type="button" class="btn btn-primary"> Size: 1</button>
+									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(1)"> Size: 1</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"> Speed: 9</button>
+									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(2)"> Speed: 9</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"> Range: 2</button>
+									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(3)"> Range: 2</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"> Firepower: 3</button>
+									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(4)"> Firepower: 3</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"> Cargo: 0</button>
+									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(5)"> Cargo: 0</button>
 								</div>
 							</div>
 						</div>
@@ -118,7 +120,7 @@
 
 							<div class="card" id="AI4">
 								<h4>AI 4 Card</h4>
-								<img class="card-img-top" id="AI4Image" src="" alt="Card image">
+								<img class="card-img-top" id="AI4Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Hurricane.jpg" alt="Card image">
 								<div class="card-img-overlay">
 									</br></br></br>
 									<h4 class="card-title" id="shipName">Orion</h4>
@@ -229,45 +231,176 @@
 		<script type="text/javascript">
 			var numOpponents;
 			var shipImages = ["350r.jpg", "Avenger.jpg", "Carrack.jpg", "Constellation.jpg", "Hawk.jpg", "Hornet.jpg", "Hurricane.jpg", "Merchantman.jpg", "Idris.jpg", "Orion.jpg", "Sabre.jpg", "m50.jpg"];
+			var activePlayer = 0;
+			var gameState = 0;
+			var categorySelected = 0;
+			var opponentCards = new Array();
+			var buttonElements;
+
+
 			// Method that is called on page load
 			function initalize() {
 				var query = decodeURIComponent(window.location.search);
 				var queries = query.split("=");
 				numOpponents = queries[1];
+				buttonElements = document.querySelectorAll('[id="humanButton"]');
 
+				setOpponentsDisplayOff();
+				setOpponents();
+				seeActivePlayer();
+				setHumanCardImage();
 				setCardImages();
+
 				// --------------------------------------------------------------------------
 				// You can call other methods you want to run when the page first loads here
 				// --------------------------------------------------------------------------
+
+				// For example, lets call our sample methods
+				// helloJSONList();
+				// helloWord("Student");
+
+			}
+			function setCategory(catNumber)
+			{
+				categorySelected = catNumber;
+				seeCategoryPage();
+			}
+			function disableHumanButtons()
+			{
+				for (i = 0; i < buttonElements.length; i++){
+				  		buttonElements[i].disabled = true;
+				}
+		//		document.getElementById('humanButton').disabled = true;
+			}
+			function enableHumanButtons()
+			{
+				for (i = 0; i < buttonElements.length; i++){
+							buttonElements[i].disabled = false;
+				}
+		//		document.getElementById('humanButton').disabled = false;
+			}
+
+			function setActivePlayer()
+			{
+				if(activePlayer == 0)
+				{
+					document.getElementById("active").innerHTML = "It is your turn";
+					document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on <br /> the category buttons on your card";
+				}
+				else {
+					document.getElementById("active").innerHTML = "It is AI 1's turn";
+					document.getElementById("playerInformation").innerHTML = "See the category your opponent chose";
+				}
+			}
+
+			function setInformationForPlayer()
+			{
+				document.getElementById("active").innerHTML = "Player Chose Category 1";
+				if(opponentCards.length == 1)
+				{
+					document.getElementById("playerInformation").innerHTML = "Your Speed Category: 2 <br /> AI 1 Speed Category: 3";
+				}
+				else if(opponentCards.length == 2)
+				{
+					document.getElementById("playerInformation").innerHTML = "Your Speed Category: 2 <br /> AI 1 Speed Category: 3 <br /> AI 2 Speed Category: 4";
+				}
+				else if(opponentCards.length == 3)
+				{
+					document.getElementById("playerInformation").innerHTML = "Your Speed Category: 2 <br /> AI 1 Speed Category: 3 <br /> AI 2 Speed Category: 4 <br /> AI 3 Speed Category: 4";
+				}
+				else if(opponentCards.length == 4)
+				{
+					document.getElementById("playerInformation").innerHTML = "Your Speed Category: 2 <br /> AI 1 Speed Category: 3 <br /> AI 2 Speed Category: 4 <br /> AI 3 Speed Category: 4 <br /> AI 4 Speed Category: 4";
+				}
+			}
+
+			function seeCategoryPage()
+			{
+				document.getElementById('catButton').style.display = 'none';
+				document.getElementById('roundButton').style.display = 'block';
+				setOpponentsDisplayOn();
+				setInformationForPlayer();
+				disableHumanButtons();
+			}
+			function seeActivePlayer()
+			{
+				document.getElementById('catButton').style.display = 'block';
+				document.getElementById('roundButton').style.display = 'none';
+				setOpponentsDisplayOff();
+				setActivePlayer();
+				if (activePlayer >= 1)
+				{
+					disableHumanButtons();
+				}
+				else {
+					enableHumanButtons();
+				}
+			}
+
+			function setOpponents()
+			{
 				if(numOpponents == 1)
 				{
 				 document.getElementById('AI4').remove();
 				 document.getElementById('AI3').remove();
 				 document.getElementById('AI2').remove();
+				 opponentCards[0] = document.getElementById('AI1');
 				}
 				else if(numOpponents == 2)
 				{
 					document.getElementById('AI4').remove();
- 					document.getElementById('AI3').remove();
+					document.getElementById('AI3').remove();
+					opponentCards[0] = document.getElementById('AI1');
+					opponentCards[1] = document.getElementById('AI2');
 				}
 				else if(numOpponents == 3)
 				{
 					document.getElementById('AI4').remove();
+					opponentCards[0] = document.getElementById('AI1');
+					opponentCards[1] = document.getElementById('AI2');
+					opponentCards[2] = document.getElementById('AI3');
 				}
-
-				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
-
 			}
 
-			function setCardImages()
+			function setOpponentsDisplayOff()
+			{
+				for (i = 0; i < opponentCards.length; i++) {
+					opponentCards[i].style.display = "none";
+				}
+			}
+
+			function setOpponentsDisplayOn()
+			{
+				for (i = 0; i < opponentCards.length; i++) {
+					opponentCards[i].style.display = "block";
+				}
+			}
+			function setHumanCardImage()
 			{
 				document.getElementById('humanImage').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
-				document.getElementById('AI1Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
-				document.getElementById('AI2Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
-				document.getElementById('AI3Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
-				document.getElementById('AI4Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+			}
+			function setCardImages()
+			{
+
+				if(numOpponents >= 1)
+				{
+					document.getElementById('AI1Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+				}
+
+				if(numOpponents >= 2)
+				{
+					document.getElementById('AI2Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+				}
+
+				if(numOpponents >= 3)
+				{
+					document.getElementById('AI3Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+				}
+
+				if(numOpponents >= 4)
+				{
+					document.getElementById('AI4Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+				}
 			}
 
 			// -----------------------------------------
