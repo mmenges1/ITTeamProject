@@ -3,14 +3,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//import org.postgresql.util.PSQLException;
+import org.postgresql.util.PSQLException;
 
 public class DBConnect {
 	private static Connection connection;
 
-//	public static void main(String args[]) {
-//		DBConnect();
-//	}
+	public static void main(String args[]) {
+		DBConnect();
+	}
 	
 	public static void DBConnect() {
 		connectToTopTrumpsGameDataBase();
@@ -29,7 +29,7 @@ public class DBConnect {
 	    {
 	    	System.err.println("You are not connected to the database!");
 //	    	GameManager.mainGame();
-//	    	e.printStackTrace();
+	    	e.printStackTrace();
 	    }
 	  	return connection;
 	}
