@@ -11,7 +11,7 @@ import CoreGameTopTrumps.User;
 public class CommandLineView {
 	
 	private ArrayList<User> players;
-	private ArrayList<TurnStatsHelper> turnStats;
+	private TurnStatsHelper turnStatsHelper;
 	GameManager gm;
 
 	public static void main(String[] args) {
@@ -91,7 +91,7 @@ public class CommandLineView {
 			gm.playRoundNew();
 			
 			players = gm.getPlayers();
-			turnStats = gm.getTurnStats();
+			turnStatsHelper = gm.getTurnStatsHelper();
 			
 			displayRoundSummery();
 			
@@ -137,9 +137,9 @@ public class CommandLineView {
 	}
 
 	/* displayRoundSummery() displays the text that the user sees on the screen.
-	*  it uses turnStats to get the necissary data
+	*  it uses turnStatsHelper to get the necissary data
 	*
-	*  1) Intantiates the integer which represents the current turn within the turnStats arraylist
+	*  1) Intantiates the integer which represents the current turn within the turnStatsHelper arraylist
 	*  2) Loops through players to print format their name, card, attribute and remaining deck size.
 		The if condition can probibly be removed as now gameOver() removes players with no cards
 	*  3) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
@@ -149,29 +149,28 @@ public class CommandLineView {
 		InputReader in = new InputReader();
 		
 		// 1)
-		int currentTurnStats = turnStats.size()-1;
 
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
 			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
-					turnStats.get(currentTurnStats).getPlayer(i).getName(),
-					turnStats.get(currentTurnStats).getUserCardName(i),
-					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					turnStatsHelper.getPlayer(i).getName(),
+					turnStatsHelper.getUserCardName(i),
+					turnStatsHelper.getAnyCardTopAttribute(i),
 					players.get(i).getHandSize(),
-					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i));
+					turnStatsHelper.returnDifferenceHandSize(players.get(i), i));
 		}
 
 		String roundString = "";
 
 		// 3)
-		if(turnStats.get(currentTurnStats).getIsDraw()) {
+		if(turnStatsHelper.getIsDraw()) {
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
 					+ "\n\nCommunity deck size is currently: %d",
 					gm.getCommunity().size());
 		} else {
 			roundString = String.format("\n%s won using %s with %s. "
 					+ "\n\nCommunity deck size is currently: %d",
-					players.get(gm.getLastWinner()).getName(), turnStats.get(currentTurnStats).getWinningCardName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), gm.getCommunity().size());
+					players.get(gm.getLastWinner()).getName(), turnStatsHelper.getWinningCardName(), turnStatsHelper.getTopCardByAttribute(), gm.getCommunity().size());
 		}
 
 		System.out.println(roundString);

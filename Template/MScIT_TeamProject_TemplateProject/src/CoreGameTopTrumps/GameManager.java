@@ -15,7 +15,7 @@ public class GameManager {
 	int startingPlayer;
 	int playerTurn;
 	int currentChoice;
-	ArrayList<TurnStatsHelper> turnStats;
+	TurnStatsHelper turnStatsHelper;
 	ArrayList<Card> community;
 	ArrayList<User> players;
 	GameStats gameStatsData;
@@ -23,10 +23,10 @@ public class GameManager {
 	private TestLog testLog;
 
 	public void deal(int numberOfAIPlayers) {
+		totalRounds = 0;
 		gameStatsData = new GameStats(0,0,0,0);
 		community = new ArrayList<Card>();
 		players = new ArrayList<User>() ;
-		turnStats = new ArrayList<TurnStatsHelper>();
 		testLog = new TestLog();
 		
 		Deck d = new Deck();
@@ -109,39 +109,35 @@ public class GameManager {
 		
 		System.out.println("playRoundNew at start - lastWinner = " + lastWinner);
 
-		// 1) TODO: update this constructor. some are not used
-		turnStats.add(new TurnStatsHelper(totalTurns, currentChoice, this.players, this.currentChoice, lastWinner));
+		// TODO: update this constructor. some are not used
+		turnStatsHelper = new TurnStatsHelper(totalTurns, currentChoice, this.players, this.currentChoice, lastWinner);
 
-		// 1)
-		int currentTurnStats = turnStats.size()-1;
-
-		// 2)
 		for(int i = 0; i < players.size(); i++ ) {
-			turnStats.get(currentTurnStats).addPlayerHandSize(this.players.get(i).getHandSize());
-			turnStats.get(currentTurnStats).addCardToCardsPlayed(this.players.get(i).getTopCard());	
+			turnStatsHelper.addPlayerHandSize(this.players.get(i).getHandSize());
+			turnStatsHelper.addCardToCardsPlayed(this.players.get(i).getTopCard());	
 			players.get(i).discardTopCard();
 		}
-		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
-		// 3)
-		turnStats.get(currentTurnStats).determineWinner();
+		testLog.addCardsInPlay(turnStatsHelper.cardsPlayed);
+
+		turnStatsHelper.determineWinner();
 		
-		// 4)
-		if(!turnStats.get(currentTurnStats).getIsDraw()) {
-			lastWinner = turnStats.get(currentTurnStats).getWinner();
+
+		if(!turnStatsHelper.getIsDraw()) {
+			lastWinner = turnStatsHelper.getWinner();
 			
-			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
+			players.get(lastWinner).addCards(turnStatsHelper.passCardsPlayed());
 			players.get(lastWinner).addCards(community);
 			
-			gameStatsData.incrementPoint(turnStats.get(currentTurnStats).getWinnerName());
+			gameStatsData.incrementPoint(turnStatsHelper.getWinnerName());
 			
-			testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
+			testLog.addCardsInPlay(turnStatsHelper.cardsPlayed);
 			testLog.addCommunalDeck(community);
 			
 			community.clear();
 		} else {
-			// 5)
+
 			gameStatsData.setNumberOfDrawsInGamePlusOne();
-			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
+			community.addAll(turnStatsHelper.passCardsPlayed());
 			testLog.addCommunalDeck(community);
 		}
 
@@ -150,16 +146,11 @@ public class GameManager {
 	}
 	
 	public void handleEndOfRound() {
+		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStatsHelper.getTopCardByAttribute());
 		
-		int currentTurnStats = turnStats.size()-1;
-
-		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute());
-
 		if (players.get(lastWinner) instanceof Human) {
-//			System.out.println(false);
 			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
 		} else {
-//			System.out.println(true);
 			gameStatsData.setNumberOfCPURoundWinsPlusOne();
 		}
 	}
@@ -211,12 +202,12 @@ public class GameManager {
 			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			
 			gameOver = true;
-			turnStats.get(turnStats.size()-1).setGameOver(gameOver);
+			turnStatsHelper.setGameOver(gameOver);
 			return gameOver;
 		}
 		// TODO: make more elegent
 		gameOver = false;
-		turnStats.get(turnStats.size()-1).setGameOver(gameOver);		
+		turnStatsHelper.setGameOver(gameOver);		
 		return gameOver;
 	}
 
@@ -248,8 +239,8 @@ public class GameManager {
 		return players;
 	}
 	
-	public ArrayList<TurnStatsHelper> getTurnStats(){
-		return turnStats;
+	public TurnStatsHelper getTurnStatsHelper(){
+		return turnStatsHelper;
 	}
 	
 	public ArrayList<Card> getCommunity(){

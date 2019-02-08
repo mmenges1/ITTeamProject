@@ -47,7 +47,7 @@ public class TopTrumpsRESTAPI {
 	ObjectWriter oWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
 	GameManager gm;
 	ArrayList<User> players;
-	ArrayList<TurnStatsHelper> turnStats;
+	TurnStatsHelper turnStatsHelper;
 	
 	private boolean isPlayerChoice;
 	
@@ -217,7 +217,7 @@ public class TopTrumpsRESTAPI {
 			gm.playRoundNew();
 			
 			players = gm.getPlayers();
-			turnStats = gm.getTurnStats();
+			turnStatsHelper = gm.getTurnStatsHelper();
 			
 			
 			gm.handleEndOfRound();
@@ -292,11 +292,9 @@ public class TopTrumpsRESTAPI {
 		
 		gm.handleEndOfRound();
 		
-		turnStats = gm.getTurnStats();
+		turnStatsHelper = gm.getTurnStatsHelper();
 		
-		TurnStatsHelper current = turnStats.get(turnStats.size()-1);
-		
-		System.out.println("fromREST API current turnstats : " + current);
+		System.out.println("fromREST API current turnstats : " + turnStatsHelper);
 		
 		determinPlayerChoice();
 		
@@ -306,7 +304,7 @@ public class TopTrumpsRESTAPI {
 		
 		String turnStatsJSON = "";
 		try {
-			turnStatsJSON = oWriter.writeValueAsString(current);
+			turnStatsJSON = oWriter.writeValueAsString(turnStatsHelper);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -331,19 +329,17 @@ public class TopTrumpsRESTAPI {
 	private void displayRoundSummery() {
 		
 		players = gm.getPlayers();
-		turnStats = gm.getTurnStats();
-		
-		// 1)
-		int currentTurnStats = turnStats.size()-1;
+		turnStatsHelper = gm.getTurnStatsHelper();
+
 
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
 			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
-					turnStats.get(currentTurnStats).getPlayer(i).getName(),
-					turnStats.get(currentTurnStats).getUserCardName(i),
-					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					turnStatsHelper.getPlayer(i).getName(),
+					turnStatsHelper.getUserCardName(i),
+					turnStatsHelper.getAnyCardTopAttribute(i),
 					players.get(i).getHandSize(),
-					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i));
+					turnStatsHelper.returnDifferenceHandSize(players.get(i), i));
 		}
 
 		// 3)
@@ -352,14 +348,14 @@ public class TopTrumpsRESTAPI {
 		String roundString = "";
 
 		// 4)
-		if(turnStats.get(currentTurnStats).getIsDraw()) {
+		if(turnStatsHelper.getIsDraw()) {
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
 					+ "\n\nCommunity deck size is currently: %d",
 					gm.getCommunity().size());
 		} else {
 			roundString = String.format("\n%s won using %s with %s. "
 					+ "\n\nCommunity deck size is currently: %d",
-					players.get(gm.getLastWinner()).getName(), turnStats.get(currentTurnStats).getWinningCardName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), gm.getCommunity().size());
+					players.get(gm.getLastWinner()).getName(), turnStatsHelper.getWinningCardName(), turnStatsHelper.getTopCardByAttribute(), gm.getCommunity().size());
 		}
 
 		System.out.println(roundString);
