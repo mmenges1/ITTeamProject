@@ -185,7 +185,7 @@ public class GameManager {
 		System.out.println("playRoundNew at start - lastWinner = " + lastWinner);
 
 		// 1)
-		turnStats.add(new TurnStatsHelper(totalTurns, currentChoice, this.players, this.currentChoice));
+		turnStats.add(new TurnStatsHelper(totalTurns, currentChoice, this.players, this.currentChoice, lastWinner));
 
 		// 1)
 //		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
@@ -237,9 +237,9 @@ public class GameManager {
 //		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 		
 
-//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
+		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getTopCardByAttribute());
 
-		if (turnStats.get(currentTurnStats).getPlayer(lastWinner) instanceof Human) {
+		if (players.get(lastWinner) instanceof Human) {
 //			System.out.println(false);
 			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
 		} else {

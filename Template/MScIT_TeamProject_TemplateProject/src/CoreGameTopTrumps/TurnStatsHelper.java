@@ -14,6 +14,7 @@ public class TurnStatsHelper {
 	String winningCardName;
 	int turnNumber;
 	int winner;
+	private int lastWinner;
 	String winnerName;
 	int attributeNumberPlayed;
 	int communitySize;
@@ -26,6 +27,7 @@ public class TurnStatsHelper {
 
 	String roundString;
 	
+	
 	/**
 	 * This constructs a new turn stats helper object that manages each round
 	 * @param turnNumber
@@ -33,7 +35,7 @@ public class TurnStatsHelper {
 	 * @param players - the list of players that are currently in the game at the present round
 	 * @param currentChoice - is the index of the player in the list of players who made the choice of attribute to play this round
 	 */
-	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players, int currentChoice) {
+	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players, int currentChoice, int lastWinner) {
 		this.turnNumber = turnNumber;
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
@@ -160,22 +162,27 @@ public class TurnStatsHelper {
 	 */
 	public int determineWinner() {
 		int currentStat = 0;
-		int highestStat = 0;		
+		int highestStat = 0;	
+		int winnerIndex = this.lastWinner;
 
 		for(int i = 0; i < cardsPlayed.size(); i++) {
 			currentStat = cardsPlayed.get(i).getAttribute(attributeNumberPlayed);
 			if(currentStat > highestStat) {
 				highestStat = currentStat;
-				this.winner = i;
-				setWinnerName(this.winner);
-				isDraw = false;
-				setWinningCardName(getUserCardName(this.winner));				
+				winnerIndex = i;
+				isDraw = false;					
 			} else if (currentStat == highestStat) {
-				this.winner = currentChoice;
+				this.winner = lastWinner;
 				isDraw = true;
-				
 			}
 		}
+		
+		if(!isDraw) {
+			this.winner = winnerIndex;
+			setWinnerName(this.winner);
+			setWinningCardName(getUserCardName(this.winner));
+		}
+
 
 		return this.winner;		
 	}
@@ -206,6 +213,7 @@ public class TurnStatsHelper {
 
 	@JsonIgnore
 	public String getTopCardByAttribute() {
+		System.out.printf("TurnStatsHelper - getAnyTopCardAttribute : this.winner = %d , this.attNumberplyd = %d -1.\n", this.winner, this.attributeNumberPlayed);
 		return cardsPlayed.get(this.winner).getCriteriaName(this.attributeNumberPlayed-1 )+ " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
 
@@ -214,7 +222,7 @@ public class TurnStatsHelper {
 	 * @param playerIndex is the index of the player in this list of players
 	 * @return a message of the attribute and score for the played attribute for a player
 	 */
-	public String getAnyCardTopAttribute(int playerIndex) {
+	public String getAnyCardTopAttribute(int playerIndex) {		
 		return cardsPlayed.get(playerIndex).getCriteriaName(attributeNumberPlayed-1) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
 	}
 	
