@@ -8,9 +8,9 @@ import java.sql.SQLException;
 public class DBConnect {
 	private static Connection connection;
 
-//	public static void main(String args[]) {
-//		DBConnect();
-//	}
+	public static void main(String args[]) {
+		DBConnect();
+	}
 	
 	public static void DBConnect() {
 		connectToTopTrumpsGameDataBase();

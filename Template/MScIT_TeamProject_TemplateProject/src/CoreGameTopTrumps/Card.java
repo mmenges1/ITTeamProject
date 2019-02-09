@@ -47,37 +47,6 @@ public class Card {
 	public void setAttribute(int index, Integer value) {
 		this.attributes.set(index, value);
 	}
-//	public int getAttribute1() {
-//		return attribute1;
-//	}
-//	public void setAttribute1(int attribute1) {
-//		this.attribute1 = attribute1;
-//	}
-//	public int getAttribute2() {
-//		return attribute2;
-//	}
-//	public void setAttribute2(int attribute2) {
-//		this.attribute2 = attribute2;
-//	}
-//	public int getAttribute3() {
-//		return attribute3;
-//	}
-//	public void setAttribute3(int attribute3) {
-//		this.attribute3 = attribute3;
-//	}
-//	public int getAttribute4() {
-//		return attribute4;
-//	}
-//	public void setAttribute4(int attribute4) {
-//		this.attribute4 = attribute4;
-//	}
-//	public int getAttribute5() {
-//		return attribute5;
-//	}
-//	public void setAttribute5(int attribute5) {
-//		this.attribute5 = attribute5;
-//	}
-//	
 	public String getCriteriaName(int index) {
 		return this.criterias.get(index);
 	}
@@ -90,7 +59,7 @@ public class Card {
 	public int getIndexOfValue(int Value) {
 		return this.attributes.lastIndexOf(Value);
 	}
-	/**kw
+	/**
 	 * Get an attribute based on the selected criteria number
 	 * @param selectionCriteriaNumber
 	 * @return 
@@ -100,27 +69,22 @@ public class Card {
 		int n = 1;
 		switch (selectionCriteriaNumber) {
 		case 1: {
-//			value = this.getAttribute1();
 			value = this.getAttributeFromArrayList(1-n);
 			 break;
 		}
 		case 2: {
-//			value = this.getAttribute2();
 			value = this.getAttributeFromArrayList(2-n);
 			break;
 		}
 		case 3: {
-//			 value =this.getAttribute3();
 			value = this.getAttributeFromArrayList(3-n);
 			 break;
 		}
 		case 4: {
-//			 value  = this.getAttribute4();
 			value = this.getAttributeFromArrayList(4-n);
 			 break;
 		}
 		case 5: {
-//			value = this.getAttribute5();
 			value = this.getAttributeFromArrayList(5-n);
 			break;
 		}
@@ -131,23 +95,6 @@ public class Card {
 		return value;
 	}
 
-	//TODO: remove this method and replace all references to it with getAttribute
-//	public int returnSelectedAttr(int att) {
-//		
-//		if(att == 1) {
-//			return getAttribute1();
-//		}else if(att == 2) {
-//			return getAttribute2();
-//		}else if(att == 3) {
-//			return getAttribute3();
-//		}else if(att == 4) {
-//			return getAttribute4();
-//		}else if(att == 5) {
-//			return getAttribute5();
-//		}
-//		
-//		return -1;
-//	}
 	@Override
 	public String toString() {
 		return "Card [name=" + name + "]";
@@ -164,24 +111,5 @@ public class Card {
 					this.criterias.get(4)+ ": " + this.getAttribute(5);
 			return cardString;
 		}
-	}
-	//temporary test
-	public static void main (String[] args) {
-		Card card = new Card();
-		card.setName("Kevin");
-//		card.setAttribute1(10);
-//		card.setAttribute2(2);
-//		card.setAttribute3(3);
-//		card.setAttribute4(5);
-//		card.setAttribute5(5);
-		ArrayList<Integer> attributes = new ArrayList<Integer>();
-		attributes.add(10);
-		attributes.add(2);
-		attributes.add(3);
-		attributes.add(5);
-		attributes.add(5);
-		card.setAttributes(attributes);
-//		card.viewCard();
-		System.out.println(card.getAttribute(0));
 	}
 }
