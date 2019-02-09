@@ -182,7 +182,7 @@ public class TurnStatsHelper {
 
 	@Override
 	public String toString() {
-		return "TurnStatsHelper [cardsPlayed=" + cardsPlayed + ", turnNumber=" + turnNumber + ", winner=" + winner
+		return "TurnStatsHelper [cardsPlayed=" + cardsPlayed + ", turnNumber=" + turnNumber + ", winner=" + winner;}
 
 	/**
 	 * This method issed for Jackson Serialisation

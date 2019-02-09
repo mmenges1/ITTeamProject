@@ -32,10 +32,10 @@
 									 <h1>Top Trumps</h1>
 									 <p>&nbsp;</p>
 									 <p><div class="container-instruct">Please choose the number of opponents you would like to play against to start the game.</div></a>
-																<a role="button" onclick="setNumberOpponents(1)" class="btn btn-primary" >1 Opponent</a>
-																<a role="button" onclick="setNumberOpponents(2)" class="btn btn-primary" >2 Opponents</a>
-																<a role="button" onclick="setNumberOpponents(3)" class="btn btn-primary" >3 Opponents</a>
-																<a role="button" onclick="setNumberOpponents(4)" class="btn btn-primary" >4 Opponents</a>
+																<a role="button" onclick="setNumberOpponents(1)" id="button" class="btn btn-primary" >1 Opponent</a>
+																<a role="button" onclick="setNumberOpponents(2)" id="button" class="btn btn-primary" >2 Opponents</a>
+																<a role="button" onclick="setNumberOpponents(3)" id="button" class="btn btn-primary" >3 Opponents</a>
+																<a role="button" onclick="setNumberOpponents(4)" id="button" class="btn btn-primary" >4 Opponents</a>
 													</div>
 												</div>
 											</div>
@@ -63,10 +63,13 @@
 			height: 50px;
 			border: 1px solid transparent;
 		}
+		#button{
+			color: #ffffff;
+		}
 		.btn {
 		  display: inline-block;
 		  font-weight: 400;
-		  color: #212529;
+		  color: #ffffff;
 		  text-align: center;
 		  vertical-align: middle;
 		  background-color: transparent;
@@ -102,14 +105,6 @@
 			var numberOpponents = 4;
 			// Method that is called on page load
 			function initalize() {
-
-				// --------------------------------------------------------------------------
-				// You can call other methods you want to run when the page first loads here
-				// --------------------------------------------------------------------------
-
-				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
 
 			}
 

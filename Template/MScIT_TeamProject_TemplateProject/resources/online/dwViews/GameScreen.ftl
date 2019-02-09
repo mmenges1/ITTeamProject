@@ -32,7 +32,7 @@
 								<div id="active"><strong>Who's turn is it?</strong></div>
 								<div id="playerInformation"><p>Information we need to provide the player</p></div>
 							</div>
-							<button type="button" id="catButton" onclick="seeCategoryPage()" class="btn btn-primary">See Category Chosen</button>
+							<button type="button" id="catButton" onclick="playRound(); seeCategoryPage();" class="btn btn-primary">See Category Chosen</button>
 							<button type="button" id="roundButton" onclick="seeActivePlayer()" class="btn btn-primary">Next Round</button>
 						</section>
 						<div class="gridcontainer", "col-sm-4">
@@ -41,7 +41,7 @@
 								<img class="card-img-top" id="humanImage" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image">
 								<div class="card-img-overlay">
 									</br></br></br>
-									<h4 class="card-title">350r</h4>
+									<h4 id="humanCardName" class="card-title">350r</h4>
 									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(1)"> Size: 1</button>
 									<section> &nbsp;</section>
 									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(2)"> Speed: 9</button>
@@ -61,7 +61,7 @@
 							<img class="card-img-top" id="AI1Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Avenger.jpg" alt="Card image">
 								<div class="card-img-overlay">
 									</br></br></br>
-									<h4 class="card-title">Avenger</h4>
+									<h4 id='AI1CardName' class="card-title">Avenger</h4>
 									<button type="button" class="btn btn-primary" disabled> Size: 1</button>
 									<section> &nbsp;</section>
 									<button type="button" class="btn btn-primary"disabled> Speed: 9</button>
@@ -236,7 +236,8 @@
 			var categorySelected = 0;
 			var opponentCards = new Array();
 			var buttonElements;
-
+			var humanCardNameVar;
+			var AI1CardNameVar;
 
 			// Method that is called on page load
 			function initalize() {
@@ -245,11 +246,26 @@
 				numOpponents = queries[1];
 				buttonElements = document.querySelectorAll('[id="humanButton"]');
 
+//Step 1
+				setUpGame();
+
+
+
 				setOpponentsDisplayOff();
+
+
 				setOpponents();
+
+//Step 2 & 3
 				seeActivePlayer();
+
+
 				setHumanCardImage();
+
+
 				setCardImages();
+
+
 
 				// --------------------------------------------------------------------------
 				// You can call other methods you want to run when the page first loads here
@@ -263,6 +279,10 @@
 			function setCategory(catNumber)
 			{
 				categorySelected = catNumber;
+				//Step 4
+				sendToUserChoice();
+				//Step 5
+				playRound();
 				seeCategoryPage();
 			}
 			function disableHumanButtons()
@@ -282,6 +302,7 @@
 
 			function setActivePlayer()
 			{
+				nextPlayerHuman();
 				if(activePlayer == 0)
 				{
 					document.getElementById("active").innerHTML = "It is your turn";
@@ -318,23 +339,38 @@
 			{
 				document.getElementById('catButton').style.display = 'none';
 				document.getElementById('roundButton').style.display = 'block';
-				setOpponentsDisplayOn();
+				displayOpponentCards();
 				setInformationForPlayer();
 				disableHumanButtons();
 			}
 			function seeActivePlayer()
 			{
+				//Step 2
+				setActivePlayer();
+				//Step 3
+				displayCards();
 				document.getElementById('catButton').style.display = 'block';
 				document.getElementById('roundButton').style.display = 'none';
+				displayHumanCards();
 				setOpponentsDisplayOff();
-				setActivePlayer();
-				if (activePlayer >= 1)
+				if (activePlayer == 0)
 				{
-					disableHumanButtons();
-				}
-				else {
 					enableHumanButtons();
 				}
+				else {
+					disableHumanButtons();
+				}
+			}
+
+			function displayOpponentCards()
+			{
+				setOpponentsDisplayOn();
+			//	document.getElementById('AI1CardName').innerHTML = AI1CardNameVar;
+			}
+
+			function displayHumanCards()
+			{
+			//	document.getElementById('humanCardName').innerHTML = humanCardNameVar;
 			}
 
 			function setOpponents()
@@ -479,6 +515,246 @@
 
 				// We have done everything we need to prepare the CORS request, so send it
 				xhr.send();
+			}
+
+
+			//Moving RESTAPI functions to see where they fit in front send
+
+			function createCORSRequest(method, url) {
+		  				var xhr = new XMLHttpRequest();
+		  				if ("withCredentials" in xhr) {
+
+		    				// Check if the XMLHttpRequest object has a "withCredentials" property.
+		    				// "withCredentials" only exists on XMLHTTPRequest2 objects.
+		    				xhr.open(method, url, true);
+
+		  				} else if (typeof XDomainRequest != "undefined") {
+
+		    				// Otherwise, check if XDomainRequest.
+		    				// XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+		    				xhr = new XDomainRequest();
+		    				xhr.open(method, url);
+
+		 				 } else {
+
+		    				// Otherwise, CORS is not supported by the browser.
+		    				xhr = null;
+
+		  				 }
+		  				 return xhr;
+					}
+
+
+			function sendToUserChoice(){
+				userChoice = categorySelected;
+
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/userChoice?choice="+userChoice); // Request type and URL+parameters
+
+						// Message is not sent yet, but we can check that the browser supports CORS
+						if (!xhr) {
+							alert("CORS not supported");
+						}
+
+						// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+						// to do when the response arrives
+						xhr.onload = function(e) {
+							var responseText = xhr.response; // the text of the response
+							alert(userChoice); // lets produce an alert
+						};
+
+						// We have done everything we need to prepare the CORS request, so send it
+						xhr.send();
+			}
+
+			function sendToAIPlayers(){
+					AIPlayers = numOpponents;//document.getElementById("AIPlayers").value;
+
+					var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AIplayers?AIplayers="+AIPlayers); // Request type and URL+parameters
+
+					// Message is not sent yet, but we can check that the browser supports CORS
+					if (!xhr) {
+						alert("CORS not supported");
+					}
+
+					// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+					// to do when the response arrives
+					xhr.onload = function(e) {
+						var responseText = xhr.response; // the text of the response
+						alert(AIPlayers); // lets produce an alert
+					};
+
+					// We have done everything we need to prepare the CORS request, so send it
+					xhr.send();
+			}
+
+			function populateDisplay(str){
+
+			console.log(str);
+			console.log(JSON.parse(str));
+
+				var jsonObject = JSON.parse(str);
+
+				const statsString = JSON.stringify(jsonObject, null, '\t');
+
+		//		document.getElementById("textdisplay").innerHTML = "<pre> " + statsString + " </pre>";
+
+				//$('#textdisplay').text(JSON.stringify(jsonObject, null, '\t'));
+
+			}
+
+
+
+			function getTurnStats(){
+
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/getTurnStats"); // Request type and URL+parameters
+				var turnStats;
+
+				// Message is not sent yet, but we can check that the browser supports CORS
+				if (!xhr) {
+					alert("CORS not supported");
+				}
+
+				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+				// to do when the response arrives
+				xhr.onload = function(e) {
+						turnStats = xhr.response; // the text of the response
+						//alert(turnStats); // lets produce an alert
+						console.log(turnStats)
+						populateDisplay(turnStats);
+					};
+
+				// We have done everything we need to prepare the CORS request, so send it
+				xhr.send();
+
+				//console.log(JSON.stringify(this.turnStats));
+
+				return this.turnStats;
+
+
+			}
+
+			/* NEW FUNCTIONS BELOW */
+
+			function setUpGame(){
+				numberOfPlayers = numOpponents;
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/setUpGame?numberOfPlayers="+numberOfPlayers); // Request type and URL+parameters
+
+				// Message is not sent yet, but we can check that the browser supports CORS
+				if (!xhr) {
+					alert("CORS not supported");
+				}
+
+				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+				// to do when the response arrives
+				xhr.onload = function(e) {
+					var responseText = xhr.response; // the text of the response
+					alert(numOpponents); // lets produce an alert
+				};
+
+				// We have done everything we need to prepare the CORS request, so send it
+				xhr.send();
+			}
+
+			function nextPlayerHuman(){
+
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/isNextPlayerHuman"); // Request type and URL+parameters
+
+				// Message is not sent yet, but we can check that the browser supports CORS
+				if (!xhr) {
+					alert("CORS not supported");
+				}
+
+				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+				// to do when the response arrives
+				xhr.onload = function(e) {
+					var responseText = xhr.response; // the text of the response
+					//alert(responseText); // lets produce an alert
+					populateNextPlayerText(responseText)
+				};
+
+				// We have done everything we need to prepare the CORS request, so send it
+				xhr.send();
+
+			}
+
+			function populateNextPlayerText(str){
+
+				if(str.includes("true"))
+				{
+					activePlayer = 0;
+				}
+				else {
+					activePlayer = 1;
+				}
+			//	document.getElementById("nextPlayerDisplay").innerHTML = str
+			}
+
+			function playRound(){
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/playRound"); // Request type and URL+parameters
+
+				// Message is not sent yet, but we can check that the browser supports CORS
+				if (!xhr) {
+					alert("CORS not supported");
+				}
+
+				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+				// to do when the response arrives
+				xhr.onload = function(e) {
+					var responseText = xhr.response; // the text of the response
+					console.log(responseText); // lets produce an alert
+					populatePlayRoundDisplay(responseText)
+				};
+
+				// We have done everything we need to prepare the CORS request, so send it
+				xhr.send();
+
+			}
+
+			function populatePlayRoundDisplay(str){
+
+				var jsonObject = JSON.parse(str);
+
+				const statsString = JSON.stringify(jsonObject, null, '\t');
+
+				document.getElementById("playerInformation").innerHTML = statsString;
+
+			}
+
+				function displayCards(){
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/displayCards"); // Request type and URL+parameters
+
+				// Message is not sent yet, but we can check that the browser supports CORS
+				if (!xhr) {
+					alert("CORS not supported");
+				}
+
+				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+				// to do when the response arrives
+				xhr.onload = function(e) {
+					var responseText = xhr.response; // the text of the response
+					console.log(responseText); // lets produce an alert
+					populateDisplayCardsDisplay(responseText)
+				};
+
+				// We have done everything we need to prepare the CORS request, so send it
+				xhr.send();
+
+			}
+
+				function populateDisplayCardsDisplay(str){
+					var jsonObject = JSON.parse(str);
+
+				//	var temp = jsonObject["AI 1"][0];
+				//	AI1CardNameVar = temp;
+				//	temp = ;
+				//	humanCardNameVar = jsonObject.You.name;
+					// displayOpponentCards(jsonObject);
+					// displayHumanCards(jsonObject);
+
+					const statsString = JSON.stringify(jsonObject, null, '\t');
+
+			//		document.getElementById("displayCardsDisplay").innerHTML = "<pre> " + statsString + " </pre>";
+
 			}
 
 		</script>
