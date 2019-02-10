@@ -26,27 +26,29 @@
 
 
 		<div class="container">
-			<div class="row">
-				<div class="col-md-8 col-sm-12">
-					<div class="media">
-						<div class="media-body">
-							<h5 id="EndGame" class="mt-0">Overall number of games played</h5>
-						</div>
-						</div>
-					</div>
-				</div>
-				<hr>
+
 
 			<section>
 				<div class="jumbotron text-center mt-2">
+					<section>
+					<div id="EndGameView" class="row">
+						<div class="col-md-8 col-sm-12">
+							<div class="media">
+								<div class="media-body">
+									<h5 id="EndGame" class="mt-0"></h5>
+								</div>
+								</div>
+							</div>
+							<hr>
+
 					<div class="row">
-						<section>
-							<div class="alert alert-info">
+						<section style="float: left">
+							<div id="activePlayer" class="alert alert-info">
 								<div id="active"><strong>Who's turn is it?</strong></div>
 								<div id="playerInformation"><p>Information we need to provide the player</p></div>
 							</div>
-							<button type="button" id="catButton" onclick="playRound(); seeCategoryPage();" class="btn btn-primary">See Category Chosen</button>
-							<button type="button" id="roundButton" onclick="seeActivePlayer()" class="btn btn-primary">Next Round</button>
+							<button type="button" id="catButton" style="float: left" onclick="playRound(); seeCategoryPage();" class="btn btn-primary">See Category Chosen</button>
+							<button type="button" id="roundButton" style="float: left" onclick="seeActivePlayer()" class="btn btn-primary">Next Round</button>
 							<button type="button" id="mainScreenButton" href="../toptrumps" style="display: none" class="btn btn-primary">Main Screen</button>
 
 						</section>
@@ -271,23 +273,14 @@
 
 
 				buttonElements = document.querySelectorAll('[id="humanButton"]');
-
 				setUpGame();
 
-
-
-
-				// --------------------------------------------------------------------------
-				// You can call other methods you want to run when the page first loads here
-				// --------------------------------------------------------------------------
-
-				// For example, lets call our sample methods
-				// helloJSONList();
-				// helloWord("Student");
 
 			}
 			function displayEndGame(points)
 			{
+				document.getElementById('EndGameView').display = 'block';
+			//		document.getElementById('EndGameView2').display = 'block';
 				if(document.getElementById('Human') != null)
 				{
 					document.getElementById('Human').remove();
@@ -311,19 +304,23 @@
 				document.getElementById('roundButton').remove();
 				document.getElementById('mainScreenButton').display = "block";
 				document.getElementById('catButton').remove();
-				document.getElementById('EndGame').innerHTML =	"You won "+points[0].human+" rounds";
+				document.getElementById('activePlayer').remove();
+				document.getElementById('EndGame').innerHTML =	"You won "+points[0].human+" rounds</br><hr>";
 				if(numOpponents >= 1){
-					document.getElementById('EndGame').innerHTML += "AI 1 won "+points[0].ai1+" rounds";
+					document.getElementById('EndGame').innerHTML += "AI 1 won "+points[0].ai1+" rounds</br><hr>";
 				}
 				if(numOpponents >= 2){
-					document.getElementById('EndGame').innerHTML += "AI 2 won "+points[0].ai2+" rounds</br>";
+					document.getElementById('EndGame').innerHTML += "AI 2 won "+points[0].ai2+" rounds</br><hr>";
 				}
 				if(numOpponents >= 3){
-					document.getElementById('EndGame').innerHTML += "AI 3 won "+points[0].ai3+" rounds</br>";
+					document.getElementById('EndGame').innerHTML += "AI 3 won "+points[0].ai3+" rounds</br><hr>";
 				}
 				if(numOpponents >= 4){
-					document.getElementById('EndGame').innerHTML += "AI 4 won "+points[0].ai4+" rounds</br>";
+					document.getElementById('EndGame').innerHTML += "AI 4 won "+points[0].ai4+" rounds</br><hr>";
 				}
+
+				document.getElementById('EndGame').innerHTML +=	"Click on \"Top Trumps\" above to go back to the main screen.<hr>";
+
 
 
 			}
@@ -372,17 +369,33 @@
 
 			function setRoundInformation()
 			{
-					if(numOpponents == 1){
-						document.getElementById("playerInformation").innerHTML +=  "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString] + "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString];
+				if(document.getElementById('Human') != null)
+				{
+					document.getElementById("playerInformation").innerHTML +=  "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString];
+				}
+					if(numOpponents >= 1){
+						if(document.getElementById('AI1') != null)
+						{
+							document.getElementById("playerInformation").innerHTML +=  "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString];
+						}
 					}
-					else if(numOpponents == 2){
-						document.getElementById("playerInformation").innerHTML += "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString] + "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString] + "</br>AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString];
+					if(numOpponents >= 2){
+						if(document.getElementById('AI2') != null)
+						{
+							document.getElementById("playerInformation").innerHTML += "</br>AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString];
+						}
 					}
-					else if(numOpponents == 3){
-						document.getElementById("playerInformation").innerHTML += "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString] + "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString] + "</br>AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString] + "</br>AI 3's " + attributeList[catString]+" was: "+gameState[3].ai3[0].attributes[catString];
+				 	if(numOpponents >= 3){
+						if(document.getElementById('AI3') != null)
+						{
+							document.getElementById("playerInformation").innerHTML += "</br>AI 3's " + attributeList[catString]+" was: "+gameState[3][0].attributes[catString];
+						}
 					}
-					else if (numOpponents == 4){
-						document.getElementById("playerInformation").innerHTML += "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString] + "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString] + "</br>AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString]  + "</br>AI 3's " + attributeList[catString]+" was: "+gameState[3][0].attributes[catString] + "</br>AI 4's " + attributeList[catString]+" was: "+gameState[4][0].attributes[catString];
+					if (numOpponents >= 4){
+						if(document.getElementById('AI2') != null)
+						{
+							document.getElementById("playerInformation").innerHTML += "</br>AI 4's " + attributeList[catString]+" was: "+gameState[4][0].attributes[catString];
+						}
 					}
 			}
 
@@ -440,6 +453,13 @@
 					opponentCards[1] = document.getElementById('AI2');
 					opponentCards[2] = document.getElementById('AI3');
 				}
+				else
+				{
+					opponentCards[0] = document.getElementById('AI1');
+					opponentCards[1] = document.getElementById('AI2');
+					opponentCards[2] = document.getElementById('AI3');
+					opponentCards[3] = document.getElementById('AI4');
+				}
 			}
 
 			function setOpponentsDisplayOff()
@@ -477,7 +497,10 @@
 					}
 				}
 				else {
-					document.getElementById('Human').display = "none";
+					if(document.getElementById('Human') != null)
+					{
+						document.getElementById('Human').remove();
+					}
 				}
 
 				if(numOpponents >= 1)
@@ -497,7 +520,10 @@
 						}
 					}
 					else {
-						document.getElementById('AI1').display = "none";
+						if(document.getElementById('AI1') != null)
+						{
+							document.getElementById('AI1').remove();
+					}
 					}
 				}
 				if(numOpponents >= 2)
@@ -517,7 +543,10 @@
 						}
 					}
 					else {
-						document.getElementById('AI2').display = "none";
+						if(document.getElementById('AI2') != null)
+						{
+						document.getElementById('AI2').remove();
+					}
 					}
 				}
 				if(numOpponents >= 3)
@@ -537,12 +566,15 @@
 						}
 					}
 					else {
-						document.getElementById('AI3').display = "none";
+						if(document.getElementById('AI3') != null)
+						{
+						document.getElementById('AI3').remove();
+					}
 					}
 				}
 				if(numOpponents >= 4)
 				{
-					if(temp.hasOwnProperty("AI 2"))
+					if(temp.hasOwnProperty("AI 4"))
 					{
 						var ai4 = JSON.parse(JSON.stringify(temp["AI 4"]));
 						gameState[4] = ai4;
@@ -557,7 +589,10 @@
 						}
 					}
 					else {
-						document.getElementById('AI4').display = "none";
+						if(document.getElementById('AI14') != null)
+						{
+						document.getElementById('AI4').remove();
+					}
 					}
 				}
 
