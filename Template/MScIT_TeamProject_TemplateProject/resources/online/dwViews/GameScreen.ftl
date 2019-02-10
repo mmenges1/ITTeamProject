@@ -23,7 +23,20 @@
 	<body onload="initalize()"> <!-- Call the initalize method when the page loads -->
 		<nav class="navbar navbar-dark"><a class="navbar-brand" href="../toptrumps">Top Trumps</a></nav>
 
+
+
 		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-sm-12">
+					<div class="media">
+						<div class="media-body">
+							<h5 id="EndGame" class="mt-0">Overall number of games played</h5>
+						</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+
 			<section>
 				<div class="jumbotron text-center mt-2">
 					<div class="row">
@@ -34,6 +47,8 @@
 							</div>
 							<button type="button" id="catButton" onclick="playRound(); seeCategoryPage();" class="btn btn-primary">See Category Chosen</button>
 							<button type="button" id="roundButton" onclick="seeActivePlayer()" class="btn btn-primary">Next Round</button>
+							<button type="button" id="mainScreenButton" href="../toptrumps" style="display: none" class="btn btn-primary">Main Screen</button>
+
 						</section>
 						<div class="gridcontainer", "col-sm-4">
 							<div class="card" id="Human">
@@ -42,15 +57,15 @@
 								<div class="card-img-overlay">
 									</br></br></br>
 									<h4 id="humanCardName" class="card-title">350r</h4>
-									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(1)"> Size: 1</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(1)"> Size: 1</button>
 									<section> &nbsp;</section>
-									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(2)"> Speed: 9</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(2)"> Speed: 9</button>
 									<section> &nbsp;</section>
-									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(3)"> Range: 2</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(3)"> Range: 2</button>
 									<section> &nbsp;</section>
-									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(4)"> Firepower: 3</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(4)"> Firepower: 3</button>
 									<section> &nbsp;</section>
-									<button type="button" id="humanButton" class="btn btn-primary" onclick="setCategory(5)"> Cargo: 0</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(5)"> Cargo: 0</button>
 								</div>
 							</div>
 						</div>
@@ -62,15 +77,15 @@
 								<div class="card-img-overlay">
 									</br></br></br>
 									<h4 id='AI1CardName' class="card-title">Avenger</h4>
-									<button type="button" class="btn btn-primary" disabled> Size: 1</button>
+									<button type="button" class="btn btn-primary cat1" disabled> Size: 1</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Speed: 9</button>
+									<button type="button" class="btn btn-primary cat1"disabled> Speed: 9</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Range: 2</button>
+									<button type="button" class="btn btn-primary cat1"disabled> Range: 2</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Firepower: 3</button>
+									<button type="button" class="btn btn-primary cat1"disabled> Firepower: 3</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Cargo: 0</button>
+									<button type="button" class="btn btn-primary cat1"disabled> Cargo: 0</button>
 								</div>
 							</div>
 						</div>
@@ -83,16 +98,16 @@
 								<img class="card-img-top" id="AI2Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Carrack.jpg" alt="Card image">
 								<div class="card-img-overlay">
 									</br></br></br>
-									<h4 class="card-title">Carrack</h4>
-									<button type="button" class="btn btn-primary"disabled> Size: 1</button>
+									<h4 id='AI2CardName' class="card-title">Carrack</h4>
+									<button type="button" class="btn btn-primary cat2"disabled> Size: 1</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Speed: 9</button>
+									<button type="button" class="btn btn-primary cat2"disabled> Speed: 9</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Range: 2</button>
+									<button type="button" class="btn btn-primary cat2"disabled> Range: 2</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Firepower: 3</button>
+									<button type="button" class="btn btn-primary cat2"disabled> Firepower: 3</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Cargo: 0</button>
+									<button type="button" class="btn btn-primary cat2"disabled> Cargo: 0</button>
 								</div>
 							</div>
 						</div>
@@ -102,16 +117,16 @@
 								<img class="card-img-top" id="AI3Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Hurricane.jpg" alt="Card image">
 								<div class="card-img-overlay">
 								</br></br></br>
-									<h4 class="card-title">Hurricane</h4>
-									<button type="button" class="btn btn-primary"disabled> Size: 1</button>
+									<h4 id='AI3CardName' class="card-title">Hurricane</h4>
+									<button type="button" class="btn btn-primary cat3"disabled> Size: 1</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Speed: 9</button>
+									<button type="button" class="btn btn-primary cat3"disabled> Speed: 9</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Range: 2</button>
+									<button type="button" class="btn btn-primary cat3"disabled> Range: 2</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Firepower: 3</button>
+									<button type="button" class="btn btn-primary cat3"disabled> Firepower: 3</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Cargo: 0</button>
+									<button type="button" class="btn btn-primary cat3"disabled> Cargo: 0</button>
 								</div>
 							</div>
 						</div>
@@ -123,16 +138,16 @@
 								<img class="card-img-top" id="AI4Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Hurricane.jpg" alt="Card image">
 								<div class="card-img-overlay">
 									</br></br></br>
-									<h4 class="card-title" id="shipName">Orion</h4>
-									<button type="button" class="btn btn-primary"disabled> Size: 1</button>
+									<h4 id='AI4CardName' class="card-title" id="shipName">Orion</h4>
+									<button type="button" class="btn btn-primary cat4"disabled> Size: 1</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Speed: 9</button>
+									<button type="button" class="btn btn-primary cat4"disabled> Speed: 9</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Range: 2</button>
+									<button type="button" class="btn btn-primary cat4"disabled> Range: 2</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Firepower: 3</button>
+									<button type="button" class="btn btn-primary cat4"disabled> Firepower: 3</button>
 									<section> &nbsp;</section>
-									<button type="button" class="btn btn-primary"disabled> Cargo: 0</button>
+									<button type="button" class="btn btn-primary cat4"disabled> Cargo: 0</button>
 								</div>
 							</div>
 						</div>
@@ -225,6 +240,10 @@
 				border-color: #4d0026;
 				opacity: 1.0;
 			}
+			.media-body{
+				text-align: left;
+
+			}
 		</style>
 
 
@@ -232,38 +251,29 @@
 			var numOpponents;
 			var shipImages = ["350r.jpg", "Avenger.jpg", "Carrack.jpg", "Constellation.jpg", "Hawk.jpg", "Hornet.jpg", "Hurricane.jpg", "Merchantman.jpg", "Idris.jpg", "Orion.jpg", "Sabre.jpg", "m50.jpg"];
 			var activePlayer = 0;
-			var gameState = 0;
+			var gameState = new Array();
 			var categorySelected = 0;
 			var opponentCards = new Array();
 			var buttonElements;
 			var humanCardNameVar;
 			var AI1CardNameVar;
-
+			var AI2CardNameVar;
+			var AI3CardNameVar;
+			var AI4CardNameVar;
+			var attributeList = ["size","speed","range","firepower","cargo"];
+			var catString;
+			var currentPlayer;
 			// Method that is called on page load
 			function initalize() {
-				var query = decodeURIComponent(window.location.search);
-				var queries = query.split("=");
-				numOpponents = queries[1];
+	//			var query = decodeURIComponent(window.location.search);
+	//			var queries = query.split("=");
+	//			numOpponents = 1; //queries[1]
+
+
 				buttonElements = document.querySelectorAll('[id="humanButton"]');
 
-//Step 1
 				setUpGame();
 
-
-
-				setOpponentsDisplayOff();
-
-
-				setOpponents();
-
-//Step 2 & 3
-				seeActivePlayer();
-
-
-				setHumanCardImage();
-
-
-				setCardImages();
 
 
 
@@ -274,6 +284,47 @@
 				// For example, lets call our sample methods
 				// helloJSONList();
 				// helloWord("Student");
+
+			}
+			function displayEndGame(points)
+			{
+				if(document.getElementById('Human') != null)
+				{
+					document.getElementById('Human').remove();
+				}
+				if(document.getElementById('AI1') != null)
+				{
+					document.getElementById('AI1').remove();
+				}
+				if(document.getElementById('AI2') != null)
+				{
+					document.getElementById('AI2').remove();
+				}
+				if(document.getElementById('AI3') != null)
+				{
+					document.getElementById('AI3').remove();
+				}
+				if(document.getElementById('AI4') != null)
+				{
+					document.getElementById('AI4').remove();
+				}
+				document.getElementById('roundButton').remove();
+				document.getElementById('mainScreenButton').display = "block";
+				document.getElementById('catButton').remove();
+				document.getElementById('EndGame').innerHTML =	"You won "+points[0].human+" rounds";
+				if(numOpponents >= 1){
+					document.getElementById('EndGame').innerHTML += "AI 1 won "+points[0].ai1+" rounds";
+				}
+				if(numOpponents >= 2){
+					document.getElementById('EndGame').innerHTML += "AI 2 won "+points[0].ai2+" rounds</br>";
+				}
+				if(numOpponents >= 3){
+					document.getElementById('EndGame').innerHTML += "AI 3 won "+points[0].ai3+" rounds</br>";
+				}
+				if(numOpponents >= 4){
+					document.getElementById('EndGame').innerHTML += "AI 4 won "+points[0].ai4+" rounds</br>";
+				}
+
 
 			}
 			function setCategory(catNumber)
@@ -303,84 +354,77 @@
 			function setActivePlayer()
 			{
 				nextPlayerHuman();
-				if(activePlayer == 0)
+				//Step 3
+				displayCards();
+			}
+
+			function setInformationForPlayer(attributeList, winnerName, draw){
+				document.getElementById('active').innerHTML =currentPlayer+ " chose " + attributeList +" this round.";
+
+				if(draw.includes("true"))
 				{
-					document.getElementById("active").innerHTML = "It is your turn";
-					document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on <br /> the category buttons on your card";
+					document.getElementById("playerInformation").innerHTML = "This round is a draw! </br>"
 				}
 				else {
-					document.getElementById("active").innerHTML = "It is AI 1's turn";
-					document.getElementById("playerInformation").innerHTML = "See the category your opponent chose";
+					document.getElementById("playerInformation").innerHTML = winnerName +" won this round.";
 				}
 			}
 
-			function setInformationForPlayer()
+			function setRoundInformation()
 			{
-				document.getElementById("active").innerHTML = "Player Chose Category 1";
-				if(opponentCards.length == 1)
-				{
-					document.getElementById("playerInformation").innerHTML = "Your Speed Category: 2 <br /> AI 1 Speed Category: 3";
-				}
-				else if(opponentCards.length == 2)
-				{
-					document.getElementById("playerInformation").innerHTML = "Your Speed Category: 2 <br /> AI 1 Speed Category: 3 <br /> AI 2 Speed Category: 4";
-				}
-				else if(opponentCards.length == 3)
-				{
-					document.getElementById("playerInformation").innerHTML = "Your Speed Category: 2 <br /> AI 1 Speed Category: 3 <br /> AI 2 Speed Category: 4 <br /> AI 3 Speed Category: 4";
-				}
-				else if(opponentCards.length == 4)
-				{
-					document.getElementById("playerInformation").innerHTML = "Your Speed Category: 2 <br /> AI 1 Speed Category: 3 <br /> AI 2 Speed Category: 4 <br /> AI 3 Speed Category: 4 <br /> AI 4 Speed Category: 4";
-				}
+					if(numOpponents == 1){
+						document.getElementById("playerInformation").innerHTML +=  "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString] + "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString];
+					}
+					else if(numOpponents == 2){
+						document.getElementById("playerInformation").innerHTML += "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString] + "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString] + "</br>AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString];
+					}
+					else if(numOpponents == 3){
+						document.getElementById("playerInformation").innerHTML += "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString] + "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString] + "</br>AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString] + "</br>AI 3's " + attributeList[catString]+" was: "+gameState[3].ai3[0].attributes[catString];
+					}
+					else if (numOpponents == 4){
+						document.getElementById("playerInformation").innerHTML += "</br>Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString] + "</br>AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString] + "</br>AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString]  + "</br>AI 3's " + attributeList[catString]+" was: "+gameState[3][0].attributes[catString] + "</br>AI 4's " + attributeList[catString]+" was: "+gameState[4][0].attributes[catString];
+					}
 			}
 
 			function seeCategoryPage()
 			{
 				document.getElementById('catButton').style.display = 'none';
 				document.getElementById('roundButton').style.display = 'block';
+		//		document.getElementById('mainScreenButton').display = "none";
 				displayOpponentCards();
-				setInformationForPlayer();
 				disableHumanButtons();
 			}
 			function seeActivePlayer()
 			{
 				//Step 2
 				setActivePlayer();
-				//Step 3
-				displayCards();
+
 				document.getElementById('catButton').style.display = 'block';
 				document.getElementById('roundButton').style.display = 'none';
+		//		document.getElementById('mainScreenButton').display = "none";
 				displayHumanCards();
 				setOpponentsDisplayOff();
-				if (activePlayer == 0)
-				{
-					enableHumanButtons();
-				}
-				else {
-					disableHumanButtons();
-				}
 			}
 
 			function displayOpponentCards()
 			{
 				setOpponentsDisplayOn();
-			//	document.getElementById('AI1CardName').innerHTML = AI1CardNameVar;
+				document.getElementById('AI1CardName').innerHTML = AI1CardNameVar;
 			}
 
 			function displayHumanCards()
 			{
-			//	document.getElementById('humanCardName').innerHTML = humanCardNameVar;
+				document.getElementById('humanCardName').innerHTML = humanCardNameVar;
 			}
 
 			function setOpponents()
 			{
 				if(numOpponents == 1)
 				{
-				 document.getElementById('AI4').remove();
-				 document.getElementById('AI3').remove();
-				 document.getElementById('AI2').remove();
-				 opponentCards[0] = document.getElementById('AI1');
+					document.getElementById('AI4').remove();
+					document.getElementById('AI3').remove();
+					document.getElementById('AI2').remove();
+					opponentCards[0] = document.getElementById('AI1');
 				}
 				else if(numOpponents == 2)
 				{
@@ -415,28 +459,108 @@
 			{
 				document.getElementById('humanImage').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
 			}
-			function setCardImages()
+			function setCardImages(temp)
 			{
+				if(temp.hasOwnProperty("You"))
+				{
+					var you = JSON.parse(JSON.stringify(temp["You"]));
+					humanCardNameVar = you[0].name;
+					gameState[0] = you;
+					document.getElementById('humanCardName').innerHTML = humanCardNameVar;
+
+
+					var catButtonArray = document.getElementsByClassName('hcat');
+
+					for(i = 0; i < 5; i++)
+					{
+						catButtonArray[i].innerHTML = you[0].criterias[i]+": " + you[0].attributes[i];
+					}
+				}
+				else {
+					document.getElementById('Human').display = "none";
+				}
 
 				if(numOpponents >= 1)
 				{
-					document.getElementById('AI1Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
-				}
+					if(temp.hasOwnProperty("AI 1"))
+					{
+						var ai1 = JSON.parse(JSON.stringify(temp["AI 1"]));
+						gameState[1] = ai1;
+						AI1CardNameVar = ai1[0].name;
+						document.getElementById('AI1Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+						document.getElementById('AI1CardName').innerHTML = AI1CardNameVar;
+						catButtonArray = document.getElementsByClassName('cat1');
 
+						for(i = 0; i < 5; i++)
+						{
+							catButtonArray[i].innerHTML = ai1[0].criterias[i]+": " + ai1[0].attributes[i];
+						}
+					}
+					else {
+						document.getElementById('AI1').display = "none";
+					}
+				}
 				if(numOpponents >= 2)
 				{
-					document.getElementById('AI2Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
-				}
+					if(temp.hasOwnProperty("AI 2"))
+					{
+						var ai2 = JSON.parse(JSON.stringify(temp["AI 2"]));
+						gameState[2] = ai2;
+						AI2CardNameVar = ai2[0].name;
+						document.getElementById('AI2Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+						document.getElementById('AI2CardName').innerHTML = AI2CardNameVar;
+						catButtonArray = document.getElementsByClassName('cat2');
 
+						for(i = 0; i < 5; i++)
+						{
+							catButtonArray[i].innerHTML = ai2[0].criterias[i]+": " + ai2[0].attributes[i];
+						}
+					}
+					else {
+						document.getElementById('AI2').display = "none";
+					}
+				}
 				if(numOpponents >= 3)
 				{
-					document.getElementById('AI3Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
-				}
+					if(temp.hasOwnProperty("AI 3"))
+					{
+						var ai3 = JSON.parse(JSON.stringify(temp["AI 3"]));
+						gameState[3] = ai3;
+						AI3CardNameVar = ai3[0].name;
+						document.getElementById('AI3Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+						document.getElementById('AI3CardName').innerHTML = AI3CardNameVar;
+						catButtonArray = document.getElementsByClassName('cat3');
 
+						for(i = 0; i < 5; i++)
+						{
+							catButtonArray[i].innerHTML = ai3[0].criterias[i]+": " + ai3[0].attributes[i];
+						}
+					}
+					else {
+						document.getElementById('AI3').display = "none";
+					}
+				}
 				if(numOpponents >= 4)
 				{
-					document.getElementById('AI4Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+					if(temp.hasOwnProperty("AI 2"))
+					{
+						var ai4 = JSON.parse(JSON.stringify(temp["AI 4"]));
+						gameState[4] = ai4;
+						AI4CardNameVar = ai4[0].name;
+						document.getElementById('AI4Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
+						document.getElementById('AI4CardName').innerHTML = AI4CardNameVar;
+						catButtonArray = document.getElementsByClassName('cat4');
+
+						for(i = 0; i < 5; i++)
+						{
+							catButtonArray[i].innerHTML = ai4[0].criterias[i]+": " + ai4[0].attributes[i];
+						}
+					}
+					else {
+						document.getElementById('AI4').display = "none";
+					}
 				}
+
 			}
 
 			// -----------------------------------------
@@ -559,7 +683,7 @@
 						// to do when the response arrives
 						xhr.onload = function(e) {
 							var responseText = xhr.response; // the text of the response
-							alert(userChoice); // lets produce an alert
+						//	alert(userChoice); // lets produce an alert
 						};
 
 						// We have done everything we need to prepare the CORS request, so send it
@@ -567,7 +691,7 @@
 			}
 
 			function sendToAIPlayers(){
-					AIPlayers = numOpponents;//document.getElementById("AIPlayers").value;
+					AIPlayers = numOpponents; //document.getElementById("AIPlayers").value;
 
 					var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/AIplayers?AIplayers="+AIPlayers); // Request type and URL+parameters
 
@@ -580,7 +704,7 @@
 					// to do when the response arrives
 					xhr.onload = function(e) {
 						var responseText = xhr.response; // the text of the response
-						alert(AIPlayers); // lets produce an alert
+						//alert(AIPlayers); // lets produce an alert
 					};
 
 					// We have done everything we need to prepare the CORS request, so send it
@@ -636,8 +760,7 @@
 			/* NEW FUNCTIONS BELOW */
 
 			function setUpGame(){
-				numberOfPlayers = numOpponents;
-				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/setUpGame?numberOfPlayers="+numberOfPlayers); // Request type and URL+parameters
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/numOpponents"); // Request type and URL+parameters
 
 				// Message is not sent yet, but we can check that the browser supports CORS
 				if (!xhr) {
@@ -648,8 +771,20 @@
 				// to do when the response arrives
 				xhr.onload = function(e) {
 					var responseText = xhr.response; // the text of the response
-					alert(numOpponents); // lets produce an alert
+					numOpponents = responseText;
+					setOpponentsDisplayOff();
+					setOpponents();
+
+	//Step 2 & 3
+					seeActivePlayer();
+
+
+					setHumanCardImage();
+
+
+				//	alert(responseText); // lets produce an alert
 				};
+
 
 				// We have done everything we need to prepare the CORS request, so send it
 				xhr.send();
@@ -682,9 +817,11 @@
 				if(str.includes("true"))
 				{
 					activePlayer = 0;
+					enableHumanButtons();
 				}
 				else {
 					activePlayer = 1;
+					disableHumanButtons();
 				}
 			//	document.getElementById("nextPlayerDisplay").innerHTML = str
 			}
@@ -700,9 +837,25 @@
 				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
 				// to do when the response arrives
 				xhr.onload = function(e) {
-					var responseText = xhr.response; // the text of the response
-					console.log(responseText); // lets produce an alert
-					populatePlayRoundDisplay(responseText)
+				//	var responseText = xhr.response; // the text of the response
+				//	console.log(responseText); // lets produce an alert
+					var temp = JSON.parse(xhr.response)
+					var turnStats = JSON.parse(JSON.stringify(temp["turnStats"]));
+					var points = JSON.parse(JSON.stringify(temp["points"]));
+
+					if (!turnStats[0].hasOwnProperty("GAME")){
+						var winnerName = turnStats[0].winnerName;
+						var draw = JSON.stringify(turnStats[0].isDraw);
+						var attributeNumberPlayed = parseInt(turnStats[0].attributeNumberPlayed) - 1;
+
+						catString = attributeNumberPlayed;
+						setInformationForPlayer(attributeList[attributeNumberPlayed], winnerName, points, draw);
+						setRoundInformation();
+					}
+					else {
+						displayEndGame(points);
+					}
+			//		populatePlayRoundDisplay(responseText)
 				};
 
 				// We have done everything we need to prepare the CORS request, so send it
@@ -714,9 +867,10 @@
 
 				var jsonObject = JSON.parse(str);
 
+
 				const statsString = JSON.stringify(jsonObject, null, '\t');
 
-				document.getElementById("playerInformation").innerHTML = statsString;
+		//		document.getElementById("playerInformation").innerHTML = temp;
 
 			}
 
@@ -731,6 +885,31 @@
 				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
 				// to do when the response arrives
 				xhr.onload = function(e) {
+					var temp = JSON.parse(xhr.response)
+					var stats = JSON.parse(JSON.stringify(temp["Stats"]));
+
+					currentPlayer = stats[0].nameOfNextPlayer;
+
+					if(JSON.stringify(stats[0].nameOfNextPlayer).includes("You"))
+					{
+						activePlayer = 0;
+						document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on <br /> the category buttons on your card";
+						enableHumanButtons();
+						document.getElementById('catButton').style.display = 'none';
+						setOpponentsDisplayOff();
+					}
+					else {
+						activePlayer = 1;
+						document.getElementById("playerInformation").innerHTML = "See the category your opponent chose";
+						disableHumanButtons();
+						document.getElementById('catButton').style.display = 'block';
+						setOpponentsDisplayOff();
+					}
+
+					document.getElementById('active').innerHTML = "Round: "+ stats[0].roundNumber+"</br>"+"Current Player: "+stats[0].nameOfNextPlayer;
+
+					setCardImages(temp);
+
 					var responseText = xhr.response; // the text of the response
 					console.log(responseText); // lets produce an alert
 					populateDisplayCardsDisplay(responseText)
@@ -744,16 +923,11 @@
 				function populateDisplayCardsDisplay(str){
 					var jsonObject = JSON.parse(str);
 
-				//	var temp = jsonObject["AI 1"][0];
-				//	AI1CardNameVar = temp;
-				//	temp = ;
-				//	humanCardNameVar = jsonObject.You.name;
-					// displayOpponentCards(jsonObject);
-					// displayHumanCards(jsonObject);
+
 
 					const statsString = JSON.stringify(jsonObject, null, '\t');
 
-			//		document.getElementById("displayCardsDisplay").innerHTML = "<pre> " + statsString + " </pre>";
+					//document.getElementById("playerInformation").innerHTML = "<pre> " + statsString + " </pre>";
 
 			}
 

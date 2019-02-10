@@ -114,8 +114,7 @@
 			function setNumberOpponents(num)
 			{
 				numberOpponents = num;
-				query = "?numberOpponents=" + numberOpponents;
-				window.location.href = "../toptrumps/game"+query;
+				setUpGame(num);
 			}
 			// This is a reusable method for creating a CORS request. Do not edit this.
 			function createCORSRequest(method, url) {
@@ -147,6 +146,27 @@
 		<!-- Here are examples of how to call REST API Methods -->
 		<script type="text/javascript">
 
+
+					function setUpGame(num){
+						numberOfPlayers = num;
+						var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/setUpGame?numberOfPlayers="+numberOfPlayers); // Request type and URL+parameters
+
+						// Message is not sent yet, but we can check that the browser supports CORS
+						if (!xhr) {
+							alert("CORS not supported");
+						}
+
+						// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+						// to do when the response arrives
+						xhr.onload = function(e) {
+							var responseText = xhr.response; // the text of the response
+							console.log(responseText);
+							window.location.href = "../toptrumps/game";
+						};
+
+						// We have done everything we need to prepare the CORS request, so send it
+						xhr.send();
+					}
 			// This calls the helloJSONList REST method from TopTrumpsRESTAPI
 			function helloJSONList() {
 
