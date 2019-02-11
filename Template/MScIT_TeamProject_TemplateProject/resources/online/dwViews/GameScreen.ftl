@@ -46,8 +46,7 @@
 							</div>
 							<hr>
 
-							<div id="activePlayer" class="row">
-								<div class="col-md-8 col-sm-12">
+								<div id="activePlayer" class="col-md-8 col-sm-12">
 									<div class="media">
 										<div class="media-body">
 												<div id="activePlayer" class="navbar-brand">
@@ -59,8 +58,9 @@
 										<hr>
 									</div>
 								</div>
-
-						<div class="row">
+							</section>
+							<section>
+														<div class="row">
 						<div class="gridcontainer", "col-sm-4">
 							<div class="card" id="Human">
 							<h4>Your Card</h4>
@@ -170,6 +170,9 @@
 
 			<style>
 
+			#activePlayer{
+				float: left;
+			}
 			.card{
 				width:250px;
 				height:450px;
@@ -253,9 +256,6 @@
 			.media-body{
 				text-align: left;
 
-			}
-			#activePlayerInformation{
-				float: left-top;
 			}
 		</style>
 
@@ -952,14 +952,14 @@
 					if(JSON.stringify(stats[0].nameOfNextPlayer).includes("You"))
 					{
 						activePlayer = 0;
-						document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on <br /> the category buttons on your card";
+						document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on the category buttons on your card";
 						enableHumanButtons();
 						document.getElementById('catButton').style.display = 'none';
 						setOpponentsDisplayOff();
 					}
 					else {
 						activePlayer = 1;
-						document.getElementById("playerInformation").innerHTML = "See the category your opponent chose";
+						document.getElementById("playerInformation").innerHTML = "Click the 'See Category Chosen' button above to see the category your opponent chose.";
 						disableHumanButtons();
 						document.getElementById('catButton').style.display = 'block';
 						setOpponentsDisplayOff();
