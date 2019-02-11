@@ -50,7 +50,7 @@
 									<div class="media">
 										<div class="media-body">
 												<div id="activePlayer" class="navbar-brand">
-												</br></br>
+												</br>
 													<hr>
 													<h5 id="active"><strong>Who's turn is it?</strong></h5>
 													<hr>
@@ -321,7 +321,7 @@
 				document.getElementById('catButton').remove();
 				document.getElementById('activePlayer').remove();
 
-				document.getElementById('EndGame').innerHTML =	"</br></brYou won "+points[0].human+" rounds</br><hr>";
+				document.getElementById('EndGame').innerHTML =	"</br></br><hr></br></br>You won "+points[0].human+" rounds</br><hr>";
 				if(numOpponents >= 1){
 					document.getElementById('EndGame').innerHTML += "AI 1 won "+points[0].ai1+" rounds</br><hr>";
 				}
