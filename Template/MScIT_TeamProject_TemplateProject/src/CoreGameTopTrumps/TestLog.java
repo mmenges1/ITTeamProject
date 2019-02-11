@@ -54,7 +54,7 @@ public class TestLog
   {
 	  if (community.size() > 0)
 	  {
-		  fileString += "Community Deck has:\n" + community.toString();
+		  fileString += "Communal Deck has:\n" + community.toString();
 	  }
 	  else
 	  {
@@ -63,12 +63,12 @@ public class TestLog
 	  fileString += "\n---------------------------------------------------------------\n";
   }
 //The contents of the current cards in play (the cards from the top of the user's deck and the computer's deck(s))
-  public void addCardsInPlay(ArrayList<Card> cardsPlayed)
+  public void addCardsInPlay(TurnStatsHelper turnStats)
   {
 	  fileString += "Cards in play are:\n";
-	  for(int i = 0; i < cardsPlayed.size(); i++)
+	  for(int i = 0; i < turnStats.getCardPlayedSize(); i++)
 	  {
-		 fileString += cardsPlayed.get(i).toString() + "\n";
+		 fileString += turnStats.getPlayer(i).name + "'s " + turnStats.cardsPlayed.get(i) + "\n";
 	  }
 	  fileString += "\n---------------------------------------------------------------\n";
   }
@@ -95,5 +95,9 @@ public void addCategorySelected(int playerSize, ArrayList<User> players, TurnSta
 			fileString += players.get(i).getName() +" played "+ turnStatsHelper.getAnyCardTopAttribute(i) +"\n";
 		}
 		fileString += "\n---------------------------------------------------------------\n";
+	}
+public void addPlayerChoice(TurnStatsHelper turnStatsHelper) {
+	fileString += turnStatsHelper.getChoosingPlayerName() + " chose " + turnStatsHelper.getChoosingPlayerCriteria() + "\n";
+
 	}
 }

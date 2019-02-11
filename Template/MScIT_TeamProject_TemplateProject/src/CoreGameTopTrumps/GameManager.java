@@ -185,6 +185,7 @@ public class GameManager {
 
 		// 1)
 		turnStats.add(new TurnStatsHelper(totalTurns, currentChoice, this.players, this.currentChoice));
+		turnStats.add(new TurnStatsHelper(totalTurns, currentChoice, this.players, lastWinner));
 
 		// 1)
 //		turnStats.add(new TurnStatsHelper(totalRounds, cardChoice, players));
@@ -193,29 +194,30 @@ public class GameManager {
 		// 2)
 		for(int i = 0; i < players.size(); i++ ) {
 //		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
-//			System.out.println(this.players.get(i).getName()); //checks who's cards are added to deck
+
 			turnStats.get(currentTurnStats).addPlayerHandSize(this.players.get(i).getHandSize());
 			turnStats.get(currentTurnStats).addCardToCardsPlayed(this.players.get(i).getTopCard());	
 			players.get(i).discardTopCard();
 		}
-		testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
+		testLog.addCardsInPlay(turnStats.get(currentTurnStats));
+		testLog.addPlayerChoice(turnStats.get(currentTurnStats));
 		// 3)
 		turnStats.get(currentTurnStats).determineWinner();
-		
 		// 4)
 		if(!turnStats.get(currentTurnStats).getIsDraw()) {
 			lastWinner = turnStats.get(currentTurnStats).getWinner();
 			players.get(lastWinner).addCards(turnStats.get(currentTurnStats).passCardsPlayed());
 			players.get(lastWinner).addCards(community);
 			players.get(lastWinner).incrementScore();
+			testLog.addCategorySelected(turnStats.get(currentTurnStats).getPlayerSize(), players, turnStats.get(currentTurnStats));
 			testLog.addCommunalDeck(community);
 			community.clear();
 			points.increment(turnStats.get(currentTurnStats).getWinnerName());
-			testLog.addCardsInPlay(turnStats.get(currentTurnStats).cardsPlayed);
 		} else {
 			// 5)
 			gameStatsData.setNumberOfDrawsInGamePlusOne();
 			community.addAll(turnStats.get(currentTurnStats).passCardsPlayed());
+			testLog.addCategorySelected(turnStats.get(currentTurnStats).getPlayerSize(), players, turnStats.get(currentTurnStats));
 			testLog.addCommunalDeck(community);
 			points.increment("Draw");
 		}
@@ -236,7 +238,7 @@ public class GameManager {
 //		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 		
 
-		testLog.addCategorySelected(turnStats.get(currentTurnStats).getPlayerSize(), players, turnStats.get(currentTurnStats));
+	
 		
 		if (turnStats.get(currentTurnStats).getWinner() == 0) {
 //			System.out.println(false);

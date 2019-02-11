@@ -19,65 +19,6 @@ public class InputReader {
 	
 	private static Scanner sc = new Scanner(System.in);
 	
-	
-	/* my method for parsing money: works by requesting a double 
-	 * and then using testMoneyFormat() to check if there are <= 2
-	 * Decimal places after the point 
-	 */
-	public int parseMoney() {
-		
-		//Made an input reader class so that I can use the private method testMoneyFormat();
-		InputReader tester = new InputReader(); 
-		
-		int penceVal = 0;		
-		double moneyValue = 0;
-		boolean correctFormat = false;
-		
-		while (!correctFormat) {
-			String thisScan = sc.nextLine();
-			
-			try {
-				Scanner t = new Scanner(thisScan);
-				moneyValue = t.nextDouble(); 
-				t.close();
-				if(tester.testMoneyFormat(moneyValue)) { //returns true if correct format
-					penceVal = (int)(moneyValue*100);
-					correctFormat = true;
-				} else {
-					throw new InputMismatchException();
-				}
-				
-			}catch(InputMismatchException e) {
-				System.out.println("Please re-enter in the format of pounds and pence with a decimal point\n");
-				correctFormat = false;
-			}catch(NoSuchElementException b) {
-				System.out.println("Please re-enter in the format of pounds and pence with a decimal point\n");
-				correctFormat = false;
-			}
-			
-		}
-		
-		
-		return penceVal;
-		
-	}
-		
-	
-	//Method for reading strings - only an empty string is rejected
-	public String parseString() {
-
-		String input = sc.nextLine();
-		
-		while(input.isEmpty()) {
-			System.out.println("Please enter some text");
-			input = sc.nextLine();
-		}
-			
-//		System.out.println(input);
-				
-		return input;
-	}
-	
 	//Receives any key input from user as a means of acknowledgement
 	public void pressEnter() {
 		
@@ -115,19 +56,4 @@ public class InputReader {
 		return inInt;
 	}
 	
-	
-	private boolean testMoneyFormat(double input) {
-		
-		//This method splits the string at the decimal place (splitting using the period did not seem to work)
-		String[] testValue = String.valueOf(input).replace(".", "@").split("@");
-		
-		//if the number of digits after the decimal point is less <=2 then return true
-		if(testValue[1].length() <= 2) {
-			return true;
-		}		
-		
-		return false;
-	}
-	
-
 }
