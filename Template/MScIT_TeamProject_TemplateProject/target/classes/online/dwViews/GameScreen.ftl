@@ -21,7 +21,7 @@
 	</head>
 
 	<body onload="initalize()"> <!-- Call the initalize method when the page loads -->
-		<nav class="navbar navbar-dark"><a class="navbar-brand" href="../toptrumps">Top Trumps</a>
+		<nav class="navbar navbar-dark fixed-top"><a class="navbar-brand" href="../toptrumps">Top Trumps</a>
 
 				<button type="button" id="catButton" onclick="playRound(); seeCategoryPage();" class="btn btn-primary">See Category Chosen</button>
 				<button type="button" id="roundButton" onclick="seeActivePlayer()" class="btn btn-primary">Next Round</button>
@@ -50,7 +50,10 @@
 									<div class="media">
 										<div class="media-body">
 												<div id="activePlayer" class="navbar-brand">
+												</br>
+													<hr>
 													<h5 id="active"><strong>Who's turn is it?</strong></h5>
+													<hr>
 													<div id="playerInformation"><p>Information we need to provide the player</p></div>
 												</div>
 										</div>
@@ -209,6 +212,7 @@
 				background-position: center; /* Center the image */
 				background-repeat: no-repeat; /* Do not repeat the image */
 				background-size: cover; /* Resize the background image to cover the entire container */
+
 			}
 			.container, .jumbotron{
 				background-color: #ffffff;
@@ -316,7 +320,8 @@
 				document.getElementById('mainScreenButton').display = "block";
 				document.getElementById('catButton').remove();
 				document.getElementById('activePlayer').remove();
-				document.getElementById('EndGame').innerHTML =	"You won "+points[0].human+" rounds</br><hr>";
+
+				document.getElementById('EndGame').innerHTML =	"</br></br><hr></br>You won "+points[0].human+" rounds</br><hr>";
 				if(numOpponents >= 1){
 					document.getElementById('EndGame').innerHTML += "AI 1 won "+points[0].ai1+" rounds</br><hr>";
 				}
@@ -496,8 +501,7 @@
 					humanCardNameVar = you[0].name;
 					gameState[0] = you;
 					document.getElementById('humanCardName').innerHTML = humanCardNameVar;
-
-
+					setHumanCardImage();
 					var catButtonArray = document.getElementsByClassName('hcat');
 
 					for(i = 0; i < 5; i++)
@@ -952,7 +956,7 @@
 					if(JSON.stringify(stats[0].nameOfNextPlayer).includes("You"))
 					{
 						activePlayer = 0;
-						document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on <br /> the category buttons on your card";
+						document.getElementById("playerInformation").innerHTML = "Please choose a category by clicking on the category buttons on your card";
 						enableHumanButtons();
 						document.getElementById('catButton').style.display = 'none';
 						setOpponentsDisplayOff();
