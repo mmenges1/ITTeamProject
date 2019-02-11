@@ -128,10 +128,17 @@ public class Card {
 		}
 		return value;
 	}
-
+	
+	public String communityString() {
+		return "Card [name=" + name + "]";
+	}
 	@Override
 	public String toString() {
-		return "Card [name=" + name + "]";
+		return "Card [name=" + name + " | " + this.criterias.get(0) + ": " + this.getAttribute(1) + " | " +
+				this.criterias.get(1) + ": " + this.getAttribute(2)  + " | " +
+				this.criterias.get(2) + ": "+ this.getAttribute(3) + " | " +
+				this.criterias.get(3) + ": "+ this.getAttribute(4)+ " | " +
+				this.criterias.get(4)+ ": " + this.getAttribute(5) + "]";
 	}	
 	
 	/**
@@ -154,6 +161,13 @@ public class Card {
 	public static void main (String[] args) {
 		Card card = new Card();
 		card.setName("Kevin");
+		ArrayList<String> criterias = new ArrayList<String>();
+		criterias.add("Size");
+		criterias.add("Speed");
+		criterias.add("Range");
+		criterias.add("Strength");
+		criterias.add("Height");
+		card.setCriteria(criterias);
 //		card.setAttribute1(10);
 //		card.setAttribute2(2);
 //		card.setAttribute3(3);
@@ -167,6 +181,7 @@ public class Card {
 		attributes.add(5);
 		card.setAttributes(attributes);
 //		card.viewCard();
-		System.out.println(card.getAttribute(0));
+		System.out.println(card);
+//		System.out.println(card.getAttribute(0));
 	}
 }
