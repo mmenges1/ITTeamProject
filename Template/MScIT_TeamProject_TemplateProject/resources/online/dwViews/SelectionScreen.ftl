@@ -32,10 +32,10 @@
 									 <h1>Top Trumps</h1>
 									 <p>&nbsp;</p>
 									 <p><div class="container-instruct">Please choose the number of opponents you would like to play against to start the game.</div></a>
-																<a role="button" onclick="setNumberOpponents(1)" class="btn btn-primary" >1 Opponent</a>
-																<a role="button" onclick="setNumberOpponents(2)" class="btn btn-primary" >2 Opponents</a>
-																<a role="button" onclick="setNumberOpponents(3)" class="btn btn-primary" >3 Opponents</a>
-																<a role="button" onclick="setNumberOpponents(4)" class="btn btn-primary" >4 Opponents</a>
+																<a role="button" id="button" onclick="setNumberOpponents(1)" class="btn btn-primary" >1 Opponent</a>
+																<a role="button" id="button" onclick="setNumberOpponents(2)" class="btn btn-primary" >2 Opponents</a>
+																<a role="button" id="button" onclick="setNumberOpponents(3)" class="btn btn-primary" >3 Opponents</a>
+																<a role="button" id="button" onclick="setNumberOpponents(4)" class="btn btn-primary" >4 Opponents</a>
 													</div>
 												</div>
 											</div>
@@ -63,6 +63,9 @@
 			height: 50px;
 			border: 1px solid transparent;
 		}
+		#button{
+				color: #ffffff;
+			}
 		.btn {
 		  display: inline-block;
 		  font-weight: 400;
@@ -108,8 +111,8 @@
 				// --------------------------------------------------------------------------
 
 				// For example, lets call our sample methods
-				helloJSONList();
-				helloWord("Student");
+				// helloJSONList();
+				// helloWord("Student");
 
 			}
 
@@ -119,8 +122,7 @@
 			function setNumberOpponents(num)
 			{
 				numberOpponents = num;
-				query = "?numberOpponents=" + numberOpponents;
-				window.location.href = "../toptrumps/game"+query;
+				setUpGame(num);
 			}
 			// This is a reusable method for creating a CORS request. Do not edit this.
 			function createCORSRequest(method, url) {
@@ -151,7 +153,28 @@
 
 		<!-- Here are examples of how to call REST API Methods -->
 		<script type="text/javascript">
+//		STEP 1 - /setUpGame - set up game and select the number of AI players
+//		This is NOT safe to call in the middle of a game, it will restart
+		function setUpGame(num){
+						numberOfPlayers = num;
+						var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/setUpGame?numberOfPlayers="+numberOfPlayers); // Request type and URL+parameters
 
+						// Message is not sent yet, but we can check that the browser supports CORS
+						if (!xhr) {
+							alert("CORS not supported");
+						}
+
+						// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
+						// to do when the response arrives
+						xhr.onload = function(e) {
+							var responseText = xhr.response; // the text of the response
+							console.log(responseText);
+							window.location.href = "../toptrumps/game";
+						};
+
+						// We have done everything we need to prepare the CORS request, so send it
+						xhr.send();
+					}
 			// This calls the helloJSONList REST method from TopTrumpsRESTAPI
 			function helloJSONList() {
 
