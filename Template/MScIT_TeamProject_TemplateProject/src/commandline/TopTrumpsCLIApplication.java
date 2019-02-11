@@ -38,7 +38,7 @@ public class TopTrumpsCLIApplication {
 				CLIview.dealAndPlay(4);
 				
 				if (writeGameLogsToFile){
-					GameManager.printLogFile();
+					CLIview.printLogFile();
 				}
 				
 			} else {

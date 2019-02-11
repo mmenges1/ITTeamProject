@@ -11,7 +11,7 @@ import CoreGameTopTrumps.User;
 public class CommandLineView {
 	
 	private ArrayList<User> players;
-	private ArrayList<TurnStatsHelper> turnStats;
+	private TurnStatsHelper turnStatsHelper;
 	GameManager gm;
 
 	public static void main(String[] args) {
@@ -32,10 +32,6 @@ public class CommandLineView {
 		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
 		while(true) {			
 			playerChoice = initialPlayerChoice();
-			
-			//get player choice within a set player choice
-			
-//			System.out.println("CLUview - init Player Choice " + playerChoice);
 
 			if(playerChoice == 1) {
 				
@@ -56,9 +52,7 @@ public class CommandLineView {
 	
 	public void displayPreviousGameStats() {
 		
-		//Currently set to a mock method!!
 		String previousStats = gm.getPreviousGameStats().toString();
-		
 		
 		System.out.println(previousStats);
 		
@@ -70,10 +64,22 @@ public class CommandLineView {
 		playGame();
 	}
 	
+	public void printLogFile() {
+		gm.printLogFile();
+	}
+	
 	private void playGame() {
+		
+		@SuppressWarnings("unused")
+		boolean humanStillInGame = true;
 		
 		do {
 			players = gm.getPlayers();
+			
+			if(!(players.get(0) instanceof Human) && (humanStillInGame == true)){
+					notifyPlayerOut();	
+					humanStillInGame = false;
+			}
 			
 			if(gm.determinNextPlayer()) {
 				gm.setCurrentChoice(userChooseAttribute());
@@ -84,10 +90,10 @@ public class CommandLineView {
 			
 			displayStateOfPlay();
 			
-			gm.playRoundNew();
+			gm.playRound();
 			
 			players = gm.getPlayers();
-			turnStats = gm.getTurnStats();
+			turnStatsHelper = gm.getTurnStatsHelper();
 			
 			displayRoundSummery();
 			
@@ -98,9 +104,14 @@ public class CommandLineView {
 	
 	}
 
+	private void notifyPlayerOut() {
+		System.out.println("\nYou are out of cards! AI taking over ");
+		InputReader in = new InputReader();
+		in.pressEnter();
+	}
+
 	private void displayStateOfPlay() {
 		
-		int currentChoice = gm.getCurrentChoice();
 		int lastWinner = gm.getLastWinner();
 		int totalRounds = gm.getTotalRounds();
 		
@@ -122,9 +133,7 @@ public class CommandLineView {
 				
 				System.out.println(preRoundString);
 			
-		}
-		
-		
+		}	
 	}
 
 	private boolean askUserQuit() {
@@ -132,42 +141,30 @@ public class CommandLineView {
 		return false;
 	}
 
-	/* displayRoundSummery() displays the text that the user sees on the screen.
-	*  it uses turnStats to get the necissary data
-	*
-	*  1) Intantiates the integer which represents the current turn within the turnStats arraylist
-	*  2) Loops through players to print format their name, card, attribute and remaining deck size.
-		The if condition can probibly be removed as now gameOver() removes players with no cards
-	*  3) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
-
-	*/
+	
 	private void displayRoundSummery() {
 		InputReader in = new InputReader();
-		
-		// 1)
-		int currentTurnStats = turnStats.size()-1;
 
-		// 2)
 		for(int i = 0; i < players.size(); i++) {
 			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
-					turnStats.get(currentTurnStats).getPlayer(i).getName(),
-					turnStats.get(currentTurnStats).getUserCardName(i),
-					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					turnStatsHelper.getPlayer(i).getName(),
+					turnStatsHelper.getUserCardName(i),
+					turnStatsHelper.getAnyCardTopAttribute(i),
 					players.get(i).getHandSize(),
-					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i));
+					turnStatsHelper.returnDifferenceHandSize(players.get(i), i));
 		}
 
 		String roundString = "";
 
-		// 4)
-		if(turnStats.get(currentTurnStats).getIsDraw()) {
+
+		if(turnStatsHelper.getIsDraw()) {
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
 					+ "\n\nCommunity deck size is currently: %d",
 					gm.getCommunity().size());
 		} else {
 			roundString = String.format("\n%s won using %s with %s. "
 					+ "\n\nCommunity deck size is currently: %d",
-					players.get(gm.getLastWinner()).getName(), turnStats.get(currentTurnStats).getWinningCardName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), gm.getCommunity().size());
+					players.get(gm.getLastWinner()).getName(), turnStatsHelper.getWinningCardName(), turnStatsHelper.getTopCardByAttribute(), gm.getCommunity().size());
 		}
 
 		System.out.println(roundString);
@@ -175,30 +172,7 @@ public class CommandLineView {
 		if(players.get(0) instanceof Human) {
 			in.pressEnter();
 		}
-		
-		
-		/**
-		 * Iterate through list of players
-		 * If a player has no more cards left, a message displays that they've been knocked out
-		 * If this is true and that player comes before the winning player, the index of that winning player
-		 * is adjusted accordingly for the next round
-		 * The losing player is then removed from the list
-		 * i needs to be decremented as the size is shortened when a player is removed on each iteration
-		 */
-//		for (int i = 0; i < players.size();i++) {
-//			if (this.players.get(i).userLoses()) {
-//				System.out.println("\n" + this.players.get(i).getName() + " has been knocked out!");
-//				if (i < this.lastWinner) {
-//					this.lastWinner--;
-//				}
-//				this.players.remove(i);
-//				i--;
-//			} else {
-//				System.out.println("\n" + this.players.get(i).getName() + " to play next round!");
-//			}
-//		}
 
-		
 	}
 
 	public int initialPlayerChoice() {

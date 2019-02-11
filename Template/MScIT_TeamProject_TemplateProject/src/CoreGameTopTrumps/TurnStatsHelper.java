@@ -12,19 +12,16 @@ public class TurnStatsHelper {
 	ArrayList<Card> cardsPlayed;
 	ArrayList<User> players;
 	String winningCardName;
-	int turnNumber;
 	int winner;
+	private int lastWinner;
 	String winnerName;
 	int attributeNumberPlayed;
 	int communitySize;
 	boolean isDraw;
-	boolean gameOver;
-	
-	@JsonIgnore
-	int currentChoice;
 	ArrayList<Integer> playerHandSizes;
 
 	String roundString;
+	
 	
 	/**
 	 * This constructs a new turn stats helper object that manages each round
@@ -33,25 +30,15 @@ public class TurnStatsHelper {
 	 * @param players - the list of players that are currently in the game at the present round
 	 * @param currentChoice - is the index of the player in the list of players who made the choice of attribute to play this round
 	 */
-	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players, int currentChoice) {
-		this.turnNumber = turnNumber;
+	public TurnStatsHelper(int attributeNumberPlayed, ArrayList<User> players,int lastWinner) {
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
 		this.players = new ArrayList<User>(players);
-		this.currentChoice = currentChoice;
 		playerHandSizes = new ArrayList<Integer>(); // used to work out difference between old and new hand size 
 	}
 
-	/*
-	 * This method returns the numerical represenation of the attribute that was played based on the index of the arraylist
-	 * of criteria in card object
-	 * @return index of criteria that was played for round
-	 */
-	public int getcurrentChoice() {
-		return this.currentChoice;
-	}
 
-	/*
+	/**
 	 * This method adds a card from all available players to a deck for this round
 	 * @param card object from each player
 	 */
@@ -160,36 +147,46 @@ public class TurnStatsHelper {
 	 */
 	public int determineWinner() {
 		int currentStat = 0;
-		int highestStat = 0;		
+		int highestStat = 0;	
+		int winnerIndex = this.lastWinner;
 
 		for(int i = 0; i < cardsPlayed.size(); i++) {
 			currentStat = cardsPlayed.get(i).getAttribute(attributeNumberPlayed);
 			if(currentStat > highestStat) {
 				highestStat = currentStat;
-				this.winner = i;
-				setWinnerName(this.winner);
-				isDraw = false;
-				setWinningCardName(getUserCardName(this.winner));				
+				winnerIndex = i;
+				isDraw = false;					
 			} else if (currentStat == highestStat) {
-				this.winner = currentChoice;
+				this.winner = lastWinner;
 				isDraw = true;
-				
 			}
 		}
+		
+		if(!isDraw) {
+			this.winner = winnerIndex;
+			setWinnerName(this.winner);
+			setWinningCardName(getUserCardName(this.winner));
+		}
+
 
 		return this.winner;		
 	}
 
 
 	/**
-	 * This method issed for Jackson Serialisation
-   * sets the community deck size depending on 
+	 * This method is used for Jackson Serialisation
+     * sets the community deck size depending on 
 	 * @param size
 	 */
 	public void setCommunitySize(int size) {
 		this.communitySize = size;		
 	}
-  
+	
+	/**
+	 * This method is used for Jackson Serialisation
+     * sets the community deck size depending on 
+	 * @return size
+	 */  
 	public int getCommunitySize() {
 		return this.communitySize;		
 	}
@@ -199,7 +196,7 @@ public class TurnStatsHelper {
 	 * @return the winning card attribute  and score
 	 */
 
-  @JsonIgnore
+	@JsonIgnore
 	public String getTopCardByAttribute() {
 		return cardsPlayed.get(this.winner).getCriteriaName(this.attributeNumberPlayed-1 )+ " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
@@ -209,7 +206,7 @@ public class TurnStatsHelper {
 	 * @param playerIndex is the index of the player in this list of players
 	 * @return a message of the attribute and score for the played attribute for a player
 	 */
-	public String getAnyCardTopAttribute(int playerIndex) {
+	public String getAnyCardTopAttribute(int playerIndex) {		
 		return cardsPlayed.get(playerIndex).getCriteriaName(attributeNumberPlayed-1) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
 	}
 	
@@ -228,7 +225,7 @@ public class TurnStatsHelper {
 	 * @return a number of cards played
 	 */
 
-  @JsonIgnore
+	@JsonIgnore
 	public int getCardPlayedSize() {
 		return cardsPlayed.size();
 	}
@@ -257,17 +254,4 @@ public class TurnStatsHelper {
 	public void setWinnerName(int winner) {
 		this.winnerName = players.get(winner).getName();
 	}
-	
-	public boolean getGameOver() {
-		return gameOver;
-	}
-	
-	public void setGameOver(boolean gameOver) {
-		this.gameOver = gameOver;
-	}
-	
-	
-		
-	
-
 }
