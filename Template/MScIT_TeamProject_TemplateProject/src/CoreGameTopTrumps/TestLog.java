@@ -73,11 +73,11 @@ public class TestLog
 	  fileString += "\n---------------------------------------------------------------\n";
   }
 // The category selected and corresponding values when a user or computer selects a category
-  public void addCategorySelected(String name, String topCardByAttribute)
-  {
-	  fileString += name + " chose " + topCardByAttribute;
-	  fileString += "\n---------------------------------------------------------------\n";
-  }
+//  public void addCategorySelected(String name, String arrayList)
+//  {
+//	  fileString += name + " chose " + arrayList;
+//	  fileString += "\n---------------------------------------------------------------\n";
+//  }
 //The winner of the game
   public void addWinner(User user)
   {
@@ -89,5 +89,11 @@ public class TestLog
 	  fileString += scores;
 	  fileString += "\n---------------------------------------------------------------\n";
   }
-
+//The category selected and corresponding values when a user or computer selects a category
+public void addCategorySelected(int playerSize, ArrayList<User> players, TurnStatsHelper turnStatsHelper) {
+		for(int i = 0; i < playerSize; i++){
+			fileString += players.get(i).getName() +" played "+ turnStatsHelper.getAnyCardTopAttribute(i) +"\n";
+		}
+		fileString += "\n---------------------------------------------------------------\n";
+	}
 }

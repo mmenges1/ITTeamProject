@@ -236,8 +236,8 @@ public class GameManager {
 //		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
 		
 
-//		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStats.get(currentTurnStats).getAnyCardTopAttribute(lastWinner));
-
+		testLog.addCategorySelected(turnStats.get(currentTurnStats).getPlayerSize(), players, turnStats.get(currentTurnStats));
+		
 		if (turnStats.get(currentTurnStats).getWinner() == 0) {
 //			System.out.println(false);
 			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
@@ -264,8 +264,9 @@ public class GameManager {
 			return false;
 		} else {
 		*/
-
-
+		
+		//test log player's decks
+		testLog.addPlayerDeck(players);
 	}
 	
 

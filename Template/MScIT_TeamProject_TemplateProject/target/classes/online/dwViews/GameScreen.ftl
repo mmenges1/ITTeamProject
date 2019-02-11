@@ -321,7 +321,7 @@
 				document.getElementById('catButton').remove();
 				document.getElementById('activePlayer').remove();
 
-				document.getElementById('EndGame').innerHTML =	"</br></br><hr></br></br>You won "+points[0].human+" rounds</br><hr>";
+				document.getElementById('EndGame').innerHTML =	"</br></br><hr></br>You won "+points[0].human+" rounds</br><hr>";
 				if(numOpponents >= 1){
 					document.getElementById('EndGame').innerHTML += "AI 1 won "+points[0].ai1+" rounds</br><hr>";
 				}
