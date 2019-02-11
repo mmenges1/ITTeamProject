@@ -131,7 +131,12 @@ public class Card {
 
 	@Override
 	public String toString() {
-		return "Card [name=" + name + "]";
+		return "Card [name=" + name +" " + 	
+				this.criterias.get(0)  + "=" + this.getAttribute(1) + " " + 
+				this.criterias.get(1) + "=" + this.getAttribute(2) + " " + 
+				this.criterias.get(2) + "=" + this.getAttribute(3) + " " + 
+				this.criterias.get(3) + "=" + this.getAttribute(4) + " " +  
+				this.criterias.get(4) + "=" + this.getAttribute(5) + "]";
 	}	
 	
 	/**

@@ -149,7 +149,14 @@ public class TurnStatsHelper {
 	public void setWinningCardName(String name) {
 		this.winningCardName = name;
 	}
-
+	
+	public String getChoosingPlayerName() {
+		return this.players.get(this.currentChoice).getName();
+	}
+	
+	public String getChoosingPlayerCriteria() {
+		return this.cardsPlayed.get(this.currentChoice).getCriteriaName(this.attributeNumberPlayed-1);
+	}
 
 	/**
 	 * This method is used to determine the winner of the round by comparing the value for the played criteria of each card
