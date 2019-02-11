@@ -156,6 +156,14 @@ abstract public class User {
 	public boolean userLoses() {
 		return this.hand.size() == 0;
 	}
+	
+	public void incrementScore() { //checking something
+		this.score++;
+	}
+	
+	public int getScore() {
+		return this.score;
+	}
 
 	public String toString() {
 		return this.name + ": You have " + this.getHandSize() + " cards in your deck.";

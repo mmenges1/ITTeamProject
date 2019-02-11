@@ -41,26 +41,20 @@ public class TestLog
   {
 	  for(int i = 0; i < player.size(); i++)
 	  {
-		  fileString += player.get(i).getName() +": \n";
+		  fileString += player.get(i).getName() +"\n";
 		  for(int j = 0; j < player.get(i).getHandSize(); j++)
 		  {
-			  fileString += player.get(i).getHand().get(j).communityString() + "\n";
+			  fileString += player.get(i).getHand().get(j).toString() + "\n";
 		  }
 	  }
 	  fileString += "\n---------------------------------------------------------------\n";
   }
 //  The contents of the communal pile when cards are added or removed from it
   public void addCommunalDeck(ArrayList<Card> community)
-  {		String cards = "";
+  {
 	  if (community.size() > 0)
-	  {  for (int i = 0; i < community.size(); i++) {
-		  if (i == (community.size()-1)) {
-			  cards += community.get(i).getName();
-		  } else {
-			  cards += community.get(i).getName() + " | ";
-		  }
-	  }
-		  fileString += "Community Deck has: [" + cards + "]";
+	  {
+		  fileString += "Community Deck has:\n" + community.toString();
 	  }
 	  else
 	  {
@@ -74,63 +68,26 @@ public class TestLog
 	  fileString += "Cards in play are:\n";
 	  for(int i = 0; i < cardsPlayed.size(); i++)
 	  {
-		 fileString +=  cardsPlayed.get(i).toString() + "\n";
+		 fileString += cardsPlayed.get(i).toString() + "\n";
 	  }
 	  fileString += "\n---------------------------------------------------------------\n";
   }
-
-  // The category selected and corresponding values when a user or computer selects a category
+// The category selected and corresponding values when a user or computer selects a category
   public void addCategorySelected(String name, String topCardByAttribute)
   {
 	  fileString += name + " chose " + topCardByAttribute;
 	  fileString += "\n---------------------------------------------------------------\n";
   }
-
-  /*
-   * This method will write to file, the winner of the game
-   * @param the remaining user
-   */
+//The winner of the game
   public void addWinner(User user)
   {
 	  fileString += "Winner: " + user.getName();
 	  fileString += "\n---------------------------------------------------------------\n";
   }
   
-  /**
-   * This method will write to file, the cards that were played including the card name and attributes
-   * @param turnStatsHelper containing the player and played card details for a round
-   */
-public void addCardsInPlay(TurnStatsHelper turnStatsHelper) {
-	  {
-		  fileString += "Cards in play are:\n";
-		  for(int i = 0; i < turnStatsHelper.cardsPlayed.size(); i++)
-		  {
-			 fileString += turnStatsHelper.getPlayer(i).getName() + "'s : " +  turnStatsHelper.cardsPlayed.get(i).toString() + "\n";
-		  }
-		  fileString += "\n---------------------------------------------------------------\n";
-	  }
-	}
+  public void addScores(String scores) {
+	  fileString += scores;
+	  fileString += "\n---------------------------------------------------------------\n";
+  }
 
-/**
- * This method writes to file, each players deck. It is called after each round is played
- * @param players that played in the previous round
- */
-public void addDeckAfterRound(ArrayList<User> players) {
-	  {
-		  fileString += "Player decks after previous round:\n";
-		  for(int i = 0; i < players.size(); i++)
-		  {
-			  String s = "";
-			  for (int j = 0; j < players.get(i).getHandSize(); j++) {
-				  if (j == (players.get(i).getHandSize()-1)) {
-				  s += players.get(i).getHand().get(j).name;
-			  } else {
-				  s += players.get(i).getHand().get(j).name + " | ";
-			  }
-			  }
-			 fileString += players.get(i).getName() + "'s deck: [" + s  + "]" + "\n";
-		  }
-		  fileString += "\n---------------------------------------------------------------\n";
-	  }
-	}
 }
