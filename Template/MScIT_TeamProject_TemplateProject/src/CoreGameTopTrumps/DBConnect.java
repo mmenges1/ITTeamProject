@@ -3,14 +3,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.postgresql.util.PSQLException;
+
 
 public class DBConnect {
 	private static Connection connection;
-
-	public static void main(String args[]) {
-		DBConnect();
-	}
 	
 	public static void DBConnect() {
 		connectToTopTrumpsGameDataBase();
@@ -25,11 +21,11 @@ public class DBConnect {
 	  		Class.forName("org.postgresql.Driver");
 	  		connection = DriverManager.getConnection(url, userName, password);
 	  	}
-	    catch (SQLException | ClassNotFoundException e)
+	    catch (SQLException | ClassNotFoundException e)	
 	    {
 	    	System.err.println("You are not connected to the database!");
-//	    	GameManager.mainGame();
-	    	e.printStackTrace();
+//	    	e.printStackTrace();
+	    	connection = null;
 	    }
 	  	return connection;
 	}

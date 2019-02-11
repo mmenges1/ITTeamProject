@@ -32,6 +32,9 @@ private Connection connectionToDatabase;
 		DBCon = new DBConnect();
 		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
 		StringBuilder report = new StringBuilder();
+		if (connectionToDatabase == null) {
+			return; 		
+		}
 		// Header of report	
 		report.append("Statistics Of Previous Games Report\n\n");
 		// shows the number of overall games
@@ -60,7 +63,9 @@ private Connection connectionToDatabase;
 	public void buildPreviousGameReport() {
 		DBCon = new DBConnect();
 		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
-
+		if (connectionToDatabase == null) {
+			return; 		
+		}
 		setNumOfGames(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game", "count"));
 		setNumOfCPUWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'CPU'", "count"));
 		setNumOfHumanWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'PLAYER'", "count"));
@@ -104,6 +109,9 @@ private Connection connectionToDatabase;
 	
 	@Override
 	public String toString() {
+		if (connectionToDatabase == null) {
+			return ""; 		
+		}
 		return "\nStatistics Of Previous Games:\n\nNumber of Previous Games:\t\t"
 				+ numOfGames + "\nNumber of CPU Wins:\t\t\t" + numOfCPUWins + "\nNumber of Human Wins:\t\t\t" + numOfHumanWins
 				+ "\nAverage Number of Rounds Drawn:\t\t" + aveOfGamesDrawn + "\nHighest Round Played in Single Game:\t" + highNumOfRounds;
