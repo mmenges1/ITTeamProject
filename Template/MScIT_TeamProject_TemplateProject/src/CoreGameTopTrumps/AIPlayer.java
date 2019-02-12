@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * This class is responsible for bringing specific functionality to an ai player (i.e. to deliberately  play strongly).
+ * This class is responsible for bringing specific functionality to an ai player (i.e. to choose cards when it's their turn and deliberately play on hard mode).
  */
 public class AIPlayer extends User {
 

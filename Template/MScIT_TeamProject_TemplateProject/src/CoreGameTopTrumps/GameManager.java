@@ -105,7 +105,8 @@ public class GameManager {
 			turnStatsHelper.addCardToCardsPlayed(this.players.get(i).getTopCard());	
 			players.get(i).discardTopCard();
 		}
-		testLog.addCardsInPlay(turnStatsHelper.cardsPlayed);
+//		testLog.addCardsInPlay(turnStatsHelper.cardsPlayed);
+//		testLog.addCardsInPlay(turnStatsHelper);
 
 		turnStatsHelper.determineWinner();
 		
@@ -118,14 +119,18 @@ public class GameManager {
 			
 			gameStatsData.incrementPoint(turnStatsHelper.getWinnerName());
 			
-			testLog.addCardsInPlay(turnStatsHelper.cardsPlayed);
-			testLog.addCommunalDeck(community);
+//			testLog.addCardsInPlay(turnStatsHelper.cardsPlayed);
+			testLog.addCardsInPlay(turnStatsHelper);
+			testLog.addCategorySelected(players.get(lastWinner).getName(), turnStatsHelper.getTopCardByAttribute());
 			
 			community.clear();
+			testLog.addCommunalDeck(community);
 		} else {
 
 			gameStatsData.setNumberOfDrawsInGamePlusOne();
 			community.addAll(turnStatsHelper.passCardsPlayed());
+			testLog.addCardsInPlay(turnStatsHelper);
+			testLog.addCategorySelected(players.get(lastWinner).getName(), turnStatsHelper.getTopCardByAttribute());
 			testLog.addCommunalDeck(community);
 		}
 
@@ -137,12 +142,13 @@ public class GameManager {
 		for(int i = 0; i < players.size(); i++ ) {
 			turnStatsHelper.addPlayerHandSize(this.players.get(i).getHandSize());
 		}
-		
+
 		if (players.get(lastWinner) instanceof Human) {
 			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
 		} else {
 			gameStatsData.setNumberOfCPURoundWinsPlusOne();
 		}
+		testLog.addDeckAfterRound(players);
 	}
 	
 
@@ -179,7 +185,7 @@ public class GameManager {
 			System.out.println(players.get(0).getName() + " is the overall winner!!!\n");
 			gameStatsData.setGameWinner();
 			testLog.addWinner(players.get(0));
-			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+//			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			
 			return true;
 		}
