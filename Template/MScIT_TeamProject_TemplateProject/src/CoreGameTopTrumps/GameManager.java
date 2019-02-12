@@ -137,7 +137,12 @@ public class GameManager {
 	}
 	
 	public void handleEndOfRound() {
-	
+		testLog.addCategorySelected(players.get(lastWinner).getName(), turnStatsHelper.getTopCardByAttribute());
+		
+		for(int i = 0; i < players.size(); i++ ) {
+			turnStatsHelper.addPlayerHandSize(this.players.get(i).getHandSize());
+		}
+
 		if (players.get(lastWinner) instanceof Human) {
 			gameStatsData.setNumberOfPlayerRoundWinsPlusOne();
 		} else {
