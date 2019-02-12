@@ -40,22 +40,22 @@ abstract public class User {
 		this.name = name;
 	}
 	
-		/**
-		 * This method returns a player's deck as an arraylist of card objects
-		 * @return a player's deck
-		 */
-		public ArrayList<Card> getHand() {
-			return this.hand;
-		}
-		
-		/**
-		 * This method will set a player's deck with a given list of card objects
-		 * @param dealtCards a list of card objects (after cards are dealt)
-		 */
-		public void setHand(ArrayList<Card> dealtCards) {
-			this.hand.clear();
-			this.hand = dealtCards;
-		}
+	/**
+	 * This method returns a player's deck as an arraylist of card objects
+	 * @return a player's deck
+	 */
+	public ArrayList<Card> getHand() {
+		return this.hand;
+	}
+	
+	/**
+	 * This method will set a player's deck with a given list of card objects
+	 * @param dealtCards a list of card objects (after cards are dealt)
+	 */
+	public void setHand(ArrayList<Card> dealtCards) {
+		this.hand.clear();
+		this.hand = dealtCards;
+	}
 	
 	/*
 	 * Return a name of a criterion in the top card

@@ -2,6 +2,7 @@ package CoreGameTopTrumps;
 
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This class is responsible for handling each round and determine whether there is a winning card or if it is a draw
@@ -18,8 +19,8 @@ public class TurnStatsHelper {
 	int attributeNumberPlayed;
 	int communitySize;
 	boolean isDraw;
+	@JsonProperty
 	ArrayList<Integer> playerHandSizes;
-
 	String roundString;
 	
 	
@@ -62,6 +63,8 @@ public class TurnStatsHelper {
 		return this.playerHandSizes.get(index);
 	}
 
+
+
 	/**
 	 * This method works out the change in deck size based on the outcome of the round
 	 * @param player - a player that participated in the round
@@ -80,7 +83,7 @@ public class TurnStatsHelper {
 	 * This method returns the number of players that are active in the current round
 	 * @return number of active players in round
 	 */
-  @JsonIgnore
+   @JsonIgnore
 	public int getPlayerSize() {
 		return this.players.size();
 	}
