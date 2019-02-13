@@ -125,15 +125,12 @@ public class GameManager {
 			testLog.addCommunalDeck(community);
 			
 			community.clear();
-			points.increment(turnStatsHelper.getWinnerName());
 		} else {
 
 			gameStatsData.setNumberOfDrawsInGamePlusOne();
 			community.addAll(turnStatsHelper.passCardsPlayed());
 			testLog.addCategorySelected(turnStatsHelper.getPlayerSize(), players, turnStatsHelper);
 			testLog.addCommunalDeck(community);
-			
-			points.increment("Draw");
 		}
 
 	}
