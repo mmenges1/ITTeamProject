@@ -47,7 +47,7 @@ public class TopTrumpsRESTAPI {
 	ObjectWriter oWriter = new ObjectMapper().writerWithDefaultPrettyPrinter();
 	GameManager gm;
 	ArrayList<User> players;
-	ArrayList<TurnStatsHelper> turnStats;
+	TurnStatsHelper turnStats;
 
 	private int numberOfAIPlayers;
 	private int userChoice;
@@ -100,41 +100,6 @@ public class TopTrumpsRESTAPI {
 		return "Hello "+Word;
 	}
 
-//	@GET
-//	@Path("/userChoice")
-//
-//	// test with: http://localhost:7777/toptrumps/userChoice?Choice=2
-//	public void userChoice(@QueryParam("Choice") int choice) throws IOException{
-//		this.waitingForUser = false;
-//		this.userChoice = choice;
-//		System.out.println(userChoice);
-//	}
-
-	@GET
-	@Path("/AIplayers")
-
-	// test with: http://localhost:7777/toptrumps/AIplayers?AIPlayers=3
-	public void startGame(@QueryParam("AIplayers") int AIPlayers) throws IOException{
-		this.numberOfAIPlayers = AIPlayers;
-		System.out.println("start game");
-		this.playGame(4);
-	}
-
-	@GET
-	@Path("/getTurnStats")
-	// test with: http://localhost:7777/toptrumps/getTurnStats
-	// This is for getting the JSON object of the turn stats!
-	public String getTurnStats() throws IOException{
-
-		System.out.println(gm.getTurnStats().get(turnStats.size()-1));
-
-		String turnStatsJSON = oWriter.writeValueAsString(gm.getTurnStats().get(turnStats.size()-1));
-
-		// Sometimes this works, sometimes it doesn't - have no idea why!
-		System.out.println(turnStatsJSON);
-
-		return turnStatsJSON;
-	}
 	/*
 	 * NEW APIs BELOW
 	 */
@@ -225,10 +190,10 @@ public class TopTrumpsRESTAPI {
 				gm.applyAICardChoice();
 			}
 
-			gm.playRoundNew();
+			gm.playRound();
 
 			players = gm.getPlayers();
-			turnStats = gm.getTurnStats();
+			turnStats = gm.getTurnStatsHelper();
 
 
 			gm.handleEndOfRound();
@@ -297,17 +262,17 @@ public class TopTrumpsRESTAPI {
 
 		gm.applyAICardChoice();
 
-		gm.playRoundNew();
+		gm.playRound();
 
 		displayRoundSummery();
 
 		gm.handleEndOfRound();
 
-		turnStats = gm.getTurnStats();
+		turnStats = gm.getTurnStatsHelper();
 
-		TurnStatsHelper current = turnStats.get(turnStats.size()-1);
+	//	TurnStatsHelper current = turnStats.get(turnStats.size()-1);
 
-		System.out.println("fromREST API current turnstats : " + current);
+	//	System.out.println("fromREST API current turnstats : " + current);
 
 		determinPlayerChoice();
 
@@ -317,7 +282,7 @@ public class TopTrumpsRESTAPI {
 
 		String turnStatsJSON = "";
 		try {
-			turnStatsJSON = oWriter.writeValueAsString(current);
+			turnStatsJSON = oWriter.writeValueAsString(turnStats);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -343,19 +308,19 @@ public class TopTrumpsRESTAPI {
 	private void displayRoundSummery() {
 
 		players = gm.getPlayers();
-		turnStats = gm.getTurnStats();
+		turnStats = gm.getTurnStatsHelper();
 
 		// 1)
-		int currentTurnStats = turnStats.size()-1;
+	//	int currentTurnStats = turnStats;
 
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
 			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
-					turnStats.get(currentTurnStats).getPlayer(i).getName(),
-					turnStats.get(currentTurnStats).getUserCardName(i),
-					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					turnStats.getPlayer(i).getName(),
+					turnStats.getUserCardName(i),
+					turnStats.getAnyCardTopAttribute(i),
 					players.get(i).getHandSize(),
-					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i));
+					turnStats.returnDifferenceHandSize(players.get(i), i));
 		}
 
 		// 3)
@@ -364,14 +329,14 @@ public class TopTrumpsRESTAPI {
 		String roundString = "";
 
 		// 4)
-		if(turnStats.get(currentTurnStats).getIsDraw()) {
+		if(turnStats.getIsDraw()) {
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
 					+ "\n\nCommunity deck size is currently: %d",
 					gm.getCommunity().size());
 		} else {
 			roundString = String.format("\n%s won using %s with %s. "
 					+ "\n\nCommunity deck size is currently: %d",
-					players.get(gm.getLastWinner()).getName(), turnStats.get(currentTurnStats).getWinningCardName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), gm.getCommunity().size());
+					players.get(gm.getLastWinner()).getName(), turnStats.getWinningCardName(), turnStats.getTopCardByAttribute(), gm.getCommunity().size());
 		}
 
 		System.out.println(roundString);

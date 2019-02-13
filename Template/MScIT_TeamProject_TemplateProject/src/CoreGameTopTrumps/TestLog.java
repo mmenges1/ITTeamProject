@@ -63,12 +63,12 @@ public class TestLog
 	  fileString += "\n---------------------------------------------------------------\n";
   }
 //The contents of the current cards in play (the cards from the top of the user's deck and the computer's deck(s))
-  public void addCardsInPlay(TurnStatsHelper turnStats)
+  public void addCardsInPlay(TurnStatsHelper turnStatsHelper)
   {
 	  fileString += "Cards in play are:\n";
-	  for(int i = 0; i < turnStats.getCardPlayedSize(); i++)
+	  for(int i = 0; i < turnStatsHelper.getCardPlayedSize(); i++)
 	  {
-		 fileString += turnStats.getPlayer(i).name + "'s " + turnStats.cardsPlayed.get(i) + "\n";
+		 fileString += turnStatsHelper.getPlayer(i).getName() + "'s " + turnStatsHelper.cardsPlayed.get(i) + "\n";
 	  }
 	  fileString += "\n---------------------------------------------------------------\n";
   }
@@ -97,7 +97,10 @@ public void addCategorySelected(int playerSize, ArrayList<User> players, TurnSta
 		fileString += "\n---------------------------------------------------------------\n";
 	}
 public void addPlayerChoice(TurnStatsHelper turnStatsHelper) {
-	fileString += turnStatsHelper.getChoosingPlayerName() + " chose " + turnStatsHelper.getChoosingPlayerCriteria() + "\n";
+	for(int i = 0; i < turnStatsHelper.getPlayerSize(); i++)
+	{
+		fileString += turnStatsHelper.getPlayer(turnStatsHelper.getLastWinner()).getName() + " chose " + turnStatsHelper.getChoosingPlayerCriteria() + "\n";
+	}
 
 	}
 }

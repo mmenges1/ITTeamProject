@@ -794,7 +794,7 @@
 				xhr.onload = function(e) {
 						turnStats = xhr.response; // the text of the response
 						//alert(turnStats); // lets produce an alert
-						console.log(turnStats)
+						console.log("Turn Stats " + turnStats)
 						populateDisplay(turnStats);
 					};
 
@@ -897,7 +897,7 @@
 				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
 				// to do when the response arrives
 				xhr.onload = function(e) {
-				//	var responseText = xhr.response; // the text of the response
+					var responseText = xhr.response; // the text of the response
 				//	console.log(responseText); // lets produce an alert
 					var temp = JSON.parse(xhr.response)
 					var turnStats = JSON.parse(JSON.stringify(temp["turnStats"]));
@@ -911,8 +911,10 @@
 						catString = attributeNumberPlayed;
 						setInformationForPlayer(attributeList[attributeNumberPlayed], winnerName, points, draw);
 						setRoundInformation();
+						console.log("PlayRound "+responseText);
 					}
 					else {
+						console.log("playRound end " + responseText);
 						displayEndGame(points);
 					}
 			//		populatePlayRoundDisplay(responseText)
@@ -974,7 +976,7 @@
 					setCardImages(temp);
 
 					var responseText = xhr.response; // the text of the response
-					console.log(responseText); // lets produce an alert
+					console.log("Card Display " + responseText); // lets produce an alert
 					populateDisplayCardsDisplay(responseText)
 				};
 

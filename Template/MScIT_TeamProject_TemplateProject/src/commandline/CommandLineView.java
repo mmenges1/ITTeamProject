@@ -11,7 +11,7 @@ import CoreGameTopTrumps.User;
 public class CommandLineView {
 	
 	private ArrayList<User> players;
-	private ArrayList<TurnStatsHelper> turnStats;
+	private TurnStatsHelper turnStats;
 	GameManager gm;
 
 	public static void main(String[] args) {
@@ -70,6 +70,11 @@ public class CommandLineView {
 		playGame();
 	}
 	
+	
+	public void printLogFile() {
+		gm.printLogFile();
+	}
+	
 	private void playGame() {
 		
 		do {
@@ -84,10 +89,10 @@ public class CommandLineView {
 			
 			displayStateOfPlay();
 			
-			gm.playRoundNew();
+			gm.playRound();
 			
 			players = gm.getPlayers();
-			turnStats = gm.getTurnStats();
+			turnStats = gm.getTurnStatsHelper();
 			
 			displayRoundSummery();
 			
@@ -145,29 +150,29 @@ public class CommandLineView {
 		InputReader in = new InputReader();
 		
 		// 1)
-		int currentTurnStats = turnStats.size()-1;
+	//	int currentTurnStats = turnStats.size()-1;
 
 		// 2)
 		for(int i = 0; i < players.size(); i++) {
 			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
-					turnStats.get(currentTurnStats).getPlayer(i).getName(),
-					turnStats.get(currentTurnStats).getUserCardName(i),
-					turnStats.get(currentTurnStats).getAnyCardTopAttribute(i),
+					turnStats.getPlayer(i).getName(),
+					turnStats.getUserCardName(i),
+					turnStats.getAnyCardTopAttribute(i),
 					players.get(i).getHandSize(),
-					turnStats.get(currentTurnStats).returnDifferenceHandSize(players.get(i), i));
+					turnStats.returnDifferenceHandSize(players.get(i), i));
 		}
 
 		String roundString = "";
 
 		// 4)
-		if(turnStats.get(currentTurnStats).getIsDraw()) {
+		if(turnStats.getIsDraw()) {
 			roundString = String.format("\nIts a draw!! Cards added to Community... "
 					+ "\n\nCommunity deck size is currently: %d",
 					gm.getCommunity().size());
 		} else {
 			roundString = String.format("\n%s won using %s with %s. "
 					+ "\n\nCommunity deck size is currently: %d",
-					players.get(gm.getLastWinner()).getName(), turnStats.get(currentTurnStats).getWinningCardName(), turnStats.get(currentTurnStats).getTopCardByAttribute(), gm.getCommunity().size());
+					players.get(gm.getLastWinner()).getName(), turnStats.getWinningCardName(), turnStats.getTopCardByAttribute(), gm.getCommunity().size());
 		}
 
 		System.out.println(roundString);

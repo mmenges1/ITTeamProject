@@ -2,6 +2,7 @@ package CoreGameTopTrumps;
 
 import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This class is responsible for handling each round and determine whether there is a winning card or if it is a draw
@@ -12,19 +13,16 @@ public class TurnStatsHelper {
 	ArrayList<Card> cardsPlayed;
 	ArrayList<User> players;
 	String winningCardName;
-	int turnNumber;
 	int winner;
+	private int lastWinner;
 	String winnerName;
 	int attributeNumberPlayed;
 	int communitySize;
 	boolean isDraw;
-	boolean gameOver;
-	
-	@JsonIgnore
-	int currentChoice;
+	@JsonProperty
 	ArrayList<Integer> playerHandSizes;
-
 	String roundString;
+	
 	
 	/**
 	 * This constructs a new turn stats helper object that manages each round
@@ -33,25 +31,30 @@ public class TurnStatsHelper {
 	 * @param players - the list of players that are currently in the game at the present round
 	 * @param currentChoice - is the index of the player in the list of players who made the choice of attribute to play this round
 	 */
-	public TurnStatsHelper(int turnNumber, int attributeNumberPlayed, ArrayList<User> players, int currentChoice) {
-		this.turnNumber = turnNumber;
+	public TurnStatsHelper(int attributeNumberPlayed, ArrayList<User> players,int lastWinner) {
 		this.attributeNumberPlayed = attributeNumberPlayed;
 		cardsPlayed = new ArrayList<Card>();
 		this.players = new ArrayList<User>(players);
-		this.currentChoice = currentChoice;
 		playerHandSizes = new ArrayList<Integer>(); // used to work out difference between old and new hand size 
+		this.lastWinner = lastWinner;
+	}
+	
+	public int getLastWinner()
+	{
+		return this.lastWinner;
+	}
+	
+	public String getChoosingPlayerName() {
+		return this.players.get(attributeNumberPlayed).getName();
+	}
+	
+	public String getChoosingPlayerCriteria() {
+		//return this.cardsPlayed.get(attributeNumberPlayed).getCriteriaName(this.attributeNumberPlayed-1);
+		return "";
 	}
 
-	/*
-	 * This method returns the numerical represenation of the attribute that was played based on the index of the arraylist
-	 * of criteria in card object
-	 * @return index of criteria that was played for round
-	 */
-	public int getcurrentChoice() {
-		return this.currentChoice;
-	}
 
-	/*
+	/**
 	 * This method adds a card from all available players to a deck for this round
 	 * @param card object from each player
 	 */
@@ -75,6 +78,8 @@ public class TurnStatsHelper {
 		return this.playerHandSizes.get(index);
 	}
 
+
+
 	/**
 	 * This method works out the change in deck size based on the outcome of the round
 	 * @param player - a player that participated in the round
@@ -93,7 +98,7 @@ public class TurnStatsHelper {
 	 * This method returns the number of players that are active in the current round
 	 * @return number of active players in round
 	 */
-  @JsonIgnore
+   @JsonIgnore
 	public int getPlayerSize() {
 		return this.players.size();
 	}
@@ -149,14 +154,7 @@ public class TurnStatsHelper {
 	public void setWinningCardName(String name) {
 		this.winningCardName = name;
 	}
-	
-	public String getChoosingPlayerName() {
-		return this.players.get(this.currentChoice).getName();
-	}
-	
-	public String getChoosingPlayerCriteria() {
-		return this.cardsPlayed.get(this.currentChoice).getCriteriaName(this.attributeNumberPlayed-1);
-	}
+
 
 	/**
 	 * This method is used to determine the winner of the round by comparing the value for the played criteria of each card
@@ -167,36 +165,46 @@ public class TurnStatsHelper {
 	 */
 	public int determineWinner() {
 		int currentStat = 0;
-		int highestStat = 0;		
+		int highestStat = 0;	
+		int winnerIndex = this.lastWinner;
 
 		for(int i = 0; i < cardsPlayed.size(); i++) {
 			currentStat = cardsPlayed.get(i).getAttribute(attributeNumberPlayed);
 			if(currentStat > highestStat) {
 				highestStat = currentStat;
-				this.winner = i;
-				setWinnerName(this.winner);
-				isDraw = false;
-				setWinningCardName(getUserCardName(this.winner));				
+				winnerIndex = i;
+				isDraw = false;					
 			} else if (currentStat == highestStat) {
-				this.winner = currentChoice;
+				this.winner = lastWinner;
 				isDraw = true;
-				
 			}
 		}
+		
+		if(!isDraw) {
+			this.winner = winnerIndex;
+			setWinnerName(this.winner);
+			setWinningCardName(getUserCardName(this.winner));
+		}
+
 
 		return this.winner;		
 	}
 
 
 	/**
-	 * This method issed for Jackson Serialisation
-   * sets the community deck size depending on 
+	 * This method is used for Jackson Serialisation
+     * sets the community deck size depending on 
 	 * @param size
 	 */
 	public void setCommunitySize(int size) {
 		this.communitySize = size;		
 	}
-  
+	
+	/**
+	 * This method is used for Jackson Serialisation
+     * sets the community deck size depending on 
+	 * @return size
+	 */  
 	public int getCommunitySize() {
 		return this.communitySize;		
 	}
@@ -206,7 +214,7 @@ public class TurnStatsHelper {
 	 * @return the winning card attribute  and score
 	 */
 
-  @JsonIgnore
+	@JsonIgnore
 	public String getTopCardByAttribute() {
 		return cardsPlayed.get(this.winner).getCriteriaName(this.attributeNumberPlayed-1 )+ " : " + cardsPlayed.get(this.winner).getAttribute(attributeNumberPlayed);
 	}
@@ -216,7 +224,7 @@ public class TurnStatsHelper {
 	 * @param playerIndex is the index of the player in this list of players
 	 * @return a message of the attribute and score for the played attribute for a player
 	 */
-	public String getAnyCardTopAttribute(int playerIndex) {
+	public String getAnyCardTopAttribute(int playerIndex) {		
 		return cardsPlayed.get(playerIndex).getCriteriaName(attributeNumberPlayed-1) + " : " + cardsPlayed.get(playerIndex).getAttribute(attributeNumberPlayed);
 	}
 	
@@ -235,7 +243,7 @@ public class TurnStatsHelper {
 	 * @return a number of cards played
 	 */
 
-  @JsonIgnore
+	@JsonIgnore
 	public int getCardPlayedSize() {
 		return cardsPlayed.size();
 	}
@@ -264,17 +272,4 @@ public class TurnStatsHelper {
 	public void setWinnerName(int winner) {
 		this.winnerName = players.get(winner).getName();
 	}
-	
-	public boolean getGameOver() {
-		return gameOver;
-	}
-	
-	public void setGameOver(boolean gameOver) {
-		this.gameOver = gameOver;
-	}
-	
-	
-		
-	
-
 }

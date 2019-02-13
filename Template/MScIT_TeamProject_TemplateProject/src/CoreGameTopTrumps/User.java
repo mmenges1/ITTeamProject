@@ -15,15 +15,15 @@ abstract public class User {
 //	public User() {
 //		this.hand = new ArrayList<Card>();
 //	}
-	
-	
+
+
 	public User(String name, ArrayList<Card> hand) {
 		this.name = name;
 		this.hand = hand;
 		this.score = 0;
 	}
 
-	
+
 	/**
 	 * Returns the name of a player
 	 * @return the name of a player
@@ -31,7 +31,7 @@ abstract public class User {
 	public String getName() {
 		return this.name;
 	}
-	
+
 	/**
 	 * This method sets the name for a player
 	 * @param name of a player
@@ -39,7 +39,7 @@ abstract public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 		/**
 		 * This method returns a player's deck as an arraylist of card objects
 		 * @return a player's deck
@@ -47,7 +47,7 @@ abstract public class User {
 		public ArrayList<Card> getHand() {
 			return this.hand;
 		}
-		
+
 		/**
 		 * This method will set a player's deck with a given list of card objects
 		 * @param dealtCards a list of card objects (after cards are dealt)
@@ -56,12 +56,12 @@ abstract public class User {
 			this.hand.clear();
 			this.hand = dealtCards;
 		}
-	
+
 	/*
 	 * Return a name of a criterion in the top card
 	 */
 	abstract String getCriteriaName(Card topCard);
-	
+
 	/*
 	 * Return the index of a criterion in the top card
 	 */
@@ -72,12 +72,12 @@ abstract public class User {
 	 * @return name of top card
 	 */
 	abstract String getTopCardName();
-	
+
 	/*
 	 * Return a message of a player's choice
 	 */
 	abstract public String playerChoosesMessage(Card topCard);
-	
+
 	/**
 	 * This method calls the viewCard() method in the card class for the top card in a player's deck
 	 * which prints to the console that card
@@ -95,7 +95,7 @@ abstract public class User {
 	public Card getTopCard() {
 		return this.hand.get(0);
 	}
-	
+
 
 	/**
 	 * This method will add a pile of cards to the bottom of a player's deck (e.g. after they win a round)
@@ -104,7 +104,7 @@ abstract public class User {
 	public void addCards(ArrayList<Card> wonCards) {
 		this.hand.addAll(wonCards);
 	}
-	
+
 	/**
 	 * This method will add a single card to the bottom of a player's deck
 	 * @param card to be added
@@ -156,11 +156,11 @@ abstract public class User {
 	public boolean userLoses() {
 		return this.hand.size() == 0;
 	}
-	
+
 	public void incrementScore() { //checking something
 		this.score++;
 	}
-	
+
 	public int getScore() {
 		return this.score;
 	}

@@ -75,6 +75,20 @@ private Connection connectionToDatabase;
 		DBCon.closeConnectionToTopTrumpsGameDataBase();
 	} 
 	
+	public void fetchPreviousGameData() {
+		DBCon = new DBConnect();
+		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
+
+		setNumOfGames(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game", "count"));
+		setNumOfCPUWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'CPU'", "count"));
+		setNumOfHumanWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'PLAYER'", "count"));
+		setAveOfGamesDrawn(executeTopTrumpsGameDataBaseQuery("SELECT AVG(nos_draws) FROM \"DBTrump\".game", "avg").substring(0, 3));
+		setHighNumOfRounds(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
+
+		DBCon.closeConnectionToTopTrumpsGameDataBase();
+	} 
+	
+	
 	/// Mock method for using the class while database connection not possible
 	
 	public void mockDBConnection() {
