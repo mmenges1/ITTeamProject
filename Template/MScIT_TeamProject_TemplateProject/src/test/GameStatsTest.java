@@ -14,7 +14,7 @@ class GameStatsTest {
 	private PointsTracker pointsTracker ;
 	@BeforeEach
 	void setUp() throws Exception {
-		gameStats = new GameStats(4,2,10,3);
+		gameStats = new GameStats(4,2,10,0);
 		pointsTracker = new PointsTracker();
 	}
 
@@ -33,10 +33,9 @@ class GameStatsTest {
 		pointsTracker.setDraw(5);
 		assertEquals(5, pointsTracker.getDraw(),"Test number of game draws after setting it to 5");
 	}
-	//@Test
+	@Test
 	void testNumberOfGameDraws() {
 		gameStats.setNumberOfDrawsInGame(5);
-		pointsTracker.setDraw(5);
 		assertEquals(5, gameStats.getNumberOfDrawsInGame(),"Test number of game draws after setting it to 5");
 	}
 	@Test

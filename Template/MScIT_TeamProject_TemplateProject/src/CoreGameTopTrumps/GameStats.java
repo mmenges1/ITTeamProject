@@ -21,12 +21,12 @@ public class GameStats {
 
 	//Constructor parameters hold game statistics attributes which are passed to set methods
 	public GameStats(int numberOfPlayerRoundWins, int numberOfCPURoundWins, int numberOfRoundsInGame, 	int numberOfDrawsInGame) {
-
+		points = new PointsTracker();
 		setNumberOfPlayerRoundWins(numberOfPlayerRoundWins);
 		setNumberOfCPURoundWins(numberOfCPURoundWins);
 		setNumberOfRoundsInGame(numberOfRoundsInGame);
 		setNumberOfDrawsInGame(numberOfDrawsInGame);
-		points = new PointsTracker();
+
 
 	}
 
@@ -55,7 +55,7 @@ public class GameStats {
 
 	//This method sets the count of the total draws of the game
 	public void setNumberOfDrawsInGame(int numberOfDrawsInGame) {
-		this.numberOfDrawsInGame = numberOfDrawsInGame;
+		points.setDraw(numberOfDrawsInGame);
 	}
 
 	//This method sets the winner of the overall game
