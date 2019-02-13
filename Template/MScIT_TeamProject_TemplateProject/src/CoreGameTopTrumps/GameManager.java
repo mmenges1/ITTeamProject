@@ -211,7 +211,7 @@ public class GameManager {
 	public void setCurrentChoice(int userChooseAttribute) {
 		if(players.get(lastWinner) instanceof Human) {
 			this.currentChoice = userChooseAttribute;
-			System.out.println("GameManger.setCurrentChoice is activated : " + userChooseAttribute);
+//			System.out.println("GameManger.setCurrentChoice is activated : " + userChooseAttribute);
 		}
 
 	}
