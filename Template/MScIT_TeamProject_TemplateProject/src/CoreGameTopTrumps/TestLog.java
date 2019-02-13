@@ -96,11 +96,8 @@ public void addCategorySelected(int playerSize, ArrayList<User> players, TurnSta
 		}
 		fileString += "\n---------------------------------------------------------------\n";
 	}
-public void addPlayerChoice(TurnStatsHelper turnStatsHelper) {
-	for(int i = 0; i < turnStatsHelper.getPlayerSize(); i++)
-	{
-		fileString += turnStatsHelper.getPlayer(turnStatsHelper.getLastWinner()).getName() + " chose " + turnStatsHelper.getChoosingPlayerCriteria() + "\n";
-	}
 
+public void addPlayerChoice(TurnStatsHelper turnStatsHelper) {
+		fileString += turnStatsHelper.getPlayer(turnStatsHelper.getLastWinner()).getName() + " chose " + turnStatsHelper.getChoosingPlayerCriteria() + "\n";
 	}
 }
