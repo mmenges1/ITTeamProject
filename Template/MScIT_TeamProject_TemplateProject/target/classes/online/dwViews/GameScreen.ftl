@@ -69,7 +69,9 @@
 							<h4>Your Card</h4>
 								<img class="card-img-top" id="humanImage" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/350r.jpg" alt="Card image">
 								<div class="card-img-overlay">
-									</br></br></br>
+									</br>
+										<h4 id="humanDeckSize" class="card-title"></h4>
+									</br>
 									<h4 id="humanCardName" class="card-title">350r</h4>
 									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(1)"> Size: 1</button>
 									<section> &nbsp;</section>
@@ -80,6 +82,9 @@
 									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(4)"> Firepower: 3</button>
 									<section> &nbsp;</section>
 									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(5)"> Cargo: 0</button>
+
+
+
 								</div>
 							</div>
 						</div>
@@ -89,8 +94,9 @@
 							<h4>AI 1 Card</h4>
 							<img class="card-img-top" id="AI1Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Avenger.jpg" alt="Card image">
 								<div class="card-img-overlay">
-									</br></br></br>
-									<h4 id='AI1CardName' class="card-title">Avenger</h4>
+									</br><h4 id="AI1DeckSize" class="card-title"></h4>
+								</br>
+								<h4 id='AI1CardName' class="card-title">Avenger</h4>
 									<button type="button" class="btn btn-primary cat1" disabled> Size: 1</button>
 									<section> &nbsp;</section>
 									<button type="button" class="btn btn-primary cat1"disabled> Speed: 9</button>
@@ -110,7 +116,9 @@
 							<h4>AI 2 Card</h4>
 								<img class="card-img-top" id="AI2Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Carrack.jpg" alt="Card image">
 								<div class="card-img-overlay">
-									</br></br></br>
+									</br>
+										<h4 id="AI2DeckSize" class="card-title"></h4>
+									</br>
 									<h4 id='AI2CardName' class="card-title">Carrack</h4>
 									<button type="button" class="btn btn-primary cat2"disabled> Size: 1</button>
 									<section> &nbsp;</section>
@@ -129,8 +137,8 @@
 							<h4>AI 3 Card</h4>
 								<img class="card-img-top" id="AI3Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Hurricane.jpg" alt="Card image">
 								<div class="card-img-overlay">
-								</br></br></br>
-									<h4 id='AI3CardName' class="card-title">Hurricane</h4>
+								</br><h4 id="AI3DeckSize" class="card-title"></h4></br>
+								<h4 id='AI3CardName' class="card-title">Hurricane</h4>
 									<button type="button" class="btn btn-primary cat3"disabled> Size: 1</button>
 									<section> &nbsp;</section>
 									<button type="button" class="btn btn-primary cat3"disabled> Speed: 9</button>
@@ -150,7 +158,7 @@
 								<h4>AI 4 Card</h4>
 								<img class="card-img-top" id="AI4Image" src="http://dcs.gla.ac.uk/~richardm/TopTrumps/Hurricane.jpg" alt="Card image">
 								<div class="card-img-overlay">
-									</br></br></br>
+									</br><h4 id="AI4DeckSize" class="card-title"></h4></br>
 									<h4 id='AI4CardName' class="card-title" id="shipName">Orion</h4>
 									<button type="button" class="btn btn-primary cat4"disabled> Size: 1</button>
 									<section> &nbsp;</section>
@@ -161,6 +169,7 @@
 									<button type="button" class="btn btn-primary cat4"disabled> Firepower: 3</button>
 									<section> &nbsp;</section>
 									<button type="button" class="btn btn-primary cat4"disabled> Cargo: 0</button>
+
 								</div>
 							</div>
 						</div>
@@ -280,6 +289,7 @@
 			var attributeList = ["size","speed","range","firepower","cargo"];
 			var catString;
 			var currentPlayer;
+			var currentNumPlayers;
 			// Method that is called on page load
 			function initalize() {
 	//			var query = decodeURIComponent(window.location.search);
@@ -321,7 +331,7 @@
 				document.getElementById('catButton').remove();
 				document.getElementById('activePlayer').remove();
 
-				document.getElementById('EndGame').innerHTML =	"</br></br><hr></br>You won "+points[0].human+" rounds</br><hr>";
+				document.getElementById('EndGame').innerHTML =	"</br></br><hr>The Overall Winner Was: "+points[0].winner+"</br><hr>You won "+points[0].human+" rounds</br><hr>";
 				if(numOpponents >= 1){
 					document.getElementById('EndGame').innerHTML += "AI 1 won "+points[0].ai1+" rounds</br><hr>";
 				}
@@ -371,49 +381,62 @@
 				displayCards();
 			}
 
-			function setInformationForPlayer(attributeList, winnerName, draw){
+			function setInformationForPlayer(attributeList, winnerName, draw, turnStats){
 				document.getElementById('active').innerHTML =currentPlayer+ " chose " + attributeList +" this round.";
 
 				if(draw.includes("true"))
 				{
-					document.getElementById("playerInformation").innerHTML = "This round is a draw! </br>"
+					document.getElementById("playerInformation").innerHTML = "This round is a draw!      |      Community Pile has " + turnStats[0].communitySize + " cards <br>";
 				}
 				else {
-					document.getElementById("playerInformation").innerHTML = winnerName +" won this round.";
+					document.getElementById("playerInformation").innerHTML = winnerName +" won this round.     |      Community Pile has " + turnStats[0].communitySize + " cards <br>";
 				}
 			}
 
-			function setRoundInformation()
+			function setRoundInformation(turnStats)
 			{
 				if(document.getElementById('Human') != null)
 				{
 					document.getElementById("playerInformation").innerHTML +=  "     Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString];
+					console.log(turnStats[0].playerHandSizes[currentNumPlayers]);
+
+					document.getElementById("humanDeckSize").innerHTML = "Deck Size: " + turnStats[0].playerHandSizes[currentNumPlayers];
+					currentNumPlayers++;
 				}
 					if(numOpponents >= 1){
 						if(document.getElementById('AI1') != null)
 						{
-							document.getElementById("playerInformation").innerHTML +=  "     AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString];
+							document.getElementById("playerInformation").innerHTML +=  "  |   AI 1's " + attributeList[catString]+" was: "+gameState[1][0].attributes[catString];
+							document.getElementById("AI1DeckSize").innerHTML = "Deck Size: " + turnStats[0].playerHandSizes[currentNumPlayers];
+							currentNumPlayers++;
 						}
 					}
 					if(numOpponents >= 2){
 						if(document.getElementById('AI2') != null)
 						{
-							document.getElementById("playerInformation").innerHTML += "     AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString];
+							document.getElementById("playerInformation").innerHTML += "   |  AI 2's " + attributeList[catString]+" was: "+gameState[2][0].attributes[catString];
+							document.getElementById("AI2DeckSize").innerHTML = "Deck Size: " + turnStats[0].playerHandSizes[currentNumPlayers];
+							currentNumPlayers++;
 						}
 					}
 				 	if(numOpponents >= 3){
 						if(document.getElementById('AI3') != null)
 						{
-							document.getElementById("playerInformation").innerHTML += "   AI 3's " + attributeList[catString]+" was: "+gameState[3][0].attributes[catString];
+							document.getElementById("playerInformation").innerHTML += " |  AI 3's " + attributeList[catString]+" was: "+gameState[3][0].attributes[catString];
+							document.getElementById("AI3DeckSize").innerHTML = "Deck Size: " + turnStats[0].playerHandSizes[currentNumPlayers];
+							currentNumPlayers++;
 						}
 					}
 					if (numOpponents >= 4){
-						if(document.getElementById('AI2') != null)
+						if(document.getElementById('AI4') != null)
 						{
-							document.getElementById("playerInformation").innerHTML += "    AI 4's " + attributeList[catString]+" was: "+gameState[4][0].attributes[catString];
+							document.getElementById("playerInformation").innerHTML += "  |  AI 4's " + attributeList[catString]+" was: "+gameState[4][0].attributes[catString];
+							document.getElementById("AI4DeckSize").innerHTML = "Deck Size: " + turnStats[0].playerHandSizes[currentNumPlayers];
+							currentNumPlayers++;
 						}
 					}
 			}
+
 
 			function seeCategoryPage()
 			{
@@ -897,7 +920,7 @@
 				// CORS requests are Asynchronous, i.e. we do not wait for a response, instead we define an action
 				// to do when the response arrives
 				xhr.onload = function(e) {
-					var responseText = xhr.response; // the text of the response
+				//	var responseText = xhr.response; // the text of the response
 				//	console.log(responseText); // lets produce an alert
 					var temp = JSON.parse(xhr.response)
 					var turnStats = JSON.parse(JSON.stringify(temp["turnStats"]));
@@ -909,12 +932,12 @@
 						var attributeNumberPlayed = parseInt(turnStats[0].attributeNumberPlayed) - 1;
 
 						catString = attributeNumberPlayed;
-						setInformationForPlayer(attributeList[attributeNumberPlayed], winnerName, points, draw);
-						setRoundInformation();
-						console.log("PlayRound "+responseText);
+						setInformationForPlayer(attributeList[attributeNumberPlayed], winnerName, draw, turnStats);
+						setRoundInformation(turnStats);
+					//	console.log("PlayRound "+responseText);
 					}
 					else {
-						console.log("playRound end " + responseText);
+					//	console.log("playRound end " + responseText);
 						displayEndGame(points);
 					}
 			//		populatePlayRoundDisplay(responseText)
@@ -952,6 +975,8 @@
 				xhr.onload = function(e) {
 					var temp = JSON.parse(xhr.response)
 					var stats = JSON.parse(JSON.stringify(temp["Stats"]));
+
+					currentNumPlayers = stats[0].numOfPlayers;
 
 					currentPlayer = stats[0].nameOfNextPlayer;
 
