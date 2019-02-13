@@ -77,9 +77,16 @@ public class CommandLineView {
 	}
 
 	private void playGame() {
+		boolean humanStillInGame = true;
+		
 		do {
 			players = gm.getPlayers();
-
+			
+			if(!(players.get(0) instanceof Human) && (humanStillInGame == true)){
+					notifyPlayerOut();	
+					humanStillInGame = false;
+			}
+			
 			if(gm.determinNextPlayer()) {
 				gm.setCurrentChoice(userChooseAttribute());
 			}else {
@@ -147,8 +154,13 @@ public class CommandLineView {
 					gm.getCommunity().size());
 		} else {
 			roundString = String.format("\n%s won using %s with %s. "
-					+ "\n\nCommunity deck size is currently: %d",
-					players.get(gm.getLastWinner()).getName(), turnStats.getWinningCardName(), turnStats.getTopCardByAttribute(), gm.getCommunity().size());
+					+"\nWinning card is:\n%s"
+					+ "\n\nCommunity deck size is currently: %d",					
+					players.get(gm.getLastWinner()).getName(), 
+					turnStats.getWinningCardName(), 
+					turnStats.getTopCardByAttribute(),
+					turnStats.passCardsPlayed().get(turnStats.getWinner()).viewCard(),
+					gm.getCommunity().size());
 		}
 
 		System.out.println(roundString);
@@ -178,6 +190,12 @@ public class CommandLineView {
 				System.out.println("Please enter within the range");
 			}
 		}
+	}
+	
+	private void notifyPlayerOut() {
+		System.out.println("\nYou are out of cards! AI taking over ");
+		InputReader in = new InputReader();
+		in.pressEnter();
 	}
 	
 	/**
