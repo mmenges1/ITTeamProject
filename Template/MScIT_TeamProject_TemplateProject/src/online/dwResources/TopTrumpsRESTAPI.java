@@ -50,9 +50,7 @@ public class TopTrumpsRESTAPI {
 	TurnStatsHelper turnStats;
 
 	private int numberOfAIPlayers;
-	private int userChoice;
 	private boolean isPlayerChoice;
-	private int stupidcounter;
 
 	/**
 	 * Contructor method for the REST API. This is called first. It provides
@@ -160,10 +158,24 @@ public class TopTrumpsRESTAPI {
 
 		String turnStatsJSON = "{ \"turnStats\": [ " + currentTurnStats/* oWriter.writeValueAsString(currentTurnStats)*/+ "], \"points\": [" + oWriter.writeValueAsString(gm.getPoints()) + "]}";
 
-		// Sometimes this works, sometimes it doesn't - have no idea why!
 		System.out.println(turnStatsJSON);
 
 
+		return turnStatsJSON;
+	}
+	
+	@GET
+	@Path("/autoFinishGame")
+	public String autoFinishGame() throws IOException{
+		String currentTurnStats;
+		
+		do {
+			currentTurnStats = playRound();
+			
+		}while(!gm.gameOver());
+		
+		String turnStatsJSON = "{ \"turnStats\": [ " + currentTurnStats/* oWriter.writeValueAsString(currentTurnStats)*/+ "], \"points\": [" + oWriter.writeValueAsString(gm.getPoints()) + "]}";
+		
 		return turnStatsJSON;
 	}
 
@@ -174,7 +186,7 @@ public class TopTrumpsRESTAPI {
 		return previousGameStats;
 	}
 
-
+	//TODO: Delete this - for testing only
 	private void playGame(int numberOfAIPlayers) {
 		gm.deal(numberOfAIPlayers);
 
@@ -233,6 +245,7 @@ public class TopTrumpsRESTAPI {
 
 		buffer.append("{\n\"Stats\" : [{ \"roundNumber\" :\""+(gm.getTotalRounds())+"\", "
 					+ "\n  \"isHumanChoice\" : \""+ isPlayerChoice +"\","
+					+ "\n  \"numOfPlayers\" : \""+ players.size() +"\","
 					+ "\n  \"nameOfNextPlayer\" : \""+ players.get(gm.getLastWinner()).getName() +"\"  }]," + System.lineSeparator() );
 
 		for(int i = 0; i < players.size(); i++) {
@@ -290,18 +303,6 @@ public class TopTrumpsRESTAPI {
 
 		return turnStatsJSON;
 	}
-
-//	public int waitForUser() {
-//		while(waitingForUser) {
-//			// set to true by userChoice();
-//		}
-//
-//		System.out.println("Waiting - userChoice = " + userChoice);
-//
-//		waitingForUser = true;
-//
-//		return userChoice;
-//	}
 
 	/// for helping to debug - to be deleted!
 
