@@ -198,8 +198,7 @@ public class GameManager {
 			System.out.println(players.get(0).getName() + " is the overall winner!!!\n");
 			gameStatsData.setGameWinner();
 			testLog.addWinner(players.get(0));
-//			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
-
+			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
 			return true;
 		}
 
