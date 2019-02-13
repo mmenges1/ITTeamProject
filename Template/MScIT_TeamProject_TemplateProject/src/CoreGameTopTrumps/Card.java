@@ -155,23 +155,4 @@ public class Card {
 			return cardString;
 		}
 	}
-	//temporary test
-	public static void main (String[] args) {
-		Card card = new Card();
-		card.setName("Kevin");
-//		card.setAttribute1(10);
-//		card.setAttribute2(2);
-//		card.setAttribute3(3);
-//		card.setAttribute4(5);
-//		card.setAttribute5(5);
-		ArrayList<Integer> attributes = new ArrayList<Integer>();
-		attributes.add(10);
-		attributes.add(2);
-		attributes.add(3);
-		attributes.add(5);
-		attributes.add(5);
-		card.setAttributes(attributes);
-//		card.viewCard();
-		System.out.println(card.getAttribute(0));
-	}
 }

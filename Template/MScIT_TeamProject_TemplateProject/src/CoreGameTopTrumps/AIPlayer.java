@@ -82,27 +82,4 @@ public class AIPlayer extends User {
 	public String getTopCardName() {
 		return "The winning card is " + this.hand.get(0).getName();
 	}
-	
-//	public static void main(String[] args) {
-//		Deck d = new Deck();
-//		ArrayList<Card> list = new ArrayList<Card>();
-//		ArrayList<Card> hand = new ArrayList<Card>();
-//		AIPlayer ai = new AIPlayer();
-//		list = d.createDeck("StarCitizenDeck.txt");
-//		//This method shuffles the list
-//		Collections.shuffle(list);
-//		Card c = list.get(0);
-//		Card c2 = list.get(1);
-//		hand.add(c);
-//		hand.add(c2);
-//		ai.setHand(hand);
-//		while (ai.getHandSize() != 0) {
-//			Card topCard = ai.getTopCard();
-//			System.out.println(topCard.viewCard());
-//			System.out.println("AI chooses attribute " + ai.getIndexofCriteriaWithHighestValue(topCard) + ": " + ai.getCriteriaName(topCard) );
-//			ai.discardTopCard();
-//			System.out.println("AI has " + ai.getHandSize() + " cards remaining");
-//			System.out.println();
-//		}
-//	}
 }

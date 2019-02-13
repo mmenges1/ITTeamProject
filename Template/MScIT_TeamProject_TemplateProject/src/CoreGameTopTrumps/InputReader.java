@@ -21,13 +21,8 @@ public class InputReader {
 	
 	//Receives any key input from user as a means of acknowledgement
 	public void pressEnter() {
-		
 		System.out.println("Press enter to continue");
-
 		String input = sc.nextLine();
-			
-//		System.out.println(input);
-				
 	}
 	
 	//methods for reading an integer
