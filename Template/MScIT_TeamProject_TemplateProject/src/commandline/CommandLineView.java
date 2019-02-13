@@ -122,7 +122,8 @@ public class CommandLineView {
 	}
 
 
-	/* displayRoundSummery() displays the text that the user sees on the screen using turnStats to get the necessary data
+	/**
+	 * displayRoundSummery() displays the text that the user sees on the screen using turnStats to get the necessary data
 	 *  Loops through players to print format their name, card, attribute and remaining deck size
 	 */
 	private void displayRoundSummery() {

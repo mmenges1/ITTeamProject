@@ -19,7 +19,6 @@ public class TopTrumpsCLIApplication {
 		boolean userWantsToQuit = false; // flag to check whether the user wants to quit the application
 		
 		
-		System.out.println("From top Trumps CLI APP .java");
 		CommandLineView CLIview = new CommandLineView();
 		
 
