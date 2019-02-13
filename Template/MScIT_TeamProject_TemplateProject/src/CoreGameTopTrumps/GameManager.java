@@ -139,6 +139,8 @@ public class GameManager {
 			testLog.addCategorySelected(turnStatsHelper.getPlayerSize(), players, turnStatsHelper);
 			testLog.addCommunalDeck(community);
 		}
+		
+		turnStatsHelper.setCommunitySize(community.size());
 
 	}
 	/**
