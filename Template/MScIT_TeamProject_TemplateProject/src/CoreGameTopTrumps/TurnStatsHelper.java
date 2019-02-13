@@ -44,13 +44,14 @@ public class TurnStatsHelper {
 		return this.lastWinner;
 	}
 	
+	@JsonIgnore
 	public String getChoosingPlayerName() {
-		return this.players.get(attributeNumberPlayed).getName();
+		return this.players.get(this.winner).getName();
 	}
 	
+	@JsonIgnore
 	public String getChoosingPlayerCriteria() {
-		//return this.cardsPlayed.get(attributeNumberPlayed).getCriteriaName(this.attributeNumberPlayed-1);
-		return "";
+		return this.cardsPlayed.get(this.winner).getCriteriaName(this.attributeNumberPlayed-1);
 	}
 
 
