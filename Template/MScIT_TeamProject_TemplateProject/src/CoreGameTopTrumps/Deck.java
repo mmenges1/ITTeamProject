@@ -10,7 +10,7 @@ import java.util.Collections;
 /**
  * This class is responsible for reading the text file containing information of cards
  * Each row is to be stored as a card object which will form the basis of the deck
-* The top row will be stored as a list of attributes which is then used for each card.
+ * The top row will be stored as a list of attributes which is then used for each card.
  */
 public class Deck {
 	ArrayList<String> criteria = new ArrayList<String>();
@@ -52,21 +52,21 @@ public class Deck {
 
 		return cardList;
 	}
-	 /**
-	  * read the top line and stored in an arraylist of strings
-	  * @param data is the info read from the first row
-	  */
+	/**
+	 * read the top line and stored in an arraylist of strings
+	 * @param data is the info read from the first row
+	 */
 	public void readCriterias(String[] data) {
 		for (int j = 1; j<data.length; j++) {
 			criteria.add(data[j]);
 		}
 	}
-	
-    /*
-     * Creates a new card object from the file data and sets the name, list of criteria and list of attributes 
-     *  @param data is the info read from a row
-     *  @returns a new card object
-     */
+
+	/*
+	 * Creates a new card object from the file data and sets the name, list of criteria and list of attributes 
+	 *  @param data is the info read from a row
+	 *  @returns a new card object
+	 */
 	public Card createCard(String[] data) {
 		Card newCard = new Card();
 		ArrayList<Integer> attributes = new ArrayList<Integer>();
@@ -80,7 +80,7 @@ public class Deck {
 		this.startingDeck.add(newCard);
 		return newCard;
 	}
-	
+
 	/*
 	 * Method to get the starting deck size
 	 * returns a number
@@ -97,26 +97,5 @@ public class Deck {
 	{
 		return this.startingDeck;
 	}
-//A temporary test
-	public static void main(String[] args) {
-		Deck d = new Deck();
-		ArrayList<Card> list = new ArrayList<Card>();
-		list = d.createDeck("StarCitizenDeck.txt");
-		//This method shuffles the list
-		Collections.shuffle(list);
-//		for (Card c : list) {
-//			c.viewCard();
-		int i = 0;
-		Card c = list.get(i);
-//			String s = "";
-//			for (int j = list.size()-1; j >0; j--) {
-//			s = list.get(i).getName() + ": ";
-//			for (int j = 0; j<c.getAttributes().size(); j++) {
-		for (int j = 0; j <= c.getAttributes().size(); j++) {
-			System.out.println(c.getAttribute(j));
-		}
-		c.viewCard();
-//			}
-//		}
-		}
-	}
+}
+	

@@ -12,11 +12,6 @@ abstract public class User {
 	protected ArrayList<Card> hand;
 	protected int score;
 
-//	public User() {
-//		this.hand = new ArrayList<Card>();
-//	}
-
-
 	public User(String name, ArrayList<Card> hand) {
 		this.name = name;
 		this.hand = hand;
@@ -156,11 +151,18 @@ abstract public class User {
 	public boolean userLoses() {
 		return this.hand.size() == 0;
 	}
-
-	public void incrementScore() { //checking something
+	
+	/**
+	 * This method will increment a round-winning player's running score
+	 */
+	public void incrementScore() { 
 		this.score++;
 	}
 
+	/**
+	 * Return a players' score 
+	 * @return
+	 */
 	public int getScore() {
 		return this.score;
 	}

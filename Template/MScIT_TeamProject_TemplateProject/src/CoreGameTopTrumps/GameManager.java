@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import CoreGameTopTrumps.GameStats.PointsTracker;
-
 import java.util.Iterator;
+
+/**
+ * This class is responsible for managing the game activities, round by round.
+ */
 
 public class GameManager {
 	int totalPlayers = 0;
@@ -62,11 +65,12 @@ public class GameManager {
 
 	}
 
-
+	/**
+	 * This method determines the player who'll choose the attribute of each round
+	 * @return true if human is to play
+	 */
 	public boolean determinNextPlayer() {
 		Random r = new Random();
-
-
 		if(totalRounds == 0) {
 			startingPlayer = r.nextInt(totalPlayers);
 			lastWinner = startingPlayer;
@@ -86,7 +90,9 @@ public class GameManager {
 		return false;
 	}
 
-
+	/**
+	 * Retrieves the ai players choice if they are to play
+	 */
 	public void applyAICardChoice() {
 		// condition to check that this is not effective if the last winner (therefore current chooser) is a human
 		// Allows AI to play
@@ -95,7 +101,9 @@ public class GameManager {
 		}
 	}
 
-
+	/**
+	 * Responsible for handling each round.
+	 */
 	public void playRound() {
 
 		gameStatsData.setNumberOfRoundsInGamePlusOne();
@@ -109,7 +117,6 @@ public class GameManager {
 		}
 		testLog.addCardsInPlay(turnStatsHelper);
 		testLog.addPlayerChoice(turnStatsHelper);
-
 		turnStatsHelper.determineWinner();
 
 
@@ -134,11 +141,13 @@ public class GameManager {
 		}
 
 	}
-
+	/**
+	 * This method is responsible for handling each round
+	 * i.e. getting the changes in deck side after a round is played
+	 * determining winner of a round and incrementing their score
+	 */
 	public void handleEndOfRound() {
-		//testLog.addCategorySelected(players.get(lastWinner).getName(), turnStatsHelper.getTopCardByAttribute());
-
-		for(int i = 0; i < players.size(); i++ ) {
+			for(int i = 0; i < players.size(); i++ ) {
 			turnStatsHelper.addPlayerHandSize(this.players.get(i).getHandSize());
 		}
 
@@ -150,7 +159,10 @@ public class GameManager {
 		testLog.addPlayerDeck(players);
 	}
 
-
+	/**
+	 * This method will remove any players that have ran out of cards, it'll also determine if the game is over - when all players are out
+	 * @return true if game is finished - 1 remaining player
+	 */
 	public boolean gameOver() {
 
 		Iterator<User> playersIterator = players.iterator();

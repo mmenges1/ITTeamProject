@@ -8,151 +8,126 @@ import CoreGameTopTrumps.InputReader;
 import CoreGameTopTrumps.TurnStatsHelper;
 import CoreGameTopTrumps.User;
 
+/**
+ * This class is responsible for retrieving and presenting round events for the user playing CLI format
+ *
+ */
 public class CommandLineView {
-	
+
 	private ArrayList<User> players;
 	private TurnStatsHelper turnStats;
 	GameManager gm;
 
 	public static void main(String[] args) {
-		
 		CommandLineView CLIview = new CommandLineView();
-		System.out.println("FROM COMMAND LINE VIEW");
 		CLIview.manageTurn();
 
 	}
-	
+
 	public CommandLineView(){
 		gm = new GameManager();
 	}
-	
+
+	/**
+	 * This method handles the initial selection round
+	 */
 	public void manageTurn() {
 
 		int playerChoice = 0;
 		System.out.printf("Hello, Welcome to Top Trumps!\nWould you like to see previous game statistics, start a new game, or quit?\n");
 		while(true) {			
 			playerChoice = initialPlayerChoice();
-			
-			//get player choice within a set player choice
-			
-//			System.out.println("CLUview - init Player Choice " + playerChoice);
 
+			//get player choice within a set player choice
 			if(playerChoice == 1) {
-				
 				displayPreviousGameStats();
-				
 			} else if (playerChoice == 2){
-				
 				dealAndPlay(4);
-				
 			} else {
 				System.out.println("Goodbye!");
 				break;
 			}
 		}
-		
+
 	}
-	
-	
+
+	/**
+	 * Display previous game stats if user chooses the 1st option in CLI.
+	 */
 	public void displayPreviousGameStats() {
-		
 		//Currently set to a mock method!!
 		String previousStats = gm.getPreviousGameStats().toString();
-		
-		
 		System.out.println(previousStats);
-		
 	}
-	
+
+	/**
+	 * Play the game with appropriate number of players
+	 * @param players 
+	 */
 	public void dealAndPlay(int players) {
 		gm.deal(players);
-		
 		playGame();
 	}
-	
-	
+
+	/**
+	 * This method will print log to file if appropriate
+	 */
 	public void printLogFile() {
 		gm.printLogFile();
 	}
-	
+
 	private void playGame() {
-		
 		do {
 			players = gm.getPlayers();
-			
+
 			if(gm.determinNextPlayer()) {
 				gm.setCurrentChoice(userChooseAttribute());
 			}else {
-//				System.out.println("Not user turn");
 				gm.applyAICardChoice();
 			}
-			
 			displayStateOfPlay();
-			
 			gm.playRound();
-			
 			players = gm.getPlayers();
 			turnStats = gm.getTurnStatsHelper();
-			
 			displayRoundSummery();
-			
 			gm.handleEndOfRound();
-			
-		}while(!gm.gameOver());
-		
-	
-	}
 
+		}while(!gm.gameOver());
+	}
+	
 	private void displayStateOfPlay() {
-		
 		int currentChoice = gm.getCurrentChoice();
 		int lastWinner = gm.getLastWinner();
 		int totalRounds = gm.getTotalRounds();
-		
+
 		InputReader in = new InputReader();
-		
+
 		String preRoundString = "";
-		
+
 		if(players.get(0) instanceof Human && lastWinner !=0) {
-			    /*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
-			
-				preRoundString = String.format("%s is the next player!\n\nYour current card is:\n%s\n", players.get(lastWinner).getName(), players.get(0).getTopCard().viewCard());
-				System.out.println(preRoundString);
-				
-				in.pressEnter();
+			/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
+
+			preRoundString = String.format("%s is the next player!\n\nYour current card is:\n%s\n", players.get(lastWinner).getName(), players.get(0).getTopCard().viewCard());
+			System.out.println(preRoundString);
+
+			in.pressEnter();
 		} else if(!(players.get(0) instanceof Human)) {
-				/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
-				
-				preRoundString = String.format("%s is the next player!", players.get(lastWinner).getName());
-				
-				System.out.println(preRoundString);
-			
+			/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (totalRounds) + " ~~~~~~~\n");
+
+			preRoundString = String.format("%s is the next player!", players.get(lastWinner).getName());
+
+			System.out.println(preRoundString);
+
 		}
-		
-		
 	}
 
-	private boolean askUserQuit() {
-		System.out.println("Ask user quit");
-		return false;
-	}
 
-	/* displayRoundSummery() displays the text that the user sees on the screen.
-	*  it uses turnStats to get the necissary data
-	*
-	*  1) Intantiates the integer which represents the current turn within the turnStats arraylist
-	*  2) Loops through players to print format their name, card, attribute and remaining deck size.
-		The if condition can probibly be removed as now gameOver() removes players with no cards
-	*  3) This condition displays either the winning hand or declares a draw, & displays the size of the community deck
-
-	*/
+	/* displayRoundSummery() displays the text that the user sees on the screen using turnStats to get the necessary data
+	 *  Loops through players to print format their name, card, attribute and remaining deck size
+	 */
 	private void displayRoundSummery() {
 		InputReader in = new InputReader();
-		
-		// 1)
-	//	int currentTurnStats = turnStats.size()-1;
 
-		// 2)
 		for(int i = 0; i < players.size(); i++) {
 			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
 					turnStats.getPlayer(i).getName(),
@@ -176,36 +151,15 @@ public class CommandLineView {
 		}
 
 		System.out.println(roundString);
-		
+
 		if(players.get(0) instanceof Human) {
 			in.pressEnter();
 		}
-		
-		
-		/**
-		 * Iterate through list of players
-		 * If a player has no more cards left, a message displays that they've been knocked out
-		 * If this is true and that player comes before the winning player, the index of that winning player
-		 * is adjusted accordingly for the next round
-		 * The losing player is then removed from the list
-		 * i needs to be decremented as the size is shortened when a player is removed on each iteration
-		 */
-//		for (int i = 0; i < players.size();i++) {
-//			if (this.players.get(i).userLoses()) {
-//				System.out.println("\n" + this.players.get(i).getName() + " has been knocked out!");
-//				if (i < this.lastWinner) {
-//					this.lastWinner--;
-//				}
-//				this.players.remove(i);
-//				i--;
-//			} else {
-//				System.out.println("\n" + this.players.get(i).getName() + " to play next round!");
-//			}
-//		}
-
-		
 	}
-
+	/**
+	 * This method will return the initial player selection
+	 * @return number selection
+	 */
 	public int initialPlayerChoice() {
 
 		InputReader in = new InputReader();
@@ -225,9 +179,13 @@ public class CommandLineView {
 		}
 	}
 	
+	/**
+	 * This method handles a human player's choice of criteria to play for a round
+	 * @return the index of the criterion in list of criteria
+	 */
 	private int userChooseAttribute() {
 		InputReader reader = new InputReader();
-		
+
 		/*Make the people feel at home :) -->*/ System.out.println("\n\n~~~~~~~  R O U N D : " + (gm.getTotalRounds()) + " ~~~~~~~\n");
 
 		System.out.printf("You are the next player! \n\nHere is the card at the top of your deck...\n"
@@ -244,5 +202,4 @@ public class CommandLineView {
 			}
 		}
 	}
-
 }
