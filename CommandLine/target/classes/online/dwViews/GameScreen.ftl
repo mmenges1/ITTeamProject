@@ -566,9 +566,9 @@
 				else {
 					if(document.getElementById('Human') != null)
 					{
-						document.getElementById('Human').remove();
 						document.getElementById('roundButton').remove();
 						document.getElementById('catButton').remove();
+						document.getElementById('Human').remove();
 						humanLost = true;
 						automateRounds();
 					}
@@ -799,13 +799,13 @@
 						var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/autoFinishGame"); // Request type and URL+parameters
 
 						xhr.onload = function(e) {
-					//	alert("You Lost!");
+
 						var temp = JSON.parse(xhr.response)
 						var turnStats = JSON.parse(JSON.stringify(temp["turnStats"]));
 						var points = JSON.parse(JSON.stringify(temp["points"]));
 
 						//	console.log("playRound end " + responseText);
-
+					//	alert("You Lost!");
 						displayEndGame(points);
 					}
 						// We have done everything we need to prepare the CORS request, so send it
