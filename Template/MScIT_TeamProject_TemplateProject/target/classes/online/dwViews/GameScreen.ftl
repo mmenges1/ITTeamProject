@@ -290,6 +290,7 @@
 			var catString;
 			var currentPlayer;
 			var currentNumPlayers;
+			var humanLost = false;
 			// Method that is called on page load
 			function initalize() {
 	//			var query = decodeURIComponent(window.location.search);
@@ -326,12 +327,18 @@
 				{
 					document.getElementById('AI4').remove();
 				}
-				document.getElementById('roundButton').remove();
-				document.getElementById('mainScreenButton').display = "block";
-				document.getElementById('catButton').remove();
+				// document.getElementById('roundButton').remove();
+				// document.getElementById('mainScreenButton').display = "block";
+				// document.getElementById('catButton').remove();
 				document.getElementById('activePlayer').remove();
 
-				document.getElementById('EndGame').innerHTML =	"</br></br><hr>The Overall Winner Was: "+points[0].winner+"</br><hr>You won "+points[0].human+" rounds</br><hr>";
+				if(humanLost){
+					document.getElementById('EndGame').innerHTML =	"</br></br><strong>You Lost!!</strong><hr>The Overall Winner Was: "+points[0].winner+"</br><hr>You won "+points[0].human+" rounds</br><hr>";
+				}
+				else {
+					document.getElementById('EndGame').innerHTML =	"</br></br><hr>The Overall Winner Was: "+points[0].winner+"</br><hr>You won "+points[0].human+" rounds</br><hr>";
+				}
+
 				if(numOpponents >= 1){
 					document.getElementById('EndGame').innerHTML += "AI 1 won "+points[0].ai1+" rounds</br><hr>";
 				}
@@ -393,8 +400,31 @@
 				}
 			}
 
-			function setRoundInformation(turnStats)
+			function setRoundInformation(turnStats, winnerName, draw)
 			{
+				if(draw.includes("false"))
+				{
+					if(winnerName.includes("You"))
+					{
+						document.getElementById('Human').style["boxShadow"] = "0 0 10px #4d0026";
+					}
+					else if(winnerName.includes("AI 1"))
+					{
+						document.getElementById('AI1').style["boxShadow"] = "0 0 15px #4d0026";
+					}
+					else if(winnerName.includes("AI 2"))
+					{
+						document.getElementById('AI2').style["boxShadow"] = "0 0 5px #4d0026";
+					}
+					else if(winnerName.includes("AI 3"))
+					{
+						document.getElementById('AI3').style["boxShadow"] = "0 0 5px #4d0026";
+					}
+					else // if(winnerName.includes("AI 4"))
+					{
+						document.getElementById('AI4').style["boxShadow"] = "0 0 5px #4d0026";
+					}
+				}
 				if(document.getElementById('Human') != null)
 				{
 					document.getElementById("playerInformation").innerHTML +=  "     Your " + attributeList[catString]+" was: "+gameState[0][0].attributes[catString];
@@ -524,6 +554,7 @@
 					humanCardNameVar = you[0].name;
 					gameState[0] = you;
 					document.getElementById('humanCardName').innerHTML = humanCardNameVar;
+					document.getElementById('Human').style["boxShadow"] = "0 0 0px #ffffff";
 					setHumanCardImage();
 					var catButtonArray = document.getElementsByClassName('hcat');
 
@@ -536,6 +567,10 @@
 					if(document.getElementById('Human') != null)
 					{
 						document.getElementById('Human').remove();
+						document.getElementById('roundButton').remove();
+						document.getElementById('catButton').remove();
+						humanLost = true;
+						automateRounds();
 					}
 				}
 
@@ -548,6 +583,7 @@
 						AI1CardNameVar = ai1[0].name;
 						document.getElementById('AI1Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
 						document.getElementById('AI1CardName').innerHTML = AI1CardNameVar;
+							document.getElementById('AI1').style["boxShadow"] = "0 0 0px #ffffff";
 						catButtonArray = document.getElementsByClassName('cat1');
 
 						for(i = 0; i < 5; i++)
@@ -571,6 +607,7 @@
 						AI2CardNameVar = ai2[0].name;
 						document.getElementById('AI2Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
 						document.getElementById('AI2CardName').innerHTML = AI2CardNameVar;
+						document.getElementById('AI2').style["boxShadow"] = "0 0 0px #ffffff";
 						catButtonArray = document.getElementsByClassName('cat2');
 
 						for(i = 0; i < 5; i++)
@@ -581,8 +618,8 @@
 					else {
 						if(document.getElementById('AI2') != null)
 						{
-						document.getElementById('AI2').remove();
-					}
+							document.getElementById('AI2').remove();
+						}
 					}
 				}
 				if(numOpponents >= 3)
@@ -594,6 +631,7 @@
 						AI3CardNameVar = ai3[0].name;
 						document.getElementById('AI3Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
 						document.getElementById('AI3CardName').innerHTML = AI3CardNameVar;
+						document.getElementById('AI3').style["boxShadow"] = "0 0 0px #ffffff";
 						catButtonArray = document.getElementsByClassName('cat3');
 
 						for(i = 0; i < 5; i++)
@@ -617,6 +655,7 @@
 						AI4CardNameVar = ai4[0].name;
 						document.getElementById('AI4Image').src = "http://dcs.gla.ac.uk/~richardm/TopTrumps/" + shipImages[Math.floor(Math.random()*12)];
 						document.getElementById('AI4CardName').innerHTML = AI4CardNameVar;
+						document.getElementById('AI4').style["boxShadow"] = "0 0 0px #ffffff";
 						catButtonArray = document.getElementsByClassName('cat4');
 
 						for(i = 0; i < 5; i++)
@@ -668,7 +707,7 @@
 		<!-- Here are examples of how to call REST API Methods -->
 		<script type="text/javascript">
 
-			
+
 			//Moving RESTAPI functions to see where they fit in front send
 
 			function createCORSRequest(method, url) {
@@ -756,7 +795,25 @@
 
 			}
 
+			function automateRounds(){
+						var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/autoFinishGame"); // Request type and URL+parameters
 
+						xhr.onload = function(e) {
+					//	alert("You Lost!");
+						var temp = JSON.parse(xhr.response)
+						var turnStats = JSON.parse(JSON.stringify(temp["turnStats"]));
+						var points = JSON.parse(JSON.stringify(temp["points"]));
+
+						//	console.log("playRound end " + responseText);
+
+						displayEndGame(points);
+					}
+						// We have done everything we need to prepare the CORS request, so send it
+						xhr.send();
+
+						//console.log(JSON.stringify(this.turnStats));
+
+				}
 
 			function getTurnStats(){
 
@@ -783,8 +840,6 @@
 				//console.log(JSON.stringify(this.turnStats));
 
 				return this.turnStats;
-
-
 			}
 
 			/* NEW FUNCTIONS BELOW */
@@ -879,22 +934,32 @@
 				//	var responseText = xhr.response; // the text of the response
 				//	console.log(responseText); // lets produce an alert
 					var temp = JSON.parse(xhr.response)
+					if(temp.hasOwnProperty("turnStats")){
 					var turnStats = JSON.parse(JSON.stringify(temp["turnStats"]));
+					}
+				if(temp.hasOwnProperty("points")){
 					var points = JSON.parse(JSON.stringify(temp["points"]));
+				}
 
-					if (!turnStats[0].hasOwnProperty("GAME")){
+					if (!turnStats[0].hasOwnProperty["GAME"]){
 						var winnerName = turnStats[0].winnerName;
 						var draw = JSON.stringify(turnStats[0].isDraw);
 						var attributeNumberPlayed = parseInt(turnStats[0].attributeNumberPlayed) - 1;
 
 						catString = attributeNumberPlayed;
 						setInformationForPlayer(attributeList[attributeNumberPlayed], winnerName, draw, turnStats);
-						setRoundInformation(turnStats);
+						setRoundInformation(turnStats, winnerName, draw);
 					//	console.log("PlayRound "+responseText);
 					}
 					else {
-					//	console.log("playRound end " + responseText);
+						document.getElementById('roundButton').remove();
+						document.getElementById('catButton').remove();
 						displayEndGame(points);
+						console.log("end " + JSON.stringify(temp));
+					//	alert("Game Done!")
+
+					//	automateRounds(points);
+
 					}
 			//		populatePlayRoundDisplay(responseText)
 				};
