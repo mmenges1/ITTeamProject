@@ -245,6 +245,7 @@ public class TopTrumpsRESTAPI {
 
 		buffer.append("{\n\"Stats\" : [{ \"roundNumber\" :\""+(gm.getTotalRounds())+"\", "
 					+ "\n  \"isHumanChoice\" : \""+ isPlayerChoice +"\","
+					+ "\n  \"numOfPlayers\" : \""+ players.size() +"\","
 					+ "\n  \"nameOfNextPlayer\" : \""+ players.get(gm.getLastWinner()).getName() +"\"  }]," + System.lineSeparator() );
 
 		for(int i = 0; i < players.size(); i++) {
