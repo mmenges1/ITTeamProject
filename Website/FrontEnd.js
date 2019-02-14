@@ -328,3 +328,11 @@ function setCardImages(temp){
 		}
   }
 }
+
+
+//Selection screen
+function setNumberOpponents(num)
+{
+  numberOpponents = num;
+  setUpGame(num);
+}
