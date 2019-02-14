@@ -113,7 +113,8 @@ function setRoundInformation(turnStats, winnerName, draw){
 		else if(winnerName.includes("AI 3")){
 			document.getElementById('AI3').style["boxShadow"] = "0 0 5px #4d0026";
 		}
-		else // if(winnerName.includes("AI 4")){
+		else // if(winnerName.includes("AI 4"))
+		{
 			document.getElementById('AI4').style["boxShadow"] = "0 0 5px #4d0026";
 		}
 	}
