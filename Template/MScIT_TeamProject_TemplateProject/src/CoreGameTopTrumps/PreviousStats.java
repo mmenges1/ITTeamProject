@@ -27,65 +27,18 @@ private Connection connectionToDatabase;
 	//and a second columns showing the statistic values. 
 	//The connection to the database is then closed
 	
-	// TODO: refactor this method to set the getters and setters
-	public void buildPreviousGameStatisticsReport() {
-		DBCon = new DBConnect();
-		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
-		StringBuilder report = new StringBuilder();
-		if (connectionToDatabase == null) {
-			return; 		
-		}
-		// Header of report	
-		report.append("Statistics Of Previous Games Report\n\n");
-		// shows the number of overall games
-		report.append("Number of Previous Games:\t\t");
-		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game", "count"));
-		report.append("\n");
-		// shows the number of times the computer won
-		report.append("Number of CPU Wins:\t\t\t");
-		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'CPU'", "count"));
-		report.append("\n");
-		// shows the number of times the human player won
-		report.append("Number of Human Wins:\t\t\t");
-		report.append(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'PLAYER'", "count"));
-		report.append("\n");
-//		 shows the average number of draws per game
-		report.append("Average Number of Games Drawn:\t\t");
-		report.append((int)Float.parseFloat(executeTopTrumpsGameDataBaseQuery("SELECT AVG(nos_draws) FROM \"DBTrump\".game", "avg")));
-		report.append("\n");
-		// shows the maximum number of rounds played
-		report.append("Highest Number of Rounds Played:\t");
-		report.append(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
-		System.out.println(report.toString());
-		DBCon.closeConnectionToTopTrumpsGameDataBase();
-	} 
-	
-	public void buildPreviousGameReport() {
-		DBCon = new DBConnect();
-		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
-		if (connectionToDatabase == null) {
-			return; 		
-		}
-		setNumOfGames(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game", "count"));
-		setNumOfCPUWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'CPU'", "count"));
-		setNumOfHumanWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'PLAYER'", "count"));
-		setAveOfGamesDrawn(executeTopTrumpsGameDataBaseQuery("SELECT AVG(nos_draws) FROM \"DBTrump\".game", "avg").substring(0, 3));
-		setHighNumOfRounds(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
-
-		DBCon.closeConnectionToTopTrumpsGameDataBase();
-	} 
-	
 	public void fetchPreviousGameData() {
 		DBCon = new DBConnect();
 		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
-
-		setNumOfGames(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game", "count"));
-		setNumOfCPUWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'CPU'", "count"));
-		setNumOfHumanWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'PLAYER'", "count"));
-		setAveOfGamesDrawn(executeTopTrumpsGameDataBaseQuery("SELECT AVG(nos_draws) FROM \"DBTrump\".game", "avg").substring(0, 3));
-		setHighNumOfRounds(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
-
-		DBCon.closeConnectionToTopTrumpsGameDataBase();
+		if (connectionToDatabase != null) {
+			setNumOfGames(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game", "count"));
+			setNumOfCPUWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'CPU'", "count"));
+			setNumOfHumanWins(executeTopTrumpsGameDataBaseQuery("SELECT COUNT(nos_rounds) FROM \"DBTrump\".game WHERE winner = 'PLAYER'", "count"));
+			setAveOfGamesDrawn(executeTopTrumpsGameDataBaseQuery("SELECT AVG(nos_draws) FROM \"DBTrump\".game", "avg").substring(0, 3));
+			setHighNumOfRounds(executeTopTrumpsGameDataBaseQuery("SELECT MAX(nos_rounds) FROM \"DBTrump\".game", "max"));	
+	
+			DBCon.closeConnectionToTopTrumpsGameDataBase();
+		}
 	} 
 	
 	
@@ -113,8 +66,8 @@ private Connection connectionToDatabase;
     			stringBuilder.append(rs.getString(columnName));
             }
 		}
-		catch (SQLException e ) {
-			e.printStackTrace();
+		catch (SQLException | NullPointerException e ) {
+			//e.printStackTrace();
 		}
 		return stringBuilder.toString();
 	}
