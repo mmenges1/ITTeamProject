@@ -25,7 +25,6 @@
 
 				<button type="button" id="catButton" onclick="playRound(); seeCategoryPage();" class="btn btn-primary">See Category Chosen</button>
 				<button type="button" id="roundButton" onclick="seeActivePlayer()" class="btn btn-primary">Next Round</button>
-				<button type="button" id="mainScreenButton" href="../toptrumps" style="display: none" class="btn btn-primary">Main Screen</button>
 		</nav>
 
 
@@ -73,15 +72,15 @@
 										<h4 id="humanDeckSize" class="card-title"></h4>
 									</br>
 									<h4 id="humanCardName" class="card-title">350r</h4>
-									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(1)"> Size: 1</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="sendToUserChoice(1);"> Size: 1</button>
 									<section> &nbsp;</section>
-									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(2)"> Speed: 9</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="sendToUserChoice(2);"> Speed: 9</button>
 									<section> &nbsp;</section>
-									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(3)"> Range: 2</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="sendToUserChoice(3);"> Range: 2</button>
 									<section> &nbsp;</section>
-									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(4)"> Firepower: 3</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="sendToUserChoice(4);"> Firepower: 3</button>
 									<section> &nbsp;</section>
-									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="setCategory(5)"> Cargo: 0</button>
+									<button type="button" id="humanButton" class="btn btn-primary hcat" onclick="sendToUserChoice(5);"> Cargo: 0</button>
 
 
 
@@ -357,14 +356,13 @@
 
 
 			}
-			function setCategory(catNumber)
+			function setCategory()
 			{
-				categorySelected = catNumber;
+//				categorySelected = catNumber;
 				//Step 4
-				sendToUserChoice();
+//				sendToUserChoice();
 				//Step 5
-				playRound();
-				seeCategoryPage();
+
 			}
 			function disableHumanButtons()
 			{
@@ -736,10 +734,10 @@
 
 //      STEP 4 - /userChoice - if /isNextPlayerHuman is true, then choose which card you want to play.<br>
 //	  This should be safe to call several times in a row
-			function sendToUserChoice(){
+			function sendToUserChoice(categorySelected){
 				userChoice = categorySelected;
 
-				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/userChoice?choice="+userChoice); // Request type and URL+parameters
+				var xhr = createCORSRequest('GET', "http://localhost:7777/toptrumps/userChoice?choice="+categorySelected); // Request type and URL+parameters
 
 						// Message is not sent yet, but we can check that the browser supports CORS
 						if (!xhr) {
@@ -750,7 +748,9 @@
 						// to do when the response arrives
 						xhr.onload = function(e) {
 							var responseText = xhr.response; // the text of the response
-						//	alert(userChoice); // lets produce an alert
+						//	alert(responseText); // lets produce an alert
+							playRound();
+							seeCategoryPage();
 						};
 
 						// We have done everything we need to prepare the CORS request, so send it
@@ -933,10 +933,10 @@
 				xhr.onload = function(e) {
 				//	var responseText = xhr.response; // the text of the response
 				//	console.log(responseText); // lets produce an alert
-					var temp = JSON.parse(xhr.response)
-					if(temp.hasOwnProperty("turnStats")){
+				var temp = JSON.parse(xhr.response)
+				if(temp.hasOwnProperty("turnStats")){
 					var turnStats = JSON.parse(JSON.stringify(temp["turnStats"]));
-					}
+				}
 				if(temp.hasOwnProperty("points")){
 					var points = JSON.parse(JSON.stringify(temp["points"]));
 				}
