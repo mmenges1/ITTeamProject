@@ -666,7 +666,7 @@
 						}
 					}
 					else {
-						if(document.getElementById('AI14') != null)
+						if(document.getElementById('AI4') != null)
 						{
 						document.getElementById('AI4').remove();
 					}
@@ -948,6 +948,10 @@
 				{
 					document.getElementById('roundButton').innerHTML = "See Game Results";
 					document.getElementById('catButton').innerHTML = "See Game Results";
+						document.getElementById('activePlayer').innerHTML = "<strong>Game Over</strong>";
+						document.getElementById('roundButton').remove();
+						document.getElementById('catButton').remove();
+						displayEndGame(points);
 				}
 
 					if (!turnStats[0].hasOwnProperty["GAME"]){
@@ -961,12 +965,12 @@
 					//	console.log("PlayRound "+responseText);
 					}
 					else {
-						document.getElementById('roundButton').innerHTML = "See Game Results";
-						document.getElementById('activePlayer').innerHTML = "<strong>Game Over</strong>";
-						document.getElementById('roundButton').remove();
-						document.getElementById('catButton').remove();
-						displayEndGame(points);
-						console.log("end " + JSON.stringify(temp));
+//						document.getElementById('roundButton').innerHTML = "See Game Results";
+//						document.getElementById('activePlayer').innerHTML = "<strong>Game Over</strong>";
+//						document.getElementById('roundButton').remove();
+//						document.getElementById('catButton').remove();
+//						displayEndGame(points);
+//						console.log("end " + JSON.stringify(temp));
 					//	alert("Game Done!")
 
 					//	automateRounds(points);
