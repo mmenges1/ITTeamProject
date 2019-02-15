@@ -326,10 +326,12 @@
 				{
 					document.getElementById('AI4').remove();
 				}
+
+				document.getElementById('activePlayer').remove();
 				// document.getElementById('roundButton').remove();
 				// document.getElementById('mainScreenButton').display = "block";
 				// document.getElementById('catButton').remove();
-				document.getElementById('activePlayer').remove();
+
 
 				if(humanLost){
 					document.getElementById('EndGame').innerHTML =	"</br></br><strong>You Lost!!</strong><hr>The Overall Winner Was: "+points[0].winner+"</br><hr>You won "+points[0].human+" rounds</br><hr>";
@@ -387,7 +389,9 @@
 			}
 
 			function setInformationForPlayer(attributeList, winnerName, draw, turnStats){
-				document.getElementById('active').innerHTML =currentPlayer+ " chose " + attributeList +" this round.";
+				if(attributeList != null){
+					document.getElementById('active').innerHTML =currentPlayer+ " chose " + attributeList +" this round.";
+				}
 
 				if(draw.includes("true"))
 				{
@@ -940,6 +944,11 @@
 				if(temp.hasOwnProperty("points")){
 					var points = JSON.parse(JSON.stringify(temp["points"]));
 				}
+				if(points[0].winner != null)
+				{
+					document.getElementById('roundButton').innerHTML = "See Game Results";
+					document.getElementById('catButton').innerHTML = "See Game Results";
+				}
 
 					if (!turnStats[0].hasOwnProperty["GAME"]){
 						var winnerName = turnStats[0].winnerName;
@@ -952,6 +961,8 @@
 					//	console.log("PlayRound "+responseText);
 					}
 					else {
+						document.getElementById('roundButton').innerHTML = "See Game Results";
+						document.getElementById('activePlayer').innerHTML = "<strong>Game Over</strong>";
 						document.getElementById('roundButton').remove();
 						document.getElementById('catButton').remove();
 						displayEndGame(points);
