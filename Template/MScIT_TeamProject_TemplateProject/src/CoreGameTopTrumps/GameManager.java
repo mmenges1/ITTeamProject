@@ -200,7 +200,16 @@ public class GameManager {
 			System.out.println(players.get(0).getName() + " is the overall winner!!!\n");
 			gameStatsData.setGameWinner();
 			testLog.addWinner(players.get(0));
-			gameStatsData.insertCurrentGameStatisticsIntoDatabase();
+			
+			//New thread prevents blocking if there is no database to connect to
+			Thread goToDatabase = new Thread(new Runnable() {
+				public void run() {
+					gameStatsData.insertCurrentGameStatisticsIntoDatabase();					
+				};				
+			});
+			
+			goToDatabase.start();
+		
 			return true;
 		}
 
