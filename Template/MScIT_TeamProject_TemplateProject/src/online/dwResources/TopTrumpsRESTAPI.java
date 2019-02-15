@@ -66,7 +66,9 @@ public class TopTrumpsRESTAPI {
 	@GET
 	@Path("/setUpGame")
 	/**
-	 *  for setting up the game
+	 * Initiats a game
+	 * @param int numberOfPlayers
+	 * @throws IOException
 	 */
 	public void setUpGameREST(@QueryParam("numberOfPlayers") int numberOfPlayers) throws IOException{
 		System.out.println("AI Players: " + numberOfPlayers);
@@ -74,25 +76,33 @@ public class TopTrumpsRESTAPI {
 		setUpGame(numberOfPlayers);
 		determinPlayerChoice();
 	}
-
+	
+	/**
+	 * Returns a String 'true' if the next players is human, false otherwise
+	 * @return String
+	 * @throws IOException
+	 */
 	@GET
 	@Path("/isNextPlayerHuman")
 	public String determinNextPlayerREST() throws IOException{
-
-		/* better if returns a string of 'false' if false, and a string of the players cards if true
-		 *
-		 */
-
 		return Boolean.toString(isPlayerChoice);
 	}
-
+	/**
+	 * Returns the number of AI players
+	 * @return int numOfAIPlayers
+	 * @throws IOException
+	 */
 	@GET
 	@Path("/numOpponents")
 	public int numberofOpponents() throws IOException{
 
 		return numberOfAIPlayers;
 	}
-
+	/**
+	 * Returns a JSON string of the cards currently in play
+	 * @return String
+	 * @throws IOException
+	 */
 	@GET
 	@Path("/displayCards")
 	// http://localhost:7777/toptrumps/displayCards
@@ -100,7 +110,11 @@ public class TopTrumpsRESTAPI {
 
 		return generateCardsJSON();
 	}
-
+	/**
+	 * Sets the users choice
+	 * @param int choice
+	 * @throws IOException
+	 */
 	@GET
 	@Path("/userChoice")
 
@@ -109,7 +123,11 @@ public class TopTrumpsRESTAPI {
 		setUserChoice(choice);
 		System.out.println(choice);
 	}
-
+	/**
+	 * Plays a single round of the game and returns the results as a JSON String
+	 * @return turnStatsJSON
+	 * @throws IOException
+	 */
 	@GET
 	@Path("/playRound")
 	public String playRoundREST() throws IOException{
@@ -124,7 +142,12 @@ public class TopTrumpsRESTAPI {
 
 		return turnStatsJSON;
 	}
-	
+	/**
+	 * Automatically completes the game if required eg. Human has lost all their cards
+	 * Returns the final results as a JSON String
+	 * @return turnStatsJSON
+	 * @throws IOException
+	 */
 	@GET
 	@Path("/autoFinishGame")
 	public String autoFinishGame() throws IOException{
@@ -139,7 +162,11 @@ public class TopTrumpsRESTAPI {
 		
 		return turnStatsJSON;
 	}
-
+	/**
+	 * Returns a JSON String of the GameStats object, which connects to the database
+	 * @return
+	 * @throws IOException
+	 */
 	@GET
 	@Path("/previousGameStats")
 	public String getPreviousGameStats() throws IOException {
@@ -147,59 +174,10 @@ public class TopTrumpsRESTAPI {
 		return previousGameStats;
 	}
 
-	//TODO: Delete this - for testing only
-	private void playGame(int numberOfAIPlayers) {
-		gm.deal(numberOfAIPlayers);
-
-		System.out.println("GAME STARTED");
-
-		do {
-			players = gm.getPlayers();
-
-			if(gm.determinNextPlayer()) {
-				gm.setCurrentChoice(2);
-			}else {
-//				System.out.println("Not user turn");
-				gm.applyAICardChoice();
-			}
-
-			gm.playRound();
-
-			players = gm.getPlayers();
-			turnStats = gm.getTurnStatsHelper();
-
-
-			gm.handleEndOfRound();
-
-		}while(!gm.gameOver());
-
-		System.out.println("GAME ENDED");
-
-	}
-
-	private void setUpGame(int numberOfAIPlayers) {
-		gm = new GameManager();
-		gm.deal(numberOfAIPlayers);
-		System.out.println("GAME STARTED");
-	}
-
-	private void determinPlayerChoice() {
-
-		players = gm.getPlayers();
-
-		if(gm.determinNextPlayer()) {
-			this.isPlayerChoice = true;
-		}else {
-			this.isPlayerChoice =  false;
-		}
-
-	}
-
-	private void setUserChoice(int choice) {
-		gm.setCurrentChoice(choice);
-	}
-
-
+	/**
+	 * Generates a JSON String of useful stats and the cards currently in play
+	 * @return String 
+	 */
 	private String generateCardsJSON() {
 		StringBuffer buffer = new StringBuffer();
 		players = gm.getPlayers();
@@ -231,14 +209,16 @@ public class TopTrumpsRESTAPI {
 		return buffer.toString();
 	}
 
-	//will return a turnstats!
+	/**
+	 * Plays a single round and serialises the resuts into a JSON String
+	 * 
+	 * @return turnStatsJSON
+	 */
 	private String playRound() {
 
 		gm.applyAICardChoice();
 
 		gm.playRound();
-
-		displayRoundSummery();
 
 		gm.handleEndOfRound();
 
@@ -265,44 +245,35 @@ public class TopTrumpsRESTAPI {
 		return turnStatsJSON;
 	}
 
-	/// for helping to debug - to be deleted!
-
-	private void displayRoundSummery() {
+	/**
+	 * Creates a new game with the number of AI players and deals cards
+	 * @param numberOfAIPlayers
+	 */
+	private void setUpGame(int numberOfAIPlayers) {
+		gm = new GameManager();
+		gm.deal(numberOfAIPlayers);
+		System.out.println("GAME STARTED");
+	}
+	
+	/**
+	 * Uses the GameManagers method to establish if it is the players turn to choose
+	 */
+	private void determinPlayerChoice() {
 
 		players = gm.getPlayers();
-		turnStats = gm.getTurnStatsHelper();
 
-		// 1)
-	//	int currentTurnStats = turnStats;
-
-		// 2)
-		for(int i = 0; i < players.size(); i++) {
-			System.out.printf("%s played....\t\t%s with %s\t\t\t\t(Remaining Cards : %d (%s))\n",
-					turnStats.getPlayer(i).getName(),
-					turnStats.getUserCardName(i),
-					turnStats.getAnyCardTopAttribute(i),
-					players.get(i).getHandSize(),
-					turnStats.returnDifferenceHandSize(players.get(i), i));
+		if(gm.determinNextPlayer()) {
+			this.isPlayerChoice = true;
+		}else {
+			this.isPlayerChoice =  false;
 		}
-
-		// 3)
-		//TODO Implement a GameStats here to convey a points system for each player
-
-		String roundString = "";
-
-		// 4)
-		if(turnStats.getIsDraw()) {
-			roundString = String.format("\nIts a draw!! Cards added to Community... "
-					+ "\n\nCommunity deck size is currently: %d",
-					gm.getCommunity().size());
-		} else {
-			roundString = String.format("\n%s won using %s with %s. "
-					+ "\n\nCommunity deck size is currently: %d",
-					players.get(gm.getLastWinner()).getName(), turnStats.getWinningCardName(), turnStats.getTopCardByAttribute(), gm.getCommunity().size());
-		}
-
-		System.out.println(roundString);
 
 	}
-
+	/**
+	 * Sets the humans current choice
+	 * @param choice
+	 */
+	private void setUserChoice(int choice) {
+		gm.setCurrentChoice(choice);
+	}
 }

@@ -136,8 +136,9 @@ public class GameStats {
 		insertionData.executeUpdate(query);
 		DBCon.closeConnectionToTopTrumpsGameDataBase();
 	}
-	catch (SQLException e) {
-		e.printStackTrace();  }
+	catch (SQLException | NullPointerException e) {
+		// Do Nothing
+	}
 	}
 
 	// Points tracker helper class to support JSON conversion
