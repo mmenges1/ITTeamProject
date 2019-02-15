@@ -24,9 +24,12 @@ public class GameManager {
 	ArrayList<Card> community;
 	ArrayList<User> players;
 	GameStats gameStatsData;
-
 	private TestLog testLog;
-
+	
+	/**
+	 * Instantiates variables and deals the cards to players
+	 * @param numberOfAIPlayers
+	 */
 	public void deal(int numberOfAIPlayers) {
 		totalRounds = 0;
 		gameStatsData = new GameStats(0,0,0,0);
@@ -144,12 +147,11 @@ public class GameManager {
 
 	}
 	/**
-	 * This method is responsible for handling each round
-	 * i.e. getting the changes in deck side after a round is played
-	 * determining winner of a round and incrementing their score
+	 * This method is responsible for handling the end of the round
+	 * by setting variables within helper classes
 	 */
 	public void handleEndOfRound() {
-			for(int i = 0; i < players.size(); i++ ) {
+		for(int i = 0; i < players.size(); i++ ) {
 			turnStatsHelper.addPlayerHandSize(this.players.get(i).getHandSize());
 		}
 
@@ -204,6 +206,11 @@ public class GameManager {
 
 		return false;
 	}
+	
+	/**
+	 * Creates a new PreviousStatis object and returns it
+	 * @return PreviousStats
+	 */
 
 	public PreviousStats getPreviousGameStats() {
 		PreviousStats  previousGamesStatistics = new PreviousStats();
@@ -215,12 +222,18 @@ public class GameManager {
 
 		return previousGamesStatistics;
 	}
-
+	
+	/**
+	 * Prints the testLog
+	 */
 	public void printLogFile() {
 		testLog.printToFile();
 	}
 
-
+	/**
+	 * Sets the current choice of the user, safe to call if it is not the users turn
+	 * @param userChooseAttribute
+	 */
 	public void setCurrentChoice(int userChooseAttribute) {
 		if(players.get(lastWinner) instanceof Human) {
 			this.currentChoice = userChooseAttribute;
@@ -228,31 +241,59 @@ public class GameManager {
 		}
 
 	}
-
+	
+	/**
+	 * Returns the current players
+	 * @return players
+	 */
 	public  ArrayList<User> getPlayers() {
 		return players;
 	}
-
+	
+	/**
+	 * Returns the current TurnStatsHelper
+	 * @return
+	 */
 	public TurnStatsHelper getTurnStatsHelper(){
 		return turnStatsHelper;
 	}
-
+	
+	/**
+	 * Returns the community deck
+	 * @return community
+	 */
 	public ArrayList<Card> getCommunity(){
 		return community;
 	}
-
+	
+	/**
+	 * Returns the index of the last winner
+	 * @return
+	 */
 	public int getLastWinner() {
 		return lastWinner;
 	}
-
+	
+	/**
+	 * Returns number of rounds
+	 * @return
+	 */
 	public int getTotalRounds() {
 		return totalRounds;
 	}
-
+	
+	/**
+	 * Returns the current choice which either AI or Human has played
+	 * @return
+	 */
 	public int getCurrentChoice() {
 		return currentChoice;
 	}
-
+	
+	/**
+	 * Returns the PointsTracker object
+	 * @return
+	 */
 	public PointsTracker getPoints() {
 		return gameStatsData.getPoints();
 	}

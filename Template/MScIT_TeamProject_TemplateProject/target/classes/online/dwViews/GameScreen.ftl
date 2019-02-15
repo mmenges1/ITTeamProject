@@ -566,9 +566,9 @@
 				else {
 					if(document.getElementById('Human') != null)
 					{
+						document.getElementById('Human').remove();
 						document.getElementById('roundButton').remove();
 						document.getElementById('catButton').remove();
-						document.getElementById('Human').remove();
 						humanLost = true;
 						automateRounds();
 					}
