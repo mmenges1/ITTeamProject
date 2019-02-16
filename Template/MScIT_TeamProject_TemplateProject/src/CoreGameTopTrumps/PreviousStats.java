@@ -26,7 +26,6 @@ private Connection connectionToDatabase;
 	//It creates a StringBuilder report with a a title, a first column naming the statistics rows,
 	//and a second columns showing the statistic values. 
 	//The connection to the database is then closed
-	
 	public void fetchPreviousGameData() {
 		DBCon = new DBConnect();
 		connectionToDatabase = DBConnect.connectToTopTrumpsGameDataBase();
@@ -42,8 +41,7 @@ private Connection connectionToDatabase;
 	} 
 	
 	
-	/// Mock method for using the class while database connection not possible
-	
+	// Mock method for using the class while database connection not possible
 	public void mockDBConnection() {
 		setNumOfGames("111");
 		setNumOfCPUWins("222");
@@ -51,7 +49,6 @@ private Connection connectionToDatabase;
 		setAveOfGamesDrawn("444");
 		setHighNumOfRounds("555");			
 	}
-	
 	
 	
 	//This method tells the database connection to create a new statement
@@ -73,7 +70,6 @@ private Connection connectionToDatabase;
 	}
 	
 	// To String method for displaying to user
-	
 	@Override
 	public String toString() {
 		if (connectionToDatabase == null) {
@@ -85,7 +81,6 @@ private Connection connectionToDatabase;
 	}
 	
 	// Getters and setters, for mock method and Jackson serialisation
-	
 	public String getNumOfGames() {
 		return numOfGames;
 	}
